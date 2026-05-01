@@ -7,7 +7,7 @@
     chat<span class="text-[#00e5a0]">quill</span>
   </a>
 
-  <div class="flex items-center gap-1.5 overflow-hidden" id="nav-links">
+  <div class="nav-links-scroll flex items-center gap-1.5" id="nav-links">
     {(['All', 'AI', 'Engineering', 'Data Science', 'Beginner'] as const).map((label) => {
       const cat = label === 'All' ? 'all' : label;
       return (
@@ -21,8 +21,8 @@
     })}
   </div>
 
-  <!-- spacer so logo stays left -->
-  <div class="w-6 shrink-0" />
+  <!-- spacer balances logo on desktop; hidden on mobile to give filters full width -->
+  <div class="w-6 shrink-0 hidden sm:block" />
 </nav>
 
 <style>
@@ -36,19 +36,23 @@
     color: #00e5a0;
   }
 
-  @media (max-width: 400px) {
-    .nav-link:not(.active) {
-      display: none;
-    }
+  /* Scrollable filter strip on mobile — no links hidden */
+  .nav-links-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+  .nav-links-scroll::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
   }
 
   @media (max-width: 640px) {
-    #nav-links {
-      gap: 4px;
+    .nav-links-scroll {
+      gap: 6px;
     }
     .nav-link {
       font-size: 10px;
-      padding: 4px 6px;
+      padding: 4px 8px;
     }
   }
 </style>
