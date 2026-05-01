@@ -1,0 +1,39 @@
+---
+title: "The Exact Moment Your Data Gets Sold and Who's Buying It"
+description: 'Follow the trail from your tap on a news app to a data broker dashboard — the mechanics most people never see.'
+date: 'April 7, 2026'
+tag: 'Data Science'
+readtime: '8 min read'
+featured: false
+coverGradient: 'linear-gradient(135deg, #1a0d0d, #0d1a2b)'
+coverGlow: 'rgba(229,80,60,0.12)'
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import InlineImg from '../../components/InlineImg.astro';
+
+Most people accept that their data is "used" somehow. Fewer know the mechanics. I spent time mapping the actual flow — from the moment you tap an app to the moment a stranger bids on a profile that is, technically, you.
+
+## It Happens Faster Than You Think
+
+You open a news app. Before the first article loads, a process called **real-time bidding (RTB)** has already run. In about 100 milliseconds, your device has sent signals to an ad exchange — your IP address, device type, approximate location, time of day, browsing context. Dozens of advertisers have been told you exist. They've bid on the right to show you an ad. Someone won. The ad loads. You never knew any of it happened.
+
+<PullQuote>
+  In 100 milliseconds — before your article loads — your profile has been auctioned to the highest bidder.
+</PullQuote>
+
+This is the actual moment. Not when you signed up. Not when you tapped agree. When the page loaded.
+
+## The Data Broker Layer
+
+Advertisers want more than what you're doing right now. They want context: your income bracket, your purchase history, whether you're a homeowner, if you've recently searched for a divorce lawyer. This is where **data brokers** enter.
+
+<InlineImg caption="The simplified flow from your device to an advertiser's targeting system." alt="Data flow diagram: app → data broker → advertiser → ad network" />
+
+Companies like Acxiom, Oracle Data Cloud, and Epsilon aggregate data from hundreds of sources — loyalty programs, public records, credit activity, app permissions — and build detailed profiles. These profiles are bought and appended to the RTB signal, so the advertiser bidding on your eyeballs knows significantly more about you than just "person reading news at 8am."
+
+## Who's Actually Buying
+
+The buyers are varied. Insurance companies to assess risk. Political campaigns to micro-target messages. Retailers to predict purchase intent. Banks to pre-screen loan applicants. The data itself is neutral. The applications are not always.
+
+Mauritius, where I'm based, has the Data Protection Act 2017. Europe has GDPR. The US has a patchwork. Enforcement is inconsistent everywhere. Knowing this doesn't change the system, but it changes how you use it — and how you build software that touches user data.

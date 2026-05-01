@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  img { display: block; max-width: 100%; }
+  a { text-decoration: none; color: inherit; }
+
+  body {
+    background-color: #0d1117;
+    color: #b8ccdb;
+    font-family: 'Lora', Georgia, serif;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  .page-enter {
+    animation: fadeIn 0.3s ease;
+  }
+}
+
+/* Shiki code block resets — styles applied by CodeBlock wrapper */
+.astro-code {
+  padding: 20px !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+  font-size: 13px !important;
+  line-height: 1.7 !important;
+  background: #080d14 !important;
+  overflow-x: auto;
+}

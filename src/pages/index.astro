@@ -1,0 +1,98 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import HeroSection from '../components/HeroSection.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+
+const allPosts = await getCollection('blog');
+
+// Sort by date descending (newest first)
+const posts = allPosts.sort((a, b) => {
+  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+});
+
+const featured = posts.find((p) => p.data.featured) ?? posts[0];
+const gridPosts = posts.filter((p) => p.slug !== featured.slug);
+---
+
+<BaseLayout>
+  <Nav />
+
+  <main class="page-enter">
+    <HeroSection
+      slug={featured.slug}
+      title={featured.data.title}
+      tag={featured.data.tag}
+      readtime={featured.data.readtime}
+      date={featured.data.date}
+      coverGradient={featured.data.coverGradient ?? ''}
+      coverGlow={featured.data.coverGlow ?? ''}
+    />
+
+    <!-- Section header -->
+    <div class="flex items-baseline justify-between px-[clamp(16px,5vw,48px)] pt-10 pb-6">
+      <span class="font-mono text-[11px] uppercase tracking-[2px] text-[#7a90a4]">Recent Articles</span>
+      <span class="font-mono text-[11px] text-[#00e5a0] cursor-pointer hover:opacity-70 transition-opacity" id="view-all">View all →</span>
+    </div>
+
+    <!-- Card grid -->
+    <div
+      class="grid gap-6 px-[clamp(16px,5vw,48px)] pb-16"
+      id="card-grid"
+      style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));"
+    >
+      {gridPosts.map((post) => (
+        <ArticleCard
+          slug={post.slug}
+          title={post.data.title}
+          description={post.data.description}
+          tag={post.data.tag}
+          readtime={post.data.readtime}
+          date={post.data.date}
+          coverGradient={post.data.coverGradient ?? ''}
+          coverGlow={post.data.coverGlow ?? ''}
+        />
+      ))}
+    </div>
+
+    <Footer />
+  </main>
+</BaseLayout>
+
+<script>
+  // Category filtering
+  const links = document.querySelectorAll<HTMLButtonElement>('.nav-link');
+  const cards = document.querySelectorAll<HTMLElement>('.card');
+
+  function setActive(cat: string) {
+    links.forEach((l) => {
+      l.classList.toggle('active', l.dataset.cat === cat);
+    });
+    cards.forEach((c) => {
+      const show = cat === 'all' || c.dataset.cat === cat;
+      (c as HTMLElement).style.display = show ? '' : 'none';
+    });
+    // persist in URL without full reload
+    const url = new URL(window.location.href);
+    if (cat === 'all') url.searchParams.delete('cat');
+    else url.searchParams.set('cat', cat);
+    window.history.replaceState(null, '', url.toString());
+  }
+
+  // Read initial category from URL
+  const params = new URLSearchParams(window.location.search);
+  const initialCat = params.get('cat') ?? 'all';
+  setActive(initialCat);
+
+  // Attach click handlers
+  links.forEach((link) => {
+    link.addEventListener('click', () => {
+      setActive(link.dataset.cat ?? 'all');
+    });
+  });
+
+  // "View all" resets filter
+  document.getElementById('view-all')?.addEventListener('click', () => setActive('all'));
+</script>

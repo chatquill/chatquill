@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChatQuill — Mohun Shakeel Ahmad</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600;1,700&family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+
+/* ── TOKENS ── */
+:root {
+  --bg:        #0d1117;
+  --bg2:       #111820;
+  --bg3:       #161f2c;
+  --bg4:       #1c2739;
+  --border:    #1e2d3d;
+  --border2:   #243447;
+  --muted:     #3d5166;
+  --dim:       #7a90a4;
+  --body:      #b8ccdb;
+  --white:     #e4eff8;
+  --accent:    #00e5a0;
+  --accent2:   #00c488;
+  --accent-bg: rgba(0,229,160,0.08);
+  --ff-display: 'Playfair Display', Georgia, serif;
+  --ff-body:    'Lora', Georgia, serif;
+  --ff-mono:    'JetBrains Mono', 'Courier New', monospace;
+}
+
+/* ── BASE ── */
+body {
+  background: var(--bg);
+  color: var(--body);
+  font-family: var(--ff-body);
+  font-size: 16px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,17,23,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 clamp(16px, 5vw, 48px);
+  height: 58px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px;
+}
+.nav-logo {
+  font-family: var(--ff-display);
+  font-size: 20px; font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.nav-logo span { color: var(--accent); }
+.nav-links {
+  display: flex; align-items: center; gap: 6px;
+  flex-wrap: wrap;
+}
+.nav-link {
+  font-family: var(--ff-mono);
+  font-size: 11px; letter-spacing: 0.5px;
+  color: var(--dim);
+  padding: 5px 10px; border-radius: 3px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+.nav-link:hover { color: var(--white); background: var(--bg3); }
+.nav-link.active { color: var(--accent); }
+.nav-toggle {
+  font-family: var(--ff-mono); font-size: 11px;
+  color: var(--dim); border: 1px solid var(--border2);
+  padding: 5px 10px; border-radius: 3px; cursor: pointer;
+  transition: all 0.15s; flex-shrink: 0;
+  background: transparent;
+}
+.nav-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  height: clamp(380px, 55vw, 640px);
+  overflow: hidden;
+  cursor: pointer;
+}
+.hero-img {
+  width: 100%; height: 100%; object-fit: cover;
+  background: var(--bg3);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+  transition: transform 0.6s ease;
+}
+.hero:hover .hero-img { transform: scale(1.02); }
+.hero-gradient {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 20%,
+    rgba(13,17,23,0.4) 50%,
+    rgba(13,17,23,0.95) 85%,
+    var(--bg) 100%
+  );
+}
+.hero-content {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: clamp(20px, 4vw, 48px);
+  max-width: 860px;
+}
+.hero-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-bottom: 16px;
+}
+.hero-label span {
+  font-family: var(--ff-mono); font-size: 10px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--bg); background: var(--accent);
+  padding: 3px 8px; border-radius: 2px; font-weight: 600;
+}
+.hero-label .read-time {
+  font-family: var(--ff-mono); font-size: 10px;
+  color: var(--dim); background: none; letter-spacing: 0.5px;
+}
+.hero-title {
+  font-family: var(--ff-display);
+  font-size: clamp(22px, 4vw, 44px);
+  font-weight: 700; color: var(--white);
+  line-height: 1.2; margin-bottom: 16px;
+  text-wrap: pretty;
+}
+.hero-meta {
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--ff-mono); font-size: 11px; color: var(--dim);
+}
+.hero-meta .dot { color: var(--muted); }
+.hero-read-cta {
+  margin-top: 20px;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--ff-mono); font-size: 11px;
+  color: var(--accent); letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 1px;
+  transition: gap 0.2s;
+}
+.hero:hover .hero-read-cta { gap: 12px; }
+
+/* ── SECTION HEADER ── */
+.section-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: 40px clamp(16px, 5vw, 48px) 24px;
+}
+.section-title {
+  font-family: var(--ff-mono);
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--dim);
+}
+.section-link {
+  font-family: var(--ff-mono); font-size: 11px;
+  color: var(--accent); cursor: pointer;
+  transition: opacity 0.15s;
+}
+.section-link:hover { opacity: 0.7; }
+
+/* ── CARD GRID ── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  padding: 0 clamp(16px, 5vw, 48px) 60px;
+}
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 4px; overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  display: flex; flex-direction: column;
+}
+.card:hover {
+  border-color: var(--border2);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+.card-img {
+  width: 100%;
+  aspect-ratio: 1600 / 840;
+  overflow: hidden; flex-shrink: 0;
+  position: relative;
+}
+.card-img-inner {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 8px;
+  transition: transform 0.4s ease;
+}
+.card:hover .card-img-inner { transform: scale(1.04); }
+.card-body { padding: 18px 20px 20px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.card-tag {
+  font-family: var(--ff-mono); font-size: 9px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--accent); border: 1px solid var(--accent);
+  padding: 2px 7px; border-radius: 2px;
+  display: inline-block; width: fit-content;
+}
+.card-title {
+  font-family: var(--ff-display);
+  font-size: 17px; font-weight: 700;
+  color: var(--white); line-height: 1.35;
+  text-wrap: pretty;
+  flex: 1;
+}
+.card:hover .card-title { color: var(--accent); }
+.card-desc {
+  font-size: 13px; color: var(--dim);
+  line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+}
+.card-meta {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--ff-mono); font-size: 10px; color: var(--muted);
+  margin-top: 4px;
+}
+.card-meta .dot { color: var(--border2); }
+
+/* ── COVER IMAGE (article) ── */
+.cover-wrap {
+  width: 100%;
+  aspect-ratio: 1600 / 840;
+  overflow: hidden;
+  position: relative;
+}
+.cover-img {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+}
+
+/* ── ARTICLE LAYOUT ── */
+.article-header {
+  max-width: 740px; margin: 0 auto;
+  padding: 36px clamp(16px, 5vw, 48px) 28px;
+}
+.article-tag-row {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+}
+.article-tag {
+  font-family: var(--ff-mono); font-size: 10px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--bg); background: var(--accent);
+  padding: 3px 9px; border-radius: 2px; font-weight: 600;
+}
+.article-readtime {
+  font-family: var(--ff-mono); font-size: 11px; color: var(--dim);
+}
+.article-date {
+  font-family: var(--ff-mono); font-size: 11px; color: var(--muted);
+}
+.article-title {
+  font-family: var(--ff-display);
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 700; color: var(--white);
+  line-height: 1.2; margin-bottom: 20px;
+  text-wrap: pretty;
+}
+.article-byline {
+  display: flex; align-items: center; gap: 12px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.byline-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--bg4); border: 1px solid var(--muted);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-display); font-size: 14px; font-weight: 700;
+  color: var(--accent); flex-shrink: 0;
+}
+.byline-name {
+  font-family: var(--ff-display); font-size: 14px;
+  color: var(--white); font-weight: 600;
+}
+.byline-sub {
+  font-family: var(--ff-mono); font-size: 10px; color: var(--dim);
+  margin-top: 2px;
+}
+
+/* ── ARTICLE BODY ── */
+.article-body {
+  max-width: 740px; margin: 0 auto;
+  padding: 0 clamp(16px, 5vw, 48px) 80px;
+}
+.article-body p {
+  font-size: 17px; line-height: 1.85;
+  color: var(--body); margin-bottom: 22px;
+  text-wrap: pretty;
+}
+.article-body h2 {
+  font-family: var(--ff-display);
+  font-size: 24px; font-weight: 700;
+  color: var(--white); margin: 40px 0 16px;
+  line-height: 1.3;
+}
+.article-body h3 {
+  font-family: var(--ff-display);
+  font-size: 19px; font-weight: 600;
+  color: var(--white); margin: 32px 0 12px;
+}
+.article-body strong { color: var(--white); font-weight: 600; }
+.article-body em { font-style: italic; color: var(--body); }
+.article-body a { color: var(--accent); border-bottom: 1px solid var(--accent2); transition: opacity 0.15s; }
+.article-body a:hover { opacity: 0.75; }
+
+/* pull quote */
+.pull-quote {
+  margin: 36px 0;
+  padding: 22px 28px;
+  border-left: 3px solid var(--accent);
+  background: var(--bg2);
+  border-radius: 0 4px 4px 0;
+}
+.pull-quote p {
+  font-family: var(--ff-display) !important;
+  font-size: 20px !important; font-style: italic;
+  color: var(--white) !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+}
+.pull-quote cite {
+  display: block; margin-top: 10px;
+  font-family: var(--ff-mono); font-size: 11px;
+  color: var(--dim); font-style: normal;
+}
+
+/* code block */
+.code-block {
+  margin: 32px 0;
+  border-radius: 4px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.code-header {
+  background: var(--bg3);
+  padding: 8px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.code-filename {
+  font-family: var(--ff-mono); font-size: 11px;
+  color: var(--dim); display: flex; align-items: center; gap: 8px;
+}
+.code-filename::before {
+  content: '';
+  display: inline-block; width: 8px; height: 8px;
+  background: var(--accent); border-radius: 1px; opacity: 0.7;
+}
+.code-lang {
+  font-family: var(--ff-mono); font-size: 10px;
+  color: var(--muted); letter-spacing: 1px; text-transform: uppercase;
+}
+.code-body {
+  background: #080d14;
+  padding: 20px;
+  overflow-x: auto;
+}
+.code-body pre {
+  font-family: var(--ff-mono); font-size: 13px;
+  line-height: 1.7; color: var(--body);
+  white-space: pre;
+}
+.code-body .kw  { color: #7eb8f7; }
+.code-body .fn  { color: var(--accent); }
+.code-body .str { color: #f7c948; }
+.code-body .cm  { color: var(--muted); font-style: italic; }
+.code-body .py  { color: #e5a0ff; }
+
+/* inline image */
+.inline-img {
+  margin: 36px 0;
+}
+.inline-img-inner {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 8px;
+}
+.inline-img figcaption {
+  margin-top: 10px;
+  font-family: var(--ff-body); font-style: italic;
+  font-size: 13px; color: var(--dim);
+  text-align: center; line-height: 1.5;
+}
+
+/* ── AUTHOR BIO ── */
+.author-bio {
+  max-width: 740px; margin: 0 auto;
+  padding: 0 clamp(16px, 5vw, 48px) 80px;
+}
+.author-bio-inner {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 4px; padding: 28px;
+}
+.author-bio-top {
+  display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px;
+}
+.bio-avatar {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--bg4); border: 2px solid var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-display); font-size: 20px; font-weight: 700;
+  color: var(--accent); flex-shrink: 0;
+}
+.bio-name {
+  font-family: var(--ff-display); font-size: 18px;
+  font-weight: 700; color: var(--white); margin-bottom: 4px;
+}
+.bio-role {
+  font-family: var(--ff-mono); font-size: 10px;
+  color: var(--dim); letter-spacing: 0.5px;
+}
+.bio-text {
+  font-size: 14px; color: var(--dim);
+  line-height: 1.7; margin-bottom: 18px;
+}
+.bio-connect {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--ff-mono); font-size: 11px;
+  color: var(--bg); background: var(--accent);
+  padding: 8px 18px; border-radius: 3px; cursor: pointer;
+  font-weight: 600; letter-spacing: 0.5px;
+  transition: background 0.15s, transform 0.15s;
+  border: none;
+}
+.bio-connect:hover { background: var(--accent2); transform: translateY(-1px); }
+
+/* ── IMG PLACEHOLDER UTIL ── */
+.img-ph {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 10px;
+}
+.img-ph-icon {
+  width: 40px; height: 30px;
+  border: 1.5px solid var(--muted); border-radius: 3px;
+  position: relative; opacity: 0.5;
+  background: repeating-linear-gradient(
+    135deg,
+    transparent, transparent 4px,
+    var(--border) 4px, var(--border) 5px
+  );
+}
+.img-ph-label {
+  font-family: var(--ff-mono); font-size: 10px;
+  color: var(--muted); letter-spacing: 0.5px;
+  text-align: center;
+}
+
+/* ── GRADIENT COVER ── */
+.grad-cover {
+  width: 100%; height: 100%;
+  display: flex; align-items: flex-end;
+  padding: 20px;
+  position: relative; overflow: hidden;
+}
+.grad-cover-title {
+  font-family: var(--ff-display);
+  font-size: clamp(14px, 2.5vw, 22px);
+  font-weight: 700; font-style: italic;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.25; position: relative; z-index: 1;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+}
+
+/* ── FOOTER ── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 40px clamp(16px, 5vw, 48px);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-logo {
+  font-family: var(--ff-display); font-size: 16px;
+  font-weight: 700; color: var(--dim);
+}
+.footer-copy {
+  font-family: var(--ff-mono); font-size: 10px;
+  color: var(--muted); letter-spacing: 0.5px;
+}
+
+/* ── TWEAKS PANEL ── */
+.tweaks-panel {
+  position: fixed; bottom: 24px; right: 24px; z-index: 200;
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 6px; width: 240px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+  display: none;
+  font-family: var(--ff-mono);
+}
+.tweaks-panel.open { display: block; }
+.tweaks-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.tweaks-title {
+  font-size: 11px; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--white);
+}
+.tweaks-close {
+  font-size: 14px; color: var(--dim); cursor: pointer;
+  background: none; border: none; color: var(--dim);
+  transition: color 0.15s;
+}
+.tweaks-close:hover { color: var(--white); }
+.tweaks-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 14px; }
+.tweak-row { display: flex; flex-direction: column; gap: 6px; }
+.tweak-label { font-size: 10px; color: var(--dim); letter-spacing: 0.5px; }
+.tweak-options { display: flex; gap: 6px; flex-wrap: wrap; }
+.tweak-opt {
+  font-size: 10px; color: var(--dim);
+  border: 1px solid var(--border2); padding: 4px 10px;
+  border-radius: 3px; cursor: pointer; transition: all 0.15s;
+  background: none;
+}
+.tweak-opt:hover { border-color: var(--accent); color: var(--accent); }
+.tweak-opt.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .nav-links { gap: 4px; }
+  .nav-link { padding: 4px 6px; font-size: 10px; }
+  .card-grid { grid-template-columns: 1fr; }
+  .hero { height: 65vw; min-height: 300px; }
+}
+@media (max-width: 400px) {
+  .nav-link:not(.active) { display: none; }
+}
+
+/* ── PAGE TRANSITIONS ── */
+.page { animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     NAV
+══════════════════════════════════════ -->
+<nav class="nav">
+  <div class="nav-logo" onclick="showPage('home')">chat<span>quill</span></div>
+  <div class="nav-links">
+    <span class="nav-link active" data-cat="all" onclick="filterCat(this,'all')">All</span>
+    <span class="nav-link" data-cat="AI" onclick="filterCat(this,'AI')">AI</span>
+    <span class="nav-link" data-cat="Engineering" onclick="filterCat(this,'Engineering')">Engineering</span>
+    <span class="nav-link" data-cat="Data Science" onclick="filterCat(this,'Data Science')">Data Science</span>
+    <span class="nav-link" data-cat="Beginner" onclick="filterCat(this,'Beginner')">Beginners</span>
+  </div>
+  <button class="nav-toggle" onclick="toggleTweaks()">⚙ Tweaks</button>
+</nav>
+
+<!-- ══════════════════════════════════════
+     HOME PAGE
+══════════════════════════════════════ -->
+<main id="page-home" class="page">
+
+  <!-- Hero -->
+  <section class="hero" onclick="showArticle('ai-code-review')">
+    <div class="hero-img" id="hero-cover">
+      <div class="grad-cover" style="background: linear-gradient(135deg, #0d2b1f 0%, #0d1a2b 40%, #1a0d1f 100%);">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%, rgba(0,229,160,0.12) 0%, transparent 60%);"></div>
+        <span class="grad-cover-title">AI Code Review: Is It Ready to Replace Your Senior Dev?</span>
+      </div>
+    </div>
+    <div class="hero-gradient"></div>
+    <div class="hero-content">
+      <div class="hero-label">
+        <span>AI</span>
+        <span class="read-time">7 min read</span>
+      </div>
+      <h1 class="hero-title">AI Code Review: Is It Ready to Replace Your Senior Dev?</h1>
+      <div class="hero-meta">
+        <span>Mohun Shakeel Ahmad</span>
+        <span class="dot">·</span>
+        <span>April 28, 2026</span>
+        <span class="dot">·</span>
+        <span>7 min read</span>
+      </div>
+      <div class="hero-read-cta">Read article <span>→</span></div>
+    </div>
+  </section>
+
+  <!-- Recent articles -->
+  <div class="section-header">
+    <span class="section-title">Recent Articles</span>
+    <span class="section-link">View all →</span>
+  </div>
+
+  <div class="card-grid" id="card-grid">
+
+    <article class="card" data-cat="Beginner" onclick="showArticle('ml-zero-math')">
+      <div class="card-img">
+        <div class="card-img-inner" style="background:linear-gradient(135deg,#0d1a2b,#1a2b0d);">
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 30%, rgba(200,245,66,0.1) 0%, transparent 60%);"></div>
+          <span class="grad-cover-title" style="padding:16px;font-size:clamp(12px,1.8vw,18px);">What Is Machine Learning? Explained With Zero Math</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Beginner</span>
+        <div class="card-title">What Is Machine Learning? Explained With Zero Math</div>
+        <div class="card-desc">A plain-language breakdown of the most misunderstood concept in tech.</div>
+        <div class="card-meta">
+          <span>Mohun S.A.</span><span class="dot">·</span>
+          <span>Apr 14, 2026</span><span class="dot">·</span>
+          <span>5 min</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="Data Science" onclick="showArticle('data-sold')">
+      <div class="card-img">
+        <div class="card-img-inner" style="background:linear-gradient(135deg,#1a0d0d,#0d1a2b);">
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 40% 70%, rgba(229,80,60,0.12) 0%, transparent 60%);"></div>
+          <span class="grad-cover-title" style="padding:16px;font-size:clamp(12px,1.8vw,18px);">The Exact Moment Your Data Gets Sold and Who's Buying It</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Data Science</span>
+        <div class="card-title">The Exact Moment Your Data Gets Sold and Who's Buying It</div>
+        <div class="card-desc">Follow the trail from your tap to a data broker's dashboard.</div>
+        <div class="card-meta">
+          <span>Mohun S.A.</span><span class="dot">·</span>
+          <span>Apr 7, 2026</span><span class="dot">·</span>
+          <span>8 min</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="Engineering" onclick="showArticle('python-decorators')">
+      <div class="card-img">
+        <div class="card-img-inner" style="background:linear-gradient(135deg,#0d1520,#0d2015);">
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%, rgba(0,229,160,0.1) 0%, transparent 60%);"></div>
+          <span class="grad-cover-title" style="padding:16px;font-size:clamp(12px,1.8vw,18px);">Python Decorators: A Practical Deep Dive</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Engineering</span>
+        <div class="card-title">Python Decorators: A Practical Deep Dive</div>
+        <div class="card-desc">How decorators actually work under the hood, with real use cases.</div>
+        <div class="card-meta">
+          <span>Mohun S.A.</span><span class="dot">·</span>
+          <span>Mar 30, 2026</span><span class="dot">·</span>
+          <span>10 min</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="AI" onclick="showArticle('rag-pipelines')">
+      <div class="card-img">
+        <div class="card-img-inner" style="background:linear-gradient(135deg,#1a1020,#0d1a20);">
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%, rgba(126,184,247,0.1) 0%, transparent 60%);"></div>
+          <span class="grad-cover-title" style="padding:16px;font-size:clamp(12px,1.8vw,18px);">Building RAG Pipelines That Actually Work</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">AI</span>
+        <div class="card-title">Building RAG Pipelines That Actually Work</div>
+        <div class="card-desc">Retrieval-augmented generation beyond the tutorial — production lessons.</div>
+        <div class="card-meta">
+          <span>Mohun S.A.</span><span class="dot">·</span>
+          <span>Mar 18, 2026</span><span class="dot">·</span>
+          <span>12 min</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="Data Science" onclick="showArticle('ds-tools')">
+      <div class="card-img">
+        <div class="card-img-inner" style="background:linear-gradient(135deg,#101a0d,#1a150d);">
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%, rgba(247,201,72,0.1) 0%, transparent 60%);"></div>
+          <span class="grad-cover-title" style="padding:16px;font-size:clamp(12px,1.8vw,18px);">5 Tools Every Data Scientist Actually Uses Daily</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Data Science</span>
+        <div class="card-title">5 Tools Every Data Scientist Actually Uses Daily</div>
+        <div class="card-desc">Beyond Jupyter — the real stack of a working data scientist.</div>
+        <div class="card-meta">
+          <span>Mohun S.A.</span><span class="dot">·</span>
+          <span>Mar 5, 2026</span><span class="dot">·</span>
+          <span>6 min</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-cat="Engineering" onclick="showArticle('api-design')">
+      <div class="card-img">
+        <div class="card-img-inner" style="background:linear-gradient(135deg,#0d1520,#201520);">
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 30%, rgba(229,160,0,0.1) 0%, transparent 60%);"></div>
+          <span class="grad-cover-title" style="padding:16px;font-size:clamp(12px,1.8vw,18px);">API Design Principles I Wish I Knew Earlier</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Engineering</span>
+        <div class="card-title">API Design Principles I Wish I Knew Earlier</div>
+        <div class="card-desc">Lessons from building and consuming hundreds of APIs.</div>
+        <div class="card-meta">
+          <span>Mohun S.A.</span><span class="dot">·</span>
+          <span>Feb 20, 2026</span><span class="dot">·</span>
+          <span>9 min</span>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <footer class="footer">
+    <div class="footer-logo">chatquill</div>
+    <div class="footer-copy">© 2026 Mohun Shakeel Ahmad · Mauritius</div>
+  </footer>
+</main>
+
+<!-- ══════════════════════════════════════
+     ARTICLE PAGE
+══════════════════════════════════════ -->
+<main id="page-article" class="page" style="display:none;">
+
+  <!-- Cover -->
+  <div class="cover-wrap" id="article-cover">
+    <!-- filled by JS -->
+  </div>
+
+  <!-- Header -->
+  <div class="article-header">
+    <div class="article-tag-row">
+      <span class="article-tag" id="article-tag-label">AI</span>
+      <span class="article-readtime" id="article-readtime">7 min read</span>
+      <span class="article-date" id="article-date">April 28, 2026</span>
+    </div>
+    <h1 class="article-title" id="article-title">AI Code Review: Is It Ready to Replace Your Senior Dev?</h1>
+    <div class="article-byline">
+      <div class="byline-avatar">M</div>
+      <div>
+        <div class="byline-name">Mohun Shakeel Ahmad</div>
+        <div class="byline-sub">Software Engineer @ SharinPix · MSc Data Science, Sunway University</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <article class="article-body" id="article-body">
+    <!-- filled by JS -->
+  </article>
+
+  <!-- Author bio -->
+  <section class="author-bio">
+    <div class="author-bio-inner">
+      <div class="author-bio-top">
+        <div class="bio-avatar">M</div>
+        <div>
+          <div class="bio-name">Mohun Shakeel Ahmad</div>
+          <div class="bio-role">Software Engineer @ SharinPix · MSc Data Science with Distinction, Sunway University · Mauritius</div>
+        </div>
+      </div>
+      <p class="bio-text">
+        I write about software engineering, data science and AI from real experience — not tutorials. Based in Mauritius, working at SharinPix and obsessing over clean code, messy data, and the space where both meet.
+      </p>
+      <button class="bio-connect">Connect →</button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-logo" onclick="showPage('home')" style="cursor:pointer;">← chatquill</div>
+    <div class="footer-copy">© 2026 Mohun Shakeel Ahmad</div>
+  </footer>
+</main>
+
+<!-- ══════════════════════════════════════
+     TWEAKS PANEL
+══════════════════════════════════════ -->
+<div class="tweaks-panel" id="tweaks-panel">
+  <div class="tweaks-header">
+    <span class="tweaks-title">Tweaks</span>
+    <button class="tweaks-close" onclick="toggleTweaks()">✕</button>
+  </div>
+  <div class="tweaks-body">
+    <div class="tweak-row">
+      <div class="tweak-label">Accent Color</div>
+      <div class="tweak-options">
+        <button class="tweak-opt active" onclick="setAccent(this,'#00e5a0','#00c488')">Mint</button>
+        <button class="tweak-opt" onclick="setAccent(this,'#ff6b2b','#e05a1e')">Orange</button>
+        <button class="tweak-opt" onclick="setAccent(this,'#e63946','#c42b36')">Red</button>
+        <button class="tweak-opt" onclick="setAccent(this,'#f7c948','#d4a820')">Amber</button>
+      </div>
+    </div>
+    <div class="tweak-row">
+      <div class="tweak-label">Background</div>
+      <div class="tweak-options">
+        <button class="tweak-opt active" onclick="setBg(this,'#0d1117','#111820','#161f2c')">Slate</button>
+        <button class="tweak-opt" onclick="setBg(this,'#0f0f0f','#161616','#1d1d1d')">Black</button>
+        <button class="tweak-opt" onclick="setBg(this,'#100d08','#181410','#201a12')">Warm</button>
+      </div>
+    </div>
+    <div class="tweak-row">
+      <div class="tweak-label">Body Font</div>
+      <div class="tweak-options">
+        <button class="tweak-opt active" onclick="setBodyFont(this,&quot;'Lora', Georgia, serif&quot;)">Lora</button>
+        <button class="tweak-opt" onclick="setBodyFont(this,&quot;'JetBrains Mono', monospace&quot;)">Mono</button>
+        <button class="tweak-opt" onclick="setBodyFont(this,&quot;Georgia, serif&quot;)">Georgia</button>
+      </div>
+    </div>
+    <div class="tweak-row">
+      <div class="tweak-label">Type Scale</div>
+      <div class="tweak-options">
+        <button class="tweak-opt" onclick="setScale(this,0.9)">Small</button>
+        <button class="tweak-opt active" onclick="setScale(this,1)">Normal</button>
+        <button class="tweak-opt" onclick="setScale(this,1.1)">Large</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     ARTICLE DATA + JS
+══════════════════════════════════════ -->
+<script>
+/* ── ARTICLE CONTENT ── */
+const ARTICLES = {
+  'ai-code-review': {
+    tag: 'AI', readtime: '7 min read', date: 'April 28, 2026',
+    title: 'AI Code Review: Is It Ready to Replace Your Senior Dev?',
+    coverGradient: 'linear-gradient(135deg, #0d2b1f 0%, #0d1a2b 40%, #1a0d1f 100%)',
+    coverGlow: 'rgba(0,229,160,0.12)',
+    body: `
+<p>Every week, a new AI tool promises to revolutionize how we write and review code. GitHub Copilot, Cursor, CodeRabbit, PR-Agent — the list keeps growing. I've spent the last six months integrating these tools into real production workflows at SharinPix, and I have thoughts.</p>
+
+<h2>What AI Code Review Actually Does Well</h2>
+
+<p>Let me be fair: the tools are genuinely impressive in narrow ways. They catch <strong>surface-level issues</strong> faster than any human reviewer. Unused imports, missing null checks, inconsistent naming conventions — an AI will flag these in seconds. When I ran CodeRabbit on a 400-line pull request last month, it caught three off-by-one errors I had missed after two manual passes.</p>
+
+<div class="pull-quote"><p>"The tool catches syntax errors faster than any human reviewer — but it misses intent entirely."</p><cite>— From a code review session, March 2026</cite></div>
+
+<p>The speed argument is real too. A thorough human review of a complex PR can take 30–60 minutes. An AI gives you first-pass feedback in under a minute. For teams moving fast, this matters.</p>
+
+<h2>The Limitations Nobody Talks About</h2>
+
+<p>Here's where it gets honest. AI tools do not understand <em>why</em> your code exists. They see patterns, not intent. They'll suggest making a function more "Pythonic" without knowing that the verbose version exists specifically to aid debugging in production. They'll flag a seemingly redundant check that's actually a critical guard against a known edge case in your data pipeline.</p>
+
+<div class="code-block">
+  <div class="code-header">
+    <span class="code-filename">review_example.py</span>
+    <span class="code-lang">Python</span>
+  </div>
+  <div class="code-body"><pre><span class="cm"># AI suggestion: "simplify this condition"</span>
+<span class="cm"># Human context: this guard prevents a known null</span>
+<span class="cm"># from a third-party API that returns None on 429s</span>
+<span class="kw">def</span> <span class="fn">process_response</span>(data):
+    <span class="kw">if</span> data <span class="kw">is</span> <span class="py">None</span> <span class="kw">or</span> <span class="str">"result"</span> <span class="kw">not in</span> data:
+        <span class="kw">return</span> <span class="py">None</span>
+    <span class="kw">return</span> data[<span class="str">"result"</span>]</pre></div>
+</div>
+
+<p>The AI would suggest removing the <code>is None</code> check as redundant. It isn't. It's institutional knowledge encoded as a guard. This is the fundamental gap: <strong>AI reviews code in isolation</strong>. Human reviewers review it in context.</p>
+
+<h2>My Actual Workflow</h2>
+
+<p>After six months of experimenting, here's how I use AI code review: as a first pass, not a last one. I let the AI flag the obvious stuff — style inconsistencies, potential bugs, documentation gaps. This frees up my human reviewers (and me) to focus on the things that actually require judgment: architecture decisions, business logic correctness, performance implications, and the unwritten rules of our specific codebase.</p>
+
+<figure class="inline-img">
+  <div class="inline-img-inner">
+    <div class="img-ph">
+      <div class="img-ph-icon"></div>
+      <span class="img-ph-label">AI review output vs. human review — comparison chart</span>
+    </div>
+  </div>
+  <figcaption>A side-by-side comparison of AI-flagged issues vs. human-flagged issues across 20 PRs. The overlap is about 40%.</figcaption>
+</figure>
+
+<p>The overlap between what an AI catches and what a senior developer catches is roughly 40% in my experience. That 40% is valuable — it's time you get back. But the other 60%? That still needs eyes.</p>
+
+<h2>The Verdict</h2>
+
+<p>Is AI code review ready to replace your senior dev? No. Not even close. But is it ready to make your senior dev more effective? Absolutely. The right framing isn't replacement — it's leverage. Use it as a tireless first reviewer that handles the mechanical, so your human reviewers can focus on what machines genuinely can't do: understand context, history, and intent.</p>
+
+<p>The tools will get better. They always do. But for now, the org chart still has a slot for someone who's been around long enough to know <em>why</em> that weird check is there.</p>
+    `
+  },
+
+  'ml-zero-math': {
+    tag: 'Beginner', readtime: '5 min read', date: 'April 14, 2026',
+    title: 'What Is Machine Learning? Explained With Zero Math',
+    coverGradient: 'linear-gradient(135deg, #0d1a2b, #1a2b0d)',
+    coverGlow: 'rgba(200,245,66,0.1)',
+    body: `
+<p>Every time I try to explain machine learning at a family dinner in Mauritius, eyes glaze over the moment I mention "algorithms." So I've gotten good at explaining it differently. No equations. No jargon. Just the actual idea.</p>
+
+<h2>The Simple Version</h2>
+
+<p>Machine learning is teaching a computer to recognize patterns — the same way you learned to recognize your grandmother's handwriting without anyone explaining the rules to you.</p>
+
+<div class="pull-quote"><p>"You didn't learn to read by memorizing every possible sentence. You learned patterns. ML does the same thing, just with numbers."</p></div>
+
+<p>When you were a child, you learned what a "dog" is by seeing hundreds of dogs. Big ones, small ones, fluffy ones. Nobody gave you a formal definition. You <strong>inferred the pattern</strong>. Machine learning systems do the exact same thing — they're shown thousands or millions of examples and they figure out the pattern themselves.</p>
+
+<h2>Three Types, Simply Put</h2>
+
+<p><strong>Supervised learning</strong> — You show the system examples with answers. "This email is spam. This one isn't." After enough examples, it can classify new emails on its own. Most practical ML you encounter is this.</p>
+
+<p><strong>Unsupervised learning</strong> — You show the system examples without answers. "Here are 10,000 customers — find groups." It finds structure you didn't know to look for. Useful for discovery.</p>
+
+<p><strong>Reinforcement learning</strong> — The system learns by trial and error, earning rewards for good decisions. How AlphaGo learned to beat the world's best Go players. How your phone's autocomplete learns your typing habits.</p>
+
+<h2>Why It Matters Now</h2>
+
+<p>ML isn't new — the core ideas are from the 1950s and 60s. What changed is data and compute. We now have more data than any human could process, and cheap enough computing to crunch it. That's it. The big AI moment isn't a new idea. It's an old idea at unprecedented scale.</p>
+
+<p>Next time someone talks about "AI" at work or in the news, this is likely what they mean: a system that learned patterns from data and is now applying those patterns to new situations. No magic. Just math at scale.</p>
+    `
+  },
+
+  'data-sold': {
+    tag: 'Data Science', readtime: '8 min read', date: 'April 7, 2026',
+    title: "The Exact Moment Your Data Gets Sold and Who's Buying It",
+    coverGradient: 'linear-gradient(135deg, #1a0d0d, #0d1a2b)',
+    coverGlow: 'rgba(229,80,60,0.12)',
+    body: `
+<p>Most people accept that their data is "used" somehow. Fewer know the mechanics. I spent time mapping the actual flow — from the moment you tap an app to the moment a stranger bids on a profile that is, technically, you.</p>
+
+<h2>It Happens Faster Than You Think</h2>
+
+<p>You open a news app. Before the first article loads, a process called <strong>real-time bidding (RTB)</strong> has already run. In about 100 milliseconds, your device has sent signals to an ad exchange — your IP address, device type, approximate location, time of day, browsing context. Dozens of advertisers have been told you exist. They've bid on the right to show you an ad. Someone won. The ad loads. You never knew any of it happened.</p>
+
+<div class="pull-quote"><p>"In 100 milliseconds — before your article loads — your profile has been auctioned to the highest bidder."</p></div>
+
+<p>This is the actual moment. Not when you signed up. Not when you tapped agree. When the page loaded.</p>
+
+<h2>The Data Broker Layer</h2>
+
+<p>Advertisers want more than what you're doing right now. They want context: your income bracket, your purchase history, whether you're a homeowner, if you've recently searched for a divorce lawyer. This is where <strong>data brokers</strong> enter.</p>
+
+<figure class="inline-img">
+  <div class="inline-img-inner">
+    <div class="img-ph">
+      <div class="img-ph-icon"></div>
+      <span class="img-ph-label">Data flow diagram: app → data broker → advertiser → ad network</span>
+    </div>
+  </div>
+  <figcaption>The simplified flow from your device to an advertiser's targeting system.</figcaption>
+</figure>
+
+<p>Companies like Acxiom, Oracle Data Cloud, and Epsilon aggregate data from hundreds of sources — loyalty programs, public records, credit activity, app permissions — and build detailed profiles. These profiles are bought and appended to the RTB signal, so the advertiser bidding on your eyeballs knows significantly more about you than just "person reading news at 8am."</p>
+
+<h2>Who's Actually Buying</h2>
+
+<p>The buyers are varied. Insurance companies to assess risk. Political campaigns to micro-target messages. Retailers to predict purchase intent. Banks to pre-screen loan applicants. The data itself is neutral. The applications are not always.</p>
+
+<p>Mauritius, where I'm based, has the Data Protection Act 2017. Europe has GDPR. The US has a patchwork. Enforcement is inconsistent everywhere. Knowing this doesn't change the system, but it changes how you use it — and how you build software that touches user data.</p>
+    `
+  }
+};
+
+/* ── NAVIGATION ── */
+function showPage(page) {
+  document.getElementById('page-home').style.display = page === 'home' ? '' : 'none';
+  document.getElementById('page-article').style.display = page === 'article' ? '' : 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  localStorage.setItem('cq-page', page);
+}
+
+function showArticle(id) {
+  const art = ARTICLES[id] || ARTICLES['ai-code-review'];
+
+  // Set cover
+  document.getElementById('article-cover').innerHTML = `
+    <div class="cover-img" style="background:${art.coverGradient}; position:relative;">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 40% 60%, ${art.coverGlow} 0%, transparent 65%);"></div>
+    </div>
+  `;
+
+  document.getElementById('article-tag-label').textContent = art.tag;
+  document.getElementById('article-readtime').textContent = art.readtime;
+  document.getElementById('article-date').textContent = art.date;
+  document.getElementById('article-title').textContent = art.title;
+  document.getElementById('article-body').innerHTML = art.body;
+
+  showPage('article');
+  localStorage.setItem('cq-article', id);
+}
+
+function filterCat(el, cat) {
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.card').forEach(c => {
+    c.style.display = (cat === 'all' || c.dataset.cat === cat) ? '' : 'none';
+  });
+  showPage('home');
+}
+
+/* ── TWEAKS ── */
+function toggleTweaks() {
+  const panel = document.getElementById('tweaks-panel');
+  panel.classList.toggle('open');
+
+  // Announce availability to host
+  window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+  if (!panel.classList.contains('open')) {
+    window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
+  }
+}
+
+window.addEventListener('message', e => {
+  if (e.data?.type === '__activate_edit_mode') document.getElementById('tweaks-panel').classList.add('open');
+  if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('open');
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+function setAccent(el, color, color2) {
+  document.querySelectorAll('.tweaks-panel .tweak-row')[0].querySelectorAll('.tweak-opt').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  const r = document.documentElement.style;
+  r.setProperty('--accent', color);
+  r.setProperty('--accent2', color2);
+  r.setProperty('--accent-bg', color.replace(')', ',0.08)').replace('rgb', 'rgba'));
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { accent: color } }, '*');
+}
+
+function setBg(el, bg, bg2, bg3) {
+  document.querySelectorAll('.tweaks-panel .tweak-row')[1].querySelectorAll('.tweak-opt').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  const r = document.documentElement.style;
+  r.setProperty('--bg', bg);
+  r.setProperty('--bg2', bg2);
+  r.setProperty('--bg3', bg3);
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { bg } }, '*');
+}
+
+function setBodyFont(el, font) {
+  document.querySelectorAll('.tweaks-panel .tweak-row')[2].querySelectorAll('.tweak-opt').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.documentElement.style.setProperty('--ff-body', font);
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { bodyFont: font } }, '*');
+}
+
+function setScale(el, scale) {
+  document.querySelectorAll('.tweaks-panel .tweak-row')[3].querySelectorAll('.tweak-opt').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelector('.article-body') && (document.querySelector('.article-body').style.fontSize = (17 * scale) + 'px');
+  document.querySelectorAll('.article-body p').forEach(p => p.style.fontSize = (17 * scale) + 'px');
+}
+
+/* ── RESTORE SESSION ── */
+(function restore() {
+  const page = localStorage.getItem('cq-page');
+  const art = localStorage.getItem('cq-article');
+  if (page === 'article' && art) {
+    showArticle(art);
+  }
+})();
+</script>
+</body>
+</html>

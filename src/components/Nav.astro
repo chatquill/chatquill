@@ -1,0 +1,54 @@
+---
+// Nav renders on every page. Category filtering is handled client-side via JS.
+---
+
+<nav class="sticky top-0 z-[100] flex items-center justify-between gap-6 h-[58px] px-[clamp(16px,5vw,48px)] border-b border-[#1e2d3d]" id="site-nav">
+  <a href="/" class="font-display font-bold text-xl text-[#e4eff8] tracking-[0.5px] shrink-0 leading-none">
+    chat<span class="text-[#00e5a0]">quill</span>
+  </a>
+
+  <div class="flex items-center gap-1.5 overflow-hidden" id="nav-links">
+    {(['All', 'AI', 'Engineering', 'Data Science', 'Beginner'] as const).map((label) => {
+      const cat = label === 'All' ? 'all' : label;
+      return (
+        <button
+          class="nav-link font-mono text-[11px] tracking-[0.5px] text-[#7a90a4] px-2.5 py-[5px] rounded-[3px] cursor-pointer transition-colors duration-150 hover:text-[#e4eff8] hover:bg-[#161f2c] whitespace-nowrap"
+          data-cat={cat}
+        >
+          {label}
+        </button>
+      );
+    })}
+  </div>
+
+  <!-- spacer so logo stays left -->
+  <div class="w-6 shrink-0" />
+</nav>
+
+<style>
+  #site-nav {
+    background: rgba(13, 17, 23, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .nav-link.active {
+    color: #00e5a0;
+  }
+
+  @media (max-width: 400px) {
+    .nav-link:not(.active) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    #nav-links {
+      gap: 4px;
+    }
+    .nav-link {
+      font-size: 10px;
+      padding: 4px 6px;
+    }
+  }
+</style>

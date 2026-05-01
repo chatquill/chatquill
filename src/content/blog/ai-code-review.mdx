@@ -1,0 +1,54 @@
+---
+title: 'AI Code Review: Is It Ready to Replace Your Senior Dev?'
+description: 'After six months using AI review tools in real production workflows, here is what actually works — and where human reviewers still win.'
+date: 'April 28, 2026'
+tag: 'AI'
+readtime: '7 min read'
+featured: true
+coverGradient: 'linear-gradient(135deg, #0d2b1f 0%, #0d1a2b 40%, #1a0d1f 100%)'
+coverGlow: 'rgba(0,229,160,0.12)'
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+import InlineImg from '../../components/InlineImg.astro';
+
+Every week, a new AI tool promises to revolutionize how we write and review code. GitHub Copilot, Cursor, CodeRabbit, PR-Agent — the list keeps growing. I've spent the last six months integrating these tools into real production workflows at SharinPix, and I have thoughts.
+
+## What AI Code Review Actually Does Well
+
+Let me be fair: the tools are genuinely impressive in narrow ways. They catch **surface-level issues** faster than any human reviewer. Unused imports, missing null checks, inconsistent naming conventions — an AI will flag these in seconds. When I ran CodeRabbit on a 400-line pull request last month, it caught three off-by-one errors I had missed after two manual passes.
+
+<PullQuote cite="From a code review session, March 2026">
+  The tool catches syntax errors faster than any human reviewer — but it misses intent entirely.
+</PullQuote>
+
+The speed argument is real too. A thorough human review of a complex PR can take 30–60 minutes. An AI gives you first-pass feedback in under a minute. For teams moving fast, this matters.
+
+## The Limitations Nobody Talks About
+
+Here's where it gets honest. AI tools do not understand *why* your code exists. They see patterns, not intent. They'll suggest making a function more "Pythonic" without knowing that the verbose version exists specifically to aid debugging in production. They'll flag a seemingly redundant check that's actually a critical guard against a known edge case in your data pipeline.
+
+<CodeBlock filename="review_example.py" lang="python" code={`# AI suggestion: "simplify this condition"
+# Human context: this guard prevents a known null
+# from a third-party API that returns None on 429s
+def process_response(data):
+    if data is None or "result" not in data:
+        return None
+    return data["result"]`} />
+
+The AI would suggest removing the `is None` check as redundant. It isn't. It's institutional knowledge encoded as a guard. This is the fundamental gap: **AI reviews code in isolation**. Human reviewers review it in context.
+
+## My Actual Workflow
+
+After six months of experimenting, here's how I use AI code review: as a first pass, not a last one. I let the AI flag the obvious stuff — style inconsistencies, potential bugs, documentation gaps. This frees up my human reviewers (and me) to focus on the things that actually require judgment: architecture decisions, business logic correctness, performance implications, and the unwritten rules of our specific codebase.
+
+<InlineImg caption="A side-by-side comparison of AI-flagged issues vs. human-flagged issues across 20 PRs. The overlap is about 40%." alt="AI review output vs. human review — comparison chart" />
+
+The overlap between what an AI catches and what a senior developer catches is roughly 40% in my experience. That 40% is valuable — it's time you get back. But the other 60%? That still needs eyes.
+
+## The Verdict
+
+Is AI code review ready to replace your senior dev? No. Not even close. But is it ready to make your senior dev more effective? Absolutely. The right framing isn't replacement — it's leverage. Use it as a tireless first reviewer that handles the mechanical, so your human reviewers can focus on what machines genuinely can't do: understand context, history, and intent.
+
+The tools will get better. They always do. But for now, the org chart still has a slot for someone who's been around long enough to know *why* that weird check is there.

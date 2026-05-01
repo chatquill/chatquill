@@ -1,0 +1,82 @@
+---
+interface Props {
+  slug: string;
+  title: string;
+  tag: string;
+  readtime: string;
+  date: string;
+  coverGradient: string;
+  coverGlow: string;
+}
+
+const { slug, title, tag, readtime, date, coverGradient, coverGlow } = Astro.props;
+---
+
+<a href={`/blog/${slug}`} class="hero group block relative overflow-hidden cursor-pointer">
+  <!-- Background cover -->
+  <div
+    class="hero-img w-full h-full flex items-center justify-center relative transition-transform duration-[600ms] ease-in-out group-hover:scale-[1.02]"
+    style={`background: ${coverGradient};`}
+  >
+    <div
+      class="absolute inset-0"
+      style={`background: radial-gradient(ellipse at 30% 60%, ${coverGlow} 0%, transparent 60%);`}
+    ></div>
+  </div>
+
+  <!-- Gradient overlay -->
+  <div class="hero-gradient absolute inset-0 pointer-events-none"></div>
+
+  <!-- Content -->
+  <div class="absolute bottom-0 left-0 right-0 max-w-[860px] p-[clamp(20px,4vw,48px)]">
+    <div class="flex items-center gap-2 mb-4">
+      <span class="font-mono text-[10px] uppercase tracking-[1.5px] text-[#0d1117] bg-[#00e5a0] px-2 py-[3px] rounded-[2px] font-semibold">
+        {tag}
+      </span>
+      <span class="font-mono text-[10px] text-[#7a90a4] tracking-[0.5px]">{readtime}</span>
+    </div>
+
+    <h1 class="font-display font-bold text-[clamp(22px,4vw,44px)] text-[#e4eff8] leading-[1.2] mb-4" style="text-wrap: pretty;">
+      {title}
+    </h1>
+
+    <div class="flex items-center gap-3 font-mono text-[11px] text-[#7a90a4] mb-5">
+      <span>Mohun Shakeel Ahmad</span>
+      <span class="text-[#3d5166]">·</span>
+      <span>{date}</span>
+      <span class="text-[#3d5166]">·</span>
+      <span>{readtime}</span>
+    </div>
+
+    <div class="hero-cta inline-flex items-center gap-2 font-mono text-[11px] text-[#00e5a0] border-b border-[#00e5a0] pb-px tracking-[0.5px] transition-[gap] duration-200 group-hover:gap-3">
+      Read article <span>→</span>
+    </div>
+  </div>
+</a>
+
+<style>
+  .hero {
+    height: clamp(380px, 55vw, 640px);
+  }
+
+  .hero-img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-gradient {
+    background: linear-gradient(
+      to bottom,
+      transparent 20%,
+      rgba(13, 17, 23, 0.4) 50%,
+      rgba(13, 17, 23, 0.95) 85%,
+      #0d1117 100%
+    );
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      height: max(65vw, 300px);
+    }
+  }
+</style>
