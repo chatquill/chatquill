@@ -8,9 +8,10 @@ interface Props {
   date: string;
   coverGradient: string;
   coverGlow: string;
+  coverImage?: string;
 }
 
-const { slug, title, description, tag, readtime, date, coverGradient, coverGlow } = Astro.props;
+const { slug, title, description, tag, readtime, date, coverGradient, coverGlow, coverImage } = Astro.props;
 ---
 
 <article
@@ -20,18 +21,26 @@ const { slug, title, description, tag, readtime, date, coverGradient, coverGlow 
   <a href={`/blog/${slug}`} class="flex flex-col flex-1">
     <!-- Cover image area -->
     <div class="w-full overflow-hidden shrink-0" style="aspect-ratio: 1600/840;">
-      <div
-        class="w-full h-full flex items-end p-4 relative transition-transform duration-[400ms] ease-in-out group-hover:scale-[1.04]"
-        style={`background: ${coverGradient};`}
-      >
+      {coverImage ? (
+        <img
+          src={coverImage}
+          alt={title}
+          class="w-full h-full object-cover transition-transform duration-[400ms] ease-in-out group-hover:scale-[1.04]"
+        />
+      ) : (
         <div
-          class="absolute inset-0"
-          style={`background: radial-gradient(ellipse at 60% 40%, ${coverGlow} 0%, transparent 60%);`}
-        ></div>
-        <span class="font-display font-bold italic text-white/90 leading-[1.25] relative z-10 text-[clamp(12px,1.8vw,18px)]" style="text-shadow: 0 2px 12px rgba(0,0,0,0.5);">
-          {title}
-        </span>
-      </div>
+          class="w-full h-full flex items-end p-4 relative transition-transform duration-[400ms] ease-in-out group-hover:scale-[1.04]"
+          style={`background: ${coverGradient};`}
+        >
+          <div
+            class="absolute inset-0"
+            style={`background: radial-gradient(ellipse at 60% 40%, ${coverGlow} 0%, transparent 60%);`}
+          ></div>
+          <span class="font-display font-bold italic text-white/90 leading-[1.25] relative z-10 text-[clamp(12px,1.8vw,18px)]" style="text-shadow: 0 2px 12px rgba(0,0,0,0.5);">
+            {title}
+          </span>
+        </div>
+      )}
     </div>
 
     <!-- Card body -->

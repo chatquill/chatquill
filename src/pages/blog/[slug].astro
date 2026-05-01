@@ -19,29 +19,16 @@ interface Props {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
-const { title, tag, readtime, date, coverGradient, coverGlow, description } = post.data;
+const { title, tag, readtime, date, coverGradient, coverGlow, coverImage, description } = post.data;
 ---
 
 <BaseLayout title={`${title} — ChatQuill`} description={description}>
   <Nav />
 
   <main class="page-enter">
-    <!-- Full-bleed cover -->
-    <div class="w-full overflow-hidden" style="aspect-ratio: 1600/840;">
-      <div
-        class="w-full h-full relative"
-        style={`background: ${coverGradient};`}
-      >
-        <div
-          class="absolute inset-0"
-          style={`background: radial-gradient(ellipse at 40% 60%, ${coverGlow} 0%, transparent 65%);`}
-        ></div>
-      </div>
-    </div>
-
-    <!-- Article header -->
-    <header class="max-w-[740px] mx-auto px-[clamp(16px,5vw,48px)] pt-9 pb-7">
-      <div class="flex items-center gap-2.5 mb-4">
+    <!-- Article title ABOVE the cover image -->
+    <header class="max-w-[740px] mx-auto px-[clamp(16px,5vw,48px)] pt-10 pb-8">
+      <div class="flex items-center gap-2.5 mb-5">
         <span class="font-mono text-[10px] uppercase tracking-[1.5px] text-[#0d1117] bg-[#00e5a0] px-[9px] py-[3px] rounded-[2px] font-semibold">
           {tag}
         </span>
@@ -50,13 +37,13 @@ const { title, tag, readtime, date, coverGradient, coverGlow, description } = po
       </div>
 
       <h1
-        class="font-display font-bold text-[clamp(26px,4vw,42px)] text-[#e4eff8] leading-[1.2] mb-5"
+        class="font-display font-bold text-[clamp(26px,4vw,42px)] text-[#e4eff8] leading-[1.2] mb-6"
         style="text-wrap: pretty;"
       >
         {title}
       </h1>
 
-      <div class="flex items-center gap-3 pb-6 border-b border-[#1e2d3d]">
+      <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-full bg-[#1c2739] border border-[#3d5166] flex items-center justify-center font-display text-sm font-bold text-[#00e5a0] shrink-0">
           M
         </div>
@@ -68,6 +55,20 @@ const { title, tag, readtime, date, coverGradient, coverGlow, description } = po
         </div>
       </div>
     </header>
+
+    <!-- Full-bleed cover image (below title) -->
+    <div class="w-full overflow-hidden mb-10 border-y border-[#1e2d3d]" style="aspect-ratio: 1600/840;">
+      {coverImage ? (
+        <img src={coverImage} alt={title} class="w-full h-full object-cover" />
+      ) : (
+        <div class="w-full h-full relative" style={`background: ${coverGradient};`}>
+          <div
+            class="absolute inset-0"
+            style={`background: radial-gradient(ellipse at 40% 60%, ${coverGlow} 0%, transparent 65%);`}
+          ></div>
+        </div>
+      )}
+    </div>
 
     <!-- Article body -->
     <article class="article-body max-w-[740px] mx-auto px-[clamp(16px,5vw,48px)] pb-20">
@@ -157,5 +158,60 @@ const { title, tag, readtime, date, coverGradient, coverGlow, description } = po
     border-radius: 4px;
     border: 1px solid #1e2d3d;
     overflow-x: auto;
+  }
+
+  /* Markdown tables */
+  .article-body :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 32px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+  .article-body :global(th) {
+    background: #161f2c;
+    color: #e4eff8;
+    font-weight: 600;
+    padding: 10px 14px;
+    border: 1px solid #1e2d3d;
+    text-align: left;
+    letter-spacing: 0.3px;
+  }
+  .article-body :global(td) {
+    padding: 9px 14px;
+    border: 1px solid #1e2d3d;
+    color: #b8ccdb;
+  }
+  .article-body :global(tr:nth-child(even) td) {
+    background: #0d1520;
+  }
+
+  /* Blockquotes */
+  .article-body :global(blockquote) {
+    margin: 36px 0;
+    padding: 22px 28px;
+    border-left: 3px solid #00e5a0;
+    background: #111820;
+    border-radius: 0 4px 4px 0;
+  }
+  .article-body :global(blockquote p) {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 19px !important;
+    font-style: italic;
+    color: #e4eff8 !important;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+  }
+
+  /* H1 inside article body (user-authored) — hide since it's above the cover now */
+  .article-body :global(h1) {
+    display: none;
+  }
+
+  /* Horizontal rules */
+  .article-body :global(hr) {
+    border: none;
+    border-top: 1px solid #1e2d3d;
+    margin: 40px 0;
   }
 </style>

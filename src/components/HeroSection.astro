@@ -7,22 +7,31 @@ interface Props {
   date: string;
   coverGradient: string;
   coverGlow: string;
+  coverImage?: string;
 }
 
-const { slug, title, tag, readtime, date, coverGradient, coverGlow } = Astro.props;
+const { slug, title, tag, readtime, date, coverGradient, coverGlow, coverImage } = Astro.props;
 ---
 
 <a href={`/blog/${slug}`} class="hero group block relative overflow-hidden cursor-pointer">
   <!-- Background cover -->
-  <div
-    class="hero-img w-full h-full flex items-center justify-center relative transition-transform duration-[600ms] ease-in-out group-hover:scale-[1.02]"
-    style={`background: ${coverGradient};`}
-  >
+  {coverImage ? (
+    <img
+      src={coverImage}
+      alt={title}
+      class="hero-img w-full h-full object-cover transition-transform duration-[600ms] ease-in-out group-hover:scale-[1.02]"
+    />
+  ) : (
     <div
-      class="absolute inset-0"
-      style={`background: radial-gradient(ellipse at 30% 60%, ${coverGlow} 0%, transparent 60%);`}
-    ></div>
-  </div>
+      class="hero-img w-full h-full flex items-center justify-center relative transition-transform duration-[600ms] ease-in-out group-hover:scale-[1.02]"
+      style={`background: ${coverGradient};`}
+    >
+      <div
+        class="absolute inset-0"
+        style={`background: radial-gradient(ellipse at 30% 60%, ${coverGlow} 0%, transparent 60%);`}
+      ></div>
+    </div>
+  )}
 
   <!-- Gradient overlay -->
   <div class="hero-gradient absolute inset-0 pointer-events-none"></div>

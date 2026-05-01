@@ -29,6 +29,7 @@ const gridPosts = posts.filter((p) => p.slug !== featured.slug);
       date={featured.data.date}
       coverGradient={featured.data.coverGradient ?? ''}
       coverGlow={featured.data.coverGlow ?? ''}
+      coverImage={featured.data.coverImage}
     />
 
     <!-- Section header -->
@@ -53,6 +54,7 @@ const gridPosts = posts.filter((p) => p.slug !== featured.slug);
           date={post.data.date}
           coverGradient={post.data.coverGradient ?? ''}
           coverGlow={post.data.coverGlow ?? ''}
+          coverImage={post.data.coverImage}
         />
       ))}
     </div>
