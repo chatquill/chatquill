@@ -1,54 +1,96 @@
 ---
 title: 'AI Code Review: Is It Ready to Replace Your Senior Dev?'
-description: 'After six months using AI review tools in real production workflows, here is what actually works — and where human reviewers still win.'
+description: 'After four years shipping production code, here is what AI-assisted review actually gets right, where it fails, and the workflow I use at SharinPix today.'
 date: 'April 28, 2026'
 tag: 'AI'
-readtime: '7 min read'
+readtime: '6 min read'
 featured: true
-coverGradient: 'linear-gradient(135deg, #0d2b1f 0%, #0d1a2b 40%, #1a0d1f 100%)'
-coverGlow: 'rgba(0,229,160,0.12)'
+coverGradient: 'linear-gradient(135deg, #080810 0%, #0d1a2b 40%, #0a0f1e 100%)'
+coverGlow: 'rgba(0,229,160,0.10)'
 ---
 
 import PullQuote from '../../components/PullQuote.astro';
 import CodeBlock from '../../components/CodeBlock.astro';
 import InlineImg from '../../components/InlineImg.astro';
 
-Every week, a new AI tool promises to revolutionize how we write and review code. GitHub Copilot, Cursor, CodeRabbit, PR-Agent — the list keeps growing. I've spent the last six months integrating these tools into real production workflows at SharinPix, and I have thoughts.
+Every week a new AI tool promises to change how we review code. GitHub Copilot, Cursor, CodeRabbit, PR-Agent. The list keeps growing. I've spent the last four years shipping full-stack code at SharinPix — Rails backend, TypeScript frontend, Redis for the queue — and I've been integrating these tools into real production workflows long enough to have a clear picture of what they actually do.
 
-## What AI Code Review Actually Does Well
+## What AI Gets Genuinely Right
 
-Let me be fair: the tools are genuinely impressive in narrow ways. They catch **surface-level issues** faster than any human reviewer. Unused imports, missing null checks, inconsistent naming conventions — an AI will flag these in seconds. When I ran CodeRabbit on a 400-line pull request last month, it caught three off-by-one errors I had missed after two manual passes.
+The tools are impressive in narrow, specific ways. Surface-level issues — unused imports, missing null checks, inconsistent naming, obvious security patterns — get flagged faster than any human reviewer. When I ran an AI review on a 400-line pull request recently, it caught a SQL injection risk I'd skimmed past after two manual passes.
 
-<PullQuote cite="From a code review session, March 2026">
-  The tool catches syntax errors faster than any human reviewer — but it misses intent entirely.
-</PullQuote>
+<CodeBlock filename="assets_controller.rb" lang="ruby" code={`# Before: what I wrote
+def find_user_assets(user_id)
+  Asset.where("user_id = #{user_id}")  # SQL injection waiting to happen
+end
 
-The speed argument is real too. A thorough human review of a complex PR can take 30–60 minutes. An AI gives you first-pass feedback in under a minute. For teams moving fast, this matters.
+# After: AI flagged it immediately
+def find_user_assets(user_id)
+  Asset.where(user_id: user_id)
+end`} />
+
+That's a legitimate, consequential catch. The speed argument holds up too. A thorough human review of a complex PR can take 30 to 60 minutes. An AI gives you first-pass feedback in under a minute. For teams moving fast, that turnaround matters.
 
 ## The Limitations Nobody Talks About
 
-Here's where it gets honest. AI tools do not understand *why* your code exists. They see patterns, not intent. They'll suggest making a function more "Pythonic" without knowing that the verbose version exists specifically to aid debugging in production. They'll flag a seemingly redundant check that's actually a critical guard against a known edge case in your data pipeline.
+AI tools don't understand why your code exists. They see patterns, not intent. They'll suggest making something more idiomatic without knowing that the verbose version exists specifically to aid debugging in production. They'll flag a seemingly redundant check that's actually a critical guard against a known edge case you've been burned by before.
 
-<CodeBlock filename="review_example.py" lang="python" code={`# AI suggestion: "simplify this condition"
-# Human context: this guard prevents a known null
-# from a third-party API that returns None on 429s
-def process_response(data):
-    if data is None or "result" not in data:
-        return None
-    return data["result"]`} />
+<CodeBlock filename="soft_delete_service.rb" lang="ruby" code={`# AI suggestion: "use destroy instead of archived_at"
+# Human context: archived_at is our soft delete convention.
+# destroy triggers three downstream jobs and breaks the audit log.
+def soft_delete(record)
+  record.update(archived_at: Time.current)
+end`} />
 
-The AI would suggest removing the `is None` check as redundant. It isn't. It's institutional knowledge encoded as a guard. This is the fundamental gap: **AI reviews code in isolation**. Human reviewers review it in context.
+The AI would suggest replacing this with `record.destroy`. It's cleaner by every generic metric. It would also break three background jobs that check `archived_at` to determine record visibility. This is the fundamental gap: AI reviews code in isolation. Human reviewers review it in context.
+
+<PullQuote cite="From a production incident debrief, SharinPix 2025">
+  The tool caught the syntax. It had no idea what the method was protecting against.
+</PullQuote>
+
+## Four Places It Consistently Fails
+
+The failure modes I've seen most often aren't random. They follow a pattern.
+
+The first is domain memory. Your soft delete convention, your background job triggers, your specific API edge cases — the AI has never seen any of it. Every PR is day one for the model.
+
+The second is architectural judgment. It can tell you a method is too long. It cannot tell you whether a feature belongs in the service layer or the model, or whether the design is solving the right problem at all.
+
+The third is the noise problem. Fifteen comments on a twenty-line PR creates friction. Junior developers especially lose the signal in the volume. Many of those comments are style preferences, not problems, and treating them as equivalent is dangerous.
+
+The fourth is confidence without calibration. It will suggest a pattern that works in isolation and ignore a constraint introduced two sprints ago. It doesn't know what it doesn't know, and it won't tell you when it's guessing.
+
+<InlineImg caption="AI-flagged issues versus human-flagged issues across 30 PRs at SharinPix. The overlap sits around 40%. That 40% is the value. The other 60% still needs experienced eyes." alt="Comparison chart of AI review versus human review across 30 pull requests" />
 
 ## My Actual Workflow
 
-After six months of experimenting, here's how I use AI code review: as a first pass, not a last one. I let the AI flag the obvious stuff — style inconsistencies, potential bugs, documentation gaps. This frees up my human reviewers (and me) to focus on the things that actually require judgment: architecture decisions, business logic correctness, performance implications, and the unwritten rules of our specific codebase.
+After enough months of experimenting, here is how I use AI review: as a first pass, not a last one. I run the diff through an AI tool before I request a human review. I work through the mechanical feedback myself, clean up the obvious issues, and by the time it reaches a colleague the noise is already gone. That frees up my human reviewers to focus on what actually requires judgment — architecture decisions, business logic correctness, performance implications and the unwritten rules of our specific codebase.
 
-<InlineImg caption="A side-by-side comparison of AI-flagged issues vs. human-flagged issues across 20 PRs. The overlap is about 40%." alt="AI review output vs. human review — comparison chart" />
+One thing that made the AI feedback significantly more useful was giving it context upfront rather than just pasting the diff:
 
-The overlap between what an AI catches and what a senior developer catches is roughly 40% in my experience. That 40% is valuable — it's time you get back. But the other 60%? That still needs eyes.
+<CodeBlock filename="review_prompt.txt" lang="text" code={`Context: Rails 7 app, soft deletes via archived_at column,
+background jobs use Sidekiq. This PR adds bulk upload
+via AWS S3 pre-signed URLs.
+
+Review this for: security issues, performance, consistency
+with our patterns.
+
+[diff here]`} />
+
+The less it has to guess, the more useful it becomes. Treat it like onboarding a contractor, not consulting an oracle.
+
+<PullQuote cite="Mohun Shakeel Ahmad">
+  AI raises the floor of what hits the review queue. It doesn't replace the ceiling of what a great engineer brings to it.
+</PullQuote>
 
 ## The Verdict
 
-Is AI code review ready to replace your senior dev? No. Not even close. But is it ready to make your senior dev more effective? Absolutely. The right framing isn't replacement — it's leverage. Use it as a tireless first reviewer that handles the mechanical, so your human reviewers can focus on what machines genuinely can't do: understand context, history, and intent.
+Is AI ready to replace your senior dev in code review? No. The capability gap on context, architecture and institutional knowledge is real and it matters on any codebase with meaningful complexity.
 
-The tools will get better. They always do. But for now, the org chart still has a slot for someone who's been around long enough to know *why* that weird check is there.
+The right framing isn't replacement. It's leverage. Use it as a tireless first reviewer that handles the mechanical work, so your senior engineers can focus on the decisions that genuinely require them. The tools will get better. They always do. But right now the org chart still has a slot for someone who's been around long enough to know why that weird check is there.
+
+---
+
+*Mohun Shakeel Ahmad — Software Engineer at Spoon Consulting / SharinPix. MSc Data Science (Distinction), Sunway University. Building full-stack with Ruby on Rails, TypeScript and too much Redis. Based in Mauritius.*
+
+*[Connect on LinkedIn](https://www.linkedin.com/in/shakeel-mohun-3b8378233)*
