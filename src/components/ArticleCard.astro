@@ -3,7 +3,7 @@ interface Props {
   slug: string;
   title: string;
   description: string;
-  tag: string;
+  tags: string[];
   readtime: string;
   date: string;
   coverGradient: string;
@@ -11,12 +11,12 @@ interface Props {
   coverImage?: string;
 }
 
-const { slug, title, description, tag, readtime, date, coverGradient, coverGlow, coverImage } = Astro.props;
+const { slug, title, description, tags, readtime, date, coverGradient, coverGlow, coverImage } = Astro.props;
 ---
 
 <article
   class="card group bg-[#111820] border border-[#1e2d3d] rounded-[4px] overflow-hidden cursor-pointer flex flex-col transition-all duration-200 hover:border-[#243447] hover:-translate-y-[3px] hover:shadow-[0_12px_40px_rgba(0,0,0,0.4)]"
-  data-cat={tag}
+  data-cats={tags.join(',')}
 >
   <a href={`/blog/${slug}`} class="flex flex-col flex-1">
     <!-- Cover image area -->
@@ -45,9 +45,14 @@ const { slug, title, description, tag, readtime, date, coverGradient, coverGlow,
 
     <!-- Card body -->
     <div class="flex flex-col gap-2 p-[18px_20px_20px] flex-1">
-      <span class="font-mono text-[9px] uppercase tracking-[1.5px] text-[#00e5a0] border border-[#00e5a0] px-[7px] py-[2px] rounded-[2px] w-fit">
-        {tag}
-      </span>
+      <!-- Tags row -->
+      <div class="flex flex-wrap gap-1.5">
+        {tags.map((t) => (
+          <span class="font-mono text-[9px] uppercase tracking-[1.5px] text-[#00e5a0] border border-[#00e5a0] px-[7px] py-[2px] rounded-[2px]">
+            {t}
+          </span>
+        ))}
+      </div>
       <div class="font-display font-bold text-[17px] text-[#e4eff8] leading-[1.35] flex-1 transition-colors duration-200 group-hover:text-[#00e5a0]" style="text-wrap: pretty;">
         {title}
       </div>

@@ -2,7 +2,7 @@
 interface Props {
   slug: string;
   title: string;
-  tag: string;
+  tags: string[];
   readtime: string;
   date: string;
   coverGradient: string;
@@ -10,7 +10,7 @@ interface Props {
   coverImage?: string;
 }
 
-const { slug, title, tag, readtime, date, coverGradient, coverGlow, coverImage } = Astro.props;
+const { slug, title, tags, readtime, date, coverGradient, coverGlow, coverImage } = Astro.props;
 ---
 
 <a href={`/blog/${slug}`} class="hero group block relative overflow-hidden cursor-pointer">
@@ -38,10 +38,12 @@ const { slug, title, tag, readtime, date, coverGradient, coverGlow, coverImage }
 
   <!-- Content -->
   <div class="absolute bottom-0 left-0 right-0 max-w-[860px] p-[clamp(20px,4vw,48px)]">
-    <div class="flex items-center gap-2 mb-4">
-      <span class="font-mono text-[10px] uppercase tracking-[1.5px] text-[#0d1117] bg-[#00e5a0] px-2 py-[3px] rounded-[2px] font-semibold">
-        {tag}
-      </span>
+    <div class="flex items-center gap-2 mb-4 flex-wrap">
+      {tags.map((t) => (
+        <span class="font-mono text-[10px] uppercase tracking-[1.5px] text-[#0d1117] bg-[#00e5a0] px-2 py-[3px] rounded-[2px] font-semibold">
+          {t}
+        </span>
+      ))}
       <span class="font-mono text-[10px] text-[#7a90a4] tracking-[0.5px]">{readtime}</span>
     </div>
 

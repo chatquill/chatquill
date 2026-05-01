@@ -19,7 +19,7 @@ interface Props {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
-const { title, tag, readtime, date, coverGradient, coverGlow, coverImage, description } = post.data;
+const { title, tags, readtime, date, coverGradient, coverGlow, coverImage, description } = post.data;
 ---
 
 <BaseLayout title={`${title} — ChatQuill`} description={description}>
@@ -28,10 +28,12 @@ const { title, tag, readtime, date, coverGradient, coverGlow, coverImage, descri
   <main class="page-enter">
     <!-- Article title ABOVE the cover image -->
     <header class="max-w-[740px] mx-auto px-[clamp(16px,5vw,48px)] pt-10 pb-8">
-      <div class="flex items-center gap-2.5 mb-5">
-        <span class="font-mono text-[10px] uppercase tracking-[1.5px] text-[#0d1117] bg-[#00e5a0] px-[9px] py-[3px] rounded-[2px] font-semibold">
-          {tag}
-        </span>
+      <div class="flex items-center gap-2.5 mb-5 flex-wrap">
+        {tags.map((t) => (
+          <span class="font-mono text-[10px] uppercase tracking-[1.5px] text-[#0d1117] bg-[#00e5a0] px-[9px] py-[3px] rounded-[2px] font-semibold">
+            {t}
+          </span>
+        ))}
         <span class="font-mono text-[11px] text-[#7a90a4]">{readtime}</span>
         <span class="font-mono text-[11px] text-[#3d5166]">{date}</span>
       </div>
