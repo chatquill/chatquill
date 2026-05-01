@@ -1,0 +1,273 @@
+<svg viewBox="0 0 1600 840" xmlns="http://www.w3.org/2000/svg" width="1600" height="840">
+  <defs>
+    <!-- Fonts -->
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,900;1,9..144,700&amp;family=DM+Mono:wght@300;400;500&amp;display=swap');
+    </style>
+
+    <!-- Background gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fdf8f0;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#f7f0e4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f0e8d8;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Warm glow for right side -->
+    <radialGradient id="warmGlow" cx="75%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ff8c3a;stop-opacity:0.08" />
+      <stop offset="100%" style="stop-color:#ff8c3a;stop-opacity:0" />
+    </radialGradient>
+
+    <!-- Node glow orange -->
+    <radialGradient id="nodeGlowOrange" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#f97316;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#f97316;stop-opacity:0" />
+    </radialGradient>
+
+    <!-- Node glow blue -->
+    <radialGradient id="nodeGlowBlue" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.25" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0" />
+    </radialGradient>
+
+    <!-- Node glow green -->
+    <radialGradient id="nodeGlowGreen" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:0" />
+    </radialGradient>
+
+    <!-- Node glow purple -->
+    <radialGradient id="nodeGlowPurple" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.25" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0" />
+    </radialGradient>
+
+    <!-- Dot pattern -->
+    <pattern id="dots" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+      <circle cx="16" cy="16" r="1" fill="#c8b89a" opacity="0.4"/>
+    </pattern>
+
+    <!-- Clip for right panel -->
+    <clipPath id="rightClip">
+      <rect x="820" y="0" width="780" height="840"/>
+    </clipPath>
+  </defs>
+
+  <!-- Base background -->
+  <rect width="1600" height="840" fill="url(#bgGrad)"/>
+
+  <!-- Dot texture -->
+  <rect width="1600" height="840" fill="url(#dots)"/>
+
+  <!-- Warm glow right -->
+  <rect width="1600" height="840" fill="url(#warmGlow)"/>
+
+  <!-- Vertical divider line -->
+  <line x1="820" y1="60" x2="820" y2="780" stroke="#d4c4a8" stroke-width="1"/>
+
+  <!-- ── LEFT PANEL ── -->
+
+  <!-- Series label -->
+  <line x1="80" y1="108" x2="112" y2="108" stroke="#f97316" stroke-width="2"/>
+  <circle cx="120" cy="108" r="4" fill="#f97316"/>
+  <text x="136" y="114" font-family="'DM Mono', monospace" font-size="13" fill="#f97316" letter-spacing="3" font-weight="500">BEGINNER'S SERIES</text>
+
+  <!-- Main headline -->
+  <!-- "What Is" -->
+  <text x="80" y="230" font-family="Georgia, 'Times New Roman', serif" font-size="108" fill="#1a1208" font-weight="900" letter-spacing="-2">What Is</text>
+
+  <!-- "Machine" — orange italic -->
+  <text x="80" y="348" font-family="Georgia, 'Times New Roman', serif" font-size="128" fill="#f97316" font-weight="900" font-style="italic" letter-spacing="-3">Machine</text>
+
+  <!-- "Learning?" -->
+  <text x="80" y="456" font-family="Georgia, 'Times New Roman', serif" font-size="108" fill="#1a1208" font-weight="900" letter-spacing="-2">Learning?</text>
+
+  <!-- Zero math badge -->
+  <rect x="80" y="494" width="340" height="46" rx="23" fill="#1a1208"/>
+  <text x="250" y="523" font-family="'DM Mono', monospace" font-size="14" fill="#f7f0e4" text-anchor="middle" letter-spacing="2" font-weight="400">EXPLAINED WITH ZERO MATH ✓</text>
+
+  <!-- Description line -->
+  <text x="80" y="596" font-family="Georgia, 'Times New Roman', serif" font-size="18" fill="#8a7a60" font-style="italic">No equations. No matrices. No prerequisites.</text>
+  <text x="80" y="622" font-family="Georgia, 'Times New Roman', serif" font-size="18" fill="#8a7a60" font-style="italic">Just the real idea, explained clearly.</text>
+
+  <!-- Concept pills row -->
+  <!-- Supervised -->
+  <rect x="80" y="658" width="148" height="36" rx="18" fill="none" stroke="#f97316" stroke-width="1.5"/>
+  <text x="154" y="681" font-family="'DM Mono', monospace" font-size="12" fill="#f97316" text-anchor="middle" letter-spacing="1">Supervised</text>
+
+  <!-- Unsupervised -->
+  <rect x="240" y="658" width="168" height="36" rx="18" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="324" y="681" font-family="'DM Mono', monospace" font-size="12" fill="#3b82f6" text-anchor="middle" letter-spacing="1">Unsupervised</text>
+
+  <!-- Reinforcement -->
+  <rect x="420" y="658" width="172" height="36" rx="18" fill="none" stroke="#10b981" stroke-width="1.5"/>
+  <text x="506" y="681" font-family="'DM Mono', monospace" font-size="12" fill="#10b981" text-anchor="middle" letter-spacing="1">Reinforcement</text>
+
+  <!-- Author row -->
+  <line x1="80" y1="735" x2="740" y2="735" stroke="#d4c4a8" stroke-width="1"/>
+
+  <!-- Avatar circle -->
+  <circle cx="104" cy="770" r="22" fill="#f97316" opacity="0.9"/>
+  <text x="104" y="777" font-family="Georgia, serif" font-size="18" fill="white" text-anchor="middle" font-weight="700">M</text>
+
+  <!-- Author name -->
+  <text x="138" y="762" font-family="'DM Mono', monospace" font-size="14" fill="#1a1208" font-weight="500" letter-spacing="0.5">Mohun Shakeel Ahmad</text>
+  <text x="138" y="782" font-family="'DM Mono', monospace" font-size="11" fill="#8a7a60" letter-spacing="0.5">Software Engineer · MSc Data Science · Mauritius</text>
+
+  <!-- Read time -->
+  <rect x="650" y="755" width="110" height="30" rx="15" fill="none" stroke="#d4c4a8" stroke-width="1"/>
+  <text x="705" y="775" font-family="'DM Mono', monospace" font-size="11" fill="#8a7a60" text-anchor="middle" letter-spacing="1">5 MIN READ</text>
+
+
+  <!-- ── RIGHT PANEL — Neural Network Illustration ── -->
+
+  <!-- Right panel subtle bg -->
+  <rect x="820" y="0" width="780" height="840" fill="#1a1208" opacity="0.02"/>
+
+  <!-- Right panel label -->
+  <text x="880" y="80" font-family="'DM Mono', monospace" font-size="11" fill="#8a7a60" letter-spacing="3">// how it works</text>
+
+  <!-- ════ NEURAL NETWORK ════ -->
+  <!-- Layer labels -->
+  <text x="960" y="760" font-family="'DM Mono', monospace" font-size="10" fill="#c8b09a" text-anchor="middle" letter-spacing="2">INPUT</text>
+  <text x="1130" y="760" font-family="'DM Mono', monospace" font-size="10" fill="#c8b09a" text-anchor="middle" letter-spacing="2">HIDDEN</text>
+  <text x="1290" y="760" font-family="'DM Mono', monospace" font-size="10" fill="#c8b09a" text-anchor="middle" letter-spacing="2">HIDDEN</text>
+  <text x="1450" y="760" font-family="'DM Mono', monospace" font-size="10" fill="#c8b09a" text-anchor="middle" letter-spacing="2">OUTPUT</text>
+
+  <!-- ── CONNECTIONS — Layer 0 → Layer 1 ── -->
+  <!-- From node (960,200) -->
+  <line x1="960" y1="200" x2="1130" y2="170" stroke="#f97316" stroke-width="1" opacity="0.18"/>
+  <line x1="960" y1="200" x2="1130" y2="300" stroke="#f97316" stroke-width="1" opacity="0.12"/>
+  <line x1="960" y1="200" x2="1130" y2="430" stroke="#f97316" stroke-width="1" opacity="0.08"/>
+  <line x1="960" y1="200" x2="1130" y2="560" stroke="#f97316" stroke-width="1" opacity="0.06"/>
+  <!-- From node (960,360) -->
+  <line x1="960" y1="360" x2="1130" y2="170" stroke="#f97316" stroke-width="1" opacity="0.10"/>
+  <line x1="960" y1="360" x2="1130" y2="300" stroke="#f97316" stroke-width="1" opacity="0.18"/>
+  <line x1="960" y1="360" x2="1130" y2="430" stroke="#f97316" stroke-width="1" opacity="0.14"/>
+  <line x1="960" y1="360" x2="1130" y2="560" stroke="#f97316" stroke-width="1" opacity="0.08"/>
+  <!-- From node (960,520) -->
+  <line x1="960" y1="520" x2="1130" y2="170" stroke="#f97316" stroke-width="1" opacity="0.06"/>
+  <line x1="960" y1="520" x2="1130" y2="300" stroke="#f97316" stroke-width="1" opacity="0.10"/>
+  <line x1="960" y1="520" x2="1130" y2="430" stroke="#f97316" stroke-width="1" opacity="0.18"/>
+  <line x1="960" y1="520" x2="1130" y2="560" stroke="#f97316" stroke-width="1" opacity="0.14"/>
+  <!-- From node (960,660) -->
+  <line x1="960" y1="660" x2="1130" y2="300" stroke="#f97316" stroke-width="1" opacity="0.08"/>
+  <line x1="960" y1="660" x2="1130" y2="430" stroke="#f97316" stroke-width="1" opacity="0.12"/>
+  <line x1="960" y1="660" x2="1130" y2="560" stroke="#f97316" stroke-width="1" opacity="0.18"/>
+  <line x1="960" y1="660" x2="1130" y2="660" stroke="#f97316" stroke-width="1" opacity="0.10"/>
+
+  <!-- ── CONNECTIONS — Layer 1 → Layer 2 ── -->
+  <line x1="1130" y1="170" x2="1290" y2="230" stroke="#3b82f6" stroke-width="1" opacity="0.18"/>
+  <line x1="1130" y1="170" x2="1290" y2="390" stroke="#3b82f6" stroke-width="1" opacity="0.10"/>
+  <line x1="1130" y1="170" x2="1290" y2="550" stroke="#3b82f6" stroke-width="1" opacity="0.06"/>
+  <line x1="1130" y1="300" x2="1290" y2="230" stroke="#3b82f6" stroke-width="1" opacity="0.14"/>
+  <line x1="1130" y1="300" x2="1290" y2="390" stroke="#3b82f6" stroke-width="1" opacity="0.18"/>
+  <line x1="1130" y1="300" x2="1290" y2="550" stroke="#3b82f6" stroke-width="1" opacity="0.10"/>
+  <line x1="1130" y1="430" x2="1290" y2="230" stroke="#3b82f6" stroke-width="1" opacity="0.10"/>
+  <line x1="1130" y1="430" x2="1290" y2="390" stroke="#3b82f6" stroke-width="1" opacity="0.16"/>
+  <line x1="1130" y1="430" x2="1290" y2="550" stroke="#3b82f6" stroke-width="1" opacity="0.18"/>
+  <line x1="1130" y1="560" x2="1290" y2="390" stroke="#3b82f6" stroke-width="1" opacity="0.12"/>
+  <line x1="1130" y1="560" x2="1290" y2="550" stroke="#3b82f6" stroke-width="1" opacity="0.18"/>
+  <line x1="1130" y1="660" x2="1290" y2="550" stroke="#3b82f6" stroke-width="1" opacity="0.14"/>
+  <line x1="1130" y1="660" x2="1290" y2="680" stroke="#3b82f6" stroke-width="1" opacity="0.18"/>
+
+  <!-- ── CONNECTIONS — Layer 2 → Output ── -->
+  <line x1="1290" y1="230" x2="1450" y2="420" stroke="#8b5cf6" stroke-width="1.5" opacity="0.25"/>
+  <line x1="1290" y1="390" x2="1450" y2="420" stroke="#8b5cf6" stroke-width="1.5" opacity="0.30"/>
+  <line x1="1290" y1="550" x2="1450" y2="420" stroke="#8b5cf6" stroke-width="1.5" opacity="0.25"/>
+  <line x1="1290" y1="680" x2="1450" y2="420" stroke="#8b5cf6" stroke-width="1.5" opacity="0.18"/>
+
+  <!-- ── INPUT LAYER NODES (x=960) ── -->
+  <!-- Node 1 -->
+  <circle cx="960" cy="200" r="36" fill="url(#nodeGlowOrange)"/>
+  <circle cx="960" cy="200" r="22" fill="#fdf8f0" stroke="#f97316" stroke-width="1.8" opacity="0.9"/>
+  <circle cx="960" cy="200" r="10" fill="#f97316" opacity="0.7"/>
+  <text x="960" y="205" font-family="'DM Mono', monospace" font-size="14" fill="#1a1208" text-anchor="middle">📧</text>
+
+  <!-- Node 2 -->
+  <circle cx="960" cy="360" r="36" fill="url(#nodeGlowOrange)"/>
+  <circle cx="960" cy="360" r="22" fill="#fdf8f0" stroke="#f97316" stroke-width="1.8" opacity="0.9"/>
+  <circle cx="960" cy="360" r="10" fill="#f97316" opacity="0.7"/>
+  <text x="960" y="365" font-family="'DM Mono', monospace" font-size="14" fill="#1a1208" text-anchor="middle">🎵</text>
+
+  <!-- Node 3 -->
+  <circle cx="960" cy="520" r="36" fill="url(#nodeGlowOrange)"/>
+  <circle cx="960" cy="520" r="22" fill="#fdf8f0" stroke="#f97316" stroke-width="1.8" opacity="0.9"/>
+  <circle cx="960" cy="520" r="10" fill="#f97316" opacity="0.7"/>
+  <text x="960" y="525" font-family="'DM Mono', monospace" font-size="14" fill="#1a1208" text-anchor="middle">🛒</text>
+
+  <!-- Node 4 -->
+  <circle cx="960" cy="660" r="36" fill="url(#nodeGlowOrange)"/>
+  <circle cx="960" cy="660" r="22" fill="#fdf8f0" stroke="#f97316" stroke-width="1.8" opacity="0.9"/>
+  <circle cx="960" cy="660" r="10" fill="#f97316" opacity="0.7"/>
+  <text x="960" y="665" font-family="'DM Mono', monospace" font-size="14" fill="#1a1208" text-anchor="middle">📍</text>
+
+  <!-- ── HIDDEN LAYER 1 NODES (x=1130) ── -->
+  <circle cx="1130" cy="170" r="30" fill="url(#nodeGlowBlue)"/>
+  <circle cx="1130" cy="170" r="18" fill="#fdf8f0" stroke="#3b82f6" stroke-width="1.5" opacity="0.85"/>
+  <circle cx="1130" cy="170" r="8" fill="#3b82f6" opacity="0.6"/>
+
+  <circle cx="1130" cy="300" r="30" fill="url(#nodeGlowBlue)"/>
+  <circle cx="1130" cy="300" r="18" fill="#fdf8f0" stroke="#3b82f6" stroke-width="1.5" opacity="0.85"/>
+  <circle cx="1130" cy="300" r="8" fill="#3b82f6" opacity="0.6"/>
+
+  <circle cx="1130" cy="430" r="30" fill="url(#nodeGlowBlue)"/>
+  <circle cx="1130" cy="430" r="18" fill="#fdf8f0" stroke="#3b82f6" stroke-width="1.5" opacity="0.85"/>
+  <circle cx="1130" cy="430" r="8" fill="#3b82f6" opacity="0.6"/>
+
+  <circle cx="1130" cy="560" r="30" fill="url(#nodeGlowBlue)"/>
+  <circle cx="1130" cy="560" r="18" fill="#fdf8f0" stroke="#3b82f6" stroke-width="1.5" opacity="0.85"/>
+  <circle cx="1130" cy="560" r="8" fill="#3b82f6" opacity="0.6"/>
+
+  <circle cx="1130" cy="660" r="30" fill="url(#nodeGlowBlue)"/>
+  <circle cx="1130" cy="660" r="18" fill="#fdf8f0" stroke="#3b82f6" stroke-width="1.5" opacity="0.85"/>
+  <circle cx="1130" cy="660" r="8" fill="#3b82f6" opacity="0.6"/>
+
+  <!-- ── HIDDEN LAYER 2 NODES (x=1290) ── -->
+  <circle cx="1290" cy="230" r="28" fill="url(#nodeGlowPurple)"/>
+  <circle cx="1290" cy="230" r="17" fill="#fdf8f0" stroke="#8b5cf6" stroke-width="1.5" opacity="0.85"/>
+  <circle cx="1290" cy="230" r="7" fill="#8b5cf6" opacity="0.6"/>
+
+  <circle cx="1290" cy="390" r="28" fill="url(#nodeGlowPurple)"/>
+  <circle cx="1290" cy="390" r="17" fill="#fdf8f0" stroke="#8b5cf6" stroke-width="1.5" opacity="0.85"/>
+  <circle cx="1290" cy="390" r="7" fill="#8b5cf6" opacity="0.6"/>
+
+  <circle cx="1290" cy="550" r="28" fill="url(#nodeGlowPurple)"/>
+  <circle cx="1290" cy="550" r="17" fill="#fdf8f0" stroke="#8b5cf6" stroke-width="1.5" opacity="0.85"/>
+  <circle cx="1290" cy="550" r="7" fill="#8b5cf6" opacity="0.6"/>
+
+  <circle cx="1290" cy="680" r="28" fill="url(#nodeGlowPurple)"/>
+  <circle cx="1290" cy="680" r="17" fill="#fdf8f0" stroke="#8b5cf6" stroke-width="1.5" opacity="0.85"/>
+  <circle cx="1290" cy="680" r="7" fill="#8b5cf6" opacity="0.6"/>
+
+  <!-- ── OUTPUT NODE (x=1450) ── -->
+  <circle cx="1450" cy="420" r="52" fill="url(#nodeGlowGreen)"/>
+  <circle cx="1450" cy="420" r="36" fill="#fdf8f0" stroke="#10b981" stroke-width="2" opacity="0.9"/>
+  <circle cx="1450" cy="420" r="22" fill="#10b981" opacity="0.15" stroke="#10b981" stroke-width="1.5"/>
+  <circle cx="1450" cy="420" r="12" fill="#10b981" opacity="0.8"/>
+  <circle cx="1450" cy="420" r="5" fill="#10b981"/>
+  <text x="1450" y="476" font-family="'DM Mono', monospace" font-size="10" fill="#8a7a60" text-anchor="middle" letter-spacing="1">PREDICT</text>
+
+  <!-- Floating data point decorations -->
+  <circle cx="1045" cy="265" r="3.5" fill="#f97316" opacity="0.5"/>
+  <circle cx="1045" cy="455" r="3" fill="#f97316" opacity="0.4"/>
+  <circle cx="1045" cy="590" r="3.5" fill="#f97316" opacity="0.5"/>
+  <circle cx="1210" cy="215" r="3" fill="#3b82f6" opacity="0.45"/>
+  <circle cx="1210" cy="345" r="3.5" fill="#3b82f6" opacity="0.5"/>
+  <circle cx="1210" cy="500" r="3" fill="#3b82f6" opacity="0.4"/>
+  <circle cx="1210" cy="620" r="3.5" fill="#3b82f6" opacity="0.45"/>
+  <circle cx="1370" cy="310" r="3" fill="#8b5cf6" opacity="0.45"/>
+  <circle cx="1370" cy="470" r="3.5" fill="#8b5cf6" opacity="0.5"/>
+  <circle cx="1370" cy="616" r="3" fill="#8b5cf6" opacity="0.4"/>
+
+  <!-- Train → Model → Predict flow label at top right -->
+  <rect x="856" y="88" width="540" height="50" rx="8" fill="#1a1208" opacity="0.04"/>
+  <text x="876" y="118" font-family="'DM Mono', monospace" font-size="13" fill="#8a7a60" letter-spacing="2">TRAIN</text>
+  <text x="948" y="118" font-family="'DM Mono', monospace" font-size="13" fill="#c8b09a">→</text>
+  <text x="972" y="118" font-family="'DM Mono', monospace" font-size="13" fill="#8a7a60" letter-spacing="2">MODEL</text>
+  <text x="1056" y="118" font-family="'DM Mono', monospace" font-size="13" fill="#c8b09a">→</text>
+  <text x="1080" y="118" font-family="'DM Mono', monospace" font-size="13" fill="#8a7a60" letter-spacing="2">PREDICT</text>
+
+  <!-- Thin decorative border around entire image -->
+  <rect x="20" y="20" width="1560" height="800" rx="4" fill="none" stroke="#d4c4a8" stroke-width="1" opacity="0.6"/>
+</svg>
