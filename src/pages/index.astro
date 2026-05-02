@@ -31,32 +31,6 @@ const gridPosts = posts.filter((p) => p.slug !== featured.slug);
       coverImage={featured.data.coverImage}
     />
 
-    <!-- Author bio -->
-    <section class="border-b border-[#1e2d3d] px-[clamp(16px,5vw,48px)] py-10">
-      <div class="flex items-start gap-5 max-w-3xl">
-        <div class="w-12 h-12 rounded-full bg-[#1c2739] border-2 border-[#00e5a0] flex items-center justify-center font-display text-lg font-bold text-[#00e5a0] shrink-0 mt-0.5">
-          M
-        </div>
-        <div>
-          <div class="flex items-baseline gap-3 flex-wrap mb-1">
-            <span class="font-display font-bold text-[#e4eff8] text-[17px]">Mohun Shakeel Ahmad</span>
-            <span class="font-mono text-[10px] text-[#3d5166] tracking-[0.3px]">Software Engineer @ SharinPix · MSc Data Science · Mauritius</span>
-          </div>
-          <p class="text-[14px] text-[#7a90a4] leading-[1.65] max-w-[580px]">
-            Writing about what I actually build — Rails backends, data pipelines, AI integrations,
-            and the practical lessons that never make it into tutorials. No fluff, no theory-only.
-          </p>
-          <div class="flex gap-2 mt-3 flex-wrap">
-            {(['AI', 'Engineering', 'Data Science', 'Beginner'] as const).map((t) => (
-              <span class="font-mono text-[9px] uppercase tracking-[1.5px] text-[#3d5166] border border-[#243447] px-2 py-[3px] rounded-[2px]">
-                {t}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Section header -->
     <div class="flex items-baseline justify-between px-[clamp(16px,5vw,48px)] pt-10 pb-6">
       <span class="font-mono text-[11px] uppercase tracking-[2px] text-[#7a90a4]">Recent Articles</span>
@@ -83,6 +57,31 @@ const gridPosts = posts.filter((p) => p.slug !== featured.slug);
         />
       ))}
     </div>
+
+        <!-- Author bio -->
+    <section class="border-b border-[#1e2d3d] px-[clamp(16px,5vw,48px)] py-10">
+      <div class="flex items-start gap-5 max-w-3xl">
+        <div class="w-12 h-12 rounded-full bg-[#1c2739] border-2 border-[#00e5a0] flex items-center justify-center font-display text-lg font-bold text-[#00e5a0] shrink-0 mt-0.5">
+          M
+        </div>
+        <div>
+          <div class="flex items-baseline gap-3 flex-wrap mb-1">
+            <span class="font-display font-bold text-[#e4eff8] text-[17px]">Mohun Shakeel Ahmad</span>
+            <span class="font-mono text-[10px] text-[#3d5166] tracking-[0.3px]">Software Engineer @ SharinPix · MSc Data Science · Mauritius</span>
+          </div>
+          <p class="text-[14px] text-[#7a90a4] leading-[1.65] max-w-[580px]">
+            Code that ships. Data that matters. Writing that doesn't waste your time.
+          </p>
+          <div class="flex gap-2 mt-3 flex-wrap">
+            {(['AI', 'Data Science', 'Beginner'] as const).map((t) => (
+              <span class="font-mono text-[9px] uppercase tracking-[1.5px] text-[#3d5166] border border-[#243447] px-2 py-[3px] rounded-[2px]">
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
 
     <Footer />
   </main>
