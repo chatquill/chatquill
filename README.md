@@ -37,7 +37,7 @@ Your task is to **recreate these designs in a real codebase** using appropriate 
   - Font: Playfair Display, 700, 20px
   - Color: `#e4eff8`, the word "quill" portion in accent `#00e5a0`
   - Clicking navigates to homepage
-- **Nav links:** AI · Engineering · Data Science · Beginners · All
+- **Nav links:** AI · Tech · Data Science · Beginners · All
   - Font: JetBrains Mono, 11px, letter-spacing 0.5px
   - Color default: `#7a90a4` | Hover: `#e4eff8` with `background: #161f2c` | Active: `#00e5a0`
   - Padding: 5px 10px, border-radius 3px

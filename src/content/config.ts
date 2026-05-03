@@ -6,7 +6,7 @@ const blog = defineCollection({
     title: z.string(),
     description: z.string(),
     date: z.string(),
-    tags: z.array(z.enum(['AI', 'Engineering', 'Data Science', 'Beginner'])),
+    tags: z.array(z.enum(['AI', 'Tech', 'Data Science', 'Beginner'])),
     readtime: z.string(),
     featured: z.boolean().optional().default(false),
     coverGradient: z.string().optional().default('linear-gradient(135deg, #0d1520, #0d2015)'),

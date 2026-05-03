@@ -1,0 +1,133 @@
+---
+title: "The Exact Moment Your Data Gets Sold — and Who's Buying It"
+description: "From the device fingerprint logged before you do anything, to the millisecond auction that decides your worth to an advertiser — here is the full chain, and the buyer list nobody talks about."
+date: 'May 3, 2026'
+tags: ['Tech']
+readtime: '8 min read'
+featured: false
+coverGradient: 'linear-gradient(135deg, #0c0806 0%, #110a04 40%, #080608 100%)'
+coverGlow: 'rgba(7, 7, 81, 0.1)'
+coverImage: '/images/data-sold.svg'
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+import InlineImg from '../../components/InlineImg.astro';
+
+# The Exact Moment Your Data Gets Sold — and Who's Buying It
+
+> You've heard the line "if it's free, you're the product." That's the bumper sticker version. This is what's actually happening underneath it.
+
+---
+
+Picture this. It's a Tuesday morning. You're half awake, still in bed. You unlock your phone and open a free weather app to check if you need a jacket. The app loads. You glance at the forecast. You close it.
+
+That interaction took four seconds.
+
+In those four seconds, a version of you was packaged, auctioned and sold to buyers you've never heard of, for purposes that have nothing to do with the weather.
+
+Here's how it happened.
+
+---
+
+## Before You Even Tap the Screen
+
+Most people imagine data collection as something gradual. Something that accumulates over time as you use an app, build a history, make yourself knowable. The reality starts before any of that.
+
+The moment you installed the weather app and tapped "Accept," your device fingerprint was logged. A unique combination of your phone model, operating system version, screen resolution, battery level, installed fonts, time zone, and dozens of other passive signals that individually mean nothing but together identify you with startling precision.
+
+No account. No name. No email address. Just the invisible signature your device broadcasts the moment it connects to anything.
+
+That fingerprint follows you across every app, every website, every session. Delete the original app, clear your cookies, create a brand new account — it persists. Because it's not stored in your account. It's stored in your device. And your device doesn't change.
+
+The collection didn't start when you opened the app. It started at install. It started before you'd done a single interesting thing.
+
+---
+
+## The Industry Nobody Talks About at Dinner
+
+Sitting between the apps you use and the people who want to reach you is an entire industry most people have never heard of. It doesn't make products. It doesn't offer services. It exists entirely to buy, aggregate, clean and resell information about real people.
+
+It's called the data broker industry. It's worth over $300 billion annually.
+
+The weather app collects signals from your device. It shares that data with an analytics SDK embedded in its codebase. That SDK reports to a data platform, which sells to a broker. The broker already has data on you from the other fourteen apps on your phone that use the same SDK. They combine everything: your location history from the mapping app, your purchase patterns from the loyalty card programme, your browsing behaviour from the cookie network that follows you across the web.
+
+What began as a weather check becomes one more layer added to a profile that's been building for years.
+
+That profile gets sold to advertisers, insurance companies, financial institutions, employers, political campaigns and healthcare companies targeting people with specific conditions. The weather app developer didn't architect any of this. They integrated an analytics library that was free, well-documented and used by thousands of other apps. That library had its own data agreements. Those agreements had their own downstream partners. Nobody drew the full map. The developer shipped an SDK. The SDK shipped you.
+
+---
+
+## The Auction That Happens in 100 Milliseconds
+
+Before the first pixel of the weather app appeared on your screen this morning, your device sent a signal to an advertising exchange. That signal contained your device ID, approximate location, the time, your app context, and a list of audience segments built from your behaviour — categories like "likely new car buyer," "health-conscious 25-34," or "frequent traveller."
+
+Within 100 milliseconds, hundreds of advertisers received that signal, evaluated it against their targeting criteria and placed bids for the right to show you an ad in that specific moment.
+
+The highest bidder won. The ad loaded. You didn't look at it.
+
+The entire sequence completed before you registered that the app had opened. It happens billions of times a day. The infrastructure running it is among the most sophisticated real-time systems ever built, and its only purpose is calculating what you are worth to show an advertisement to at this specific moment.
+
+It's called programmatic advertising and real-time bidding. The fact that almost nobody outside the industry knows how it works is not an accident.
+
+---
+
+## Who's Actually Buying
+
+Advertisers are the visible layer. The list goes considerably further.
+
+Insurance companies purchase location and behavioural data to build risk profiles. Where do you go, how often, at what hours? Do you visit fast food restaurants more than gyms? These signals feed actuarial models that inform your premiums without you knowing that data from a free flashlight app made it into the calculation.
+
+Financial institutions buy spending pattern data to assess creditworthiness outside the traditional credit check. Not just what you spend, but the texture of it: irregular patterns, category shifts, behaviour in the weeks before you applied.
+
+Political organisations buy psychographic profiles with a specificity that would be startling if most people knew it existed. Not just your age and location but your persuadability score, your likelihood of changing your vote on specific issues based on specific messaging.
+
+Healthcare companies buy data from period tracking apps, fitness trackers, symptom checkers and meditation apps. Companies selling fertility treatments, mental health services and weight loss programmes have all been documented purchasing this kind of data. In most of the United States, this is legal. In Europe, GDPR created guardrails, but fines remain manageable operational costs for companies worth trillions.
+
+---
+
+## The Moments It Stopped Being Abstract
+
+In 2012, a man walked into a Target store in the United States and demanded to speak to a manager. The company had been sending his teenage daughter coupons for baby products: maternity clothing, nursery furniture, newborn items. He wanted to know why Target was sending pregnancy marketing to a teenager living at home.
+
+The manager apologised. Called back a few days later to apologise again. By then, the father had spoken to his daughter. She was, in fact, pregnant. Target's predictive model had identified her pregnancy from shifts in her purchasing behaviour weeks before she'd told her family.
+
+That was 2012. The data available then was a fraction of what exists now.
+
+A 2020 investigation documented that a weather app had sold precise location data used to identify individuals attending mosques, churches, political meetings and medical clinics, and target them with specific messaging based on those visits. The app's privacy policy permitted the data sharing. Nobody read it.
+
+In 2021, multiple mental health apps were found sending user data, including mood tracking inputs that users believed were confidential, to Facebook's advertising infrastructure and other third-party analytics platforms. The apps had privacy policies stating the data would never be shared. The technical integrations told a different story.
+
+These are not edge cases. They are what happens when data collected for one purpose travels through a supply chain with no end-to-end visibility. The original developers often had no knowledge of where the data went. They had integrated an SDK. The SDK had its own agreements. Those agreements had their own.
+
+---
+
+## What You Actually Control
+
+Less than the settings screen implies. More than doing nothing.
+
+Privacy toggles on major platforms reduce the targeting signals visible to third parties. They don't stop the underlying collection. Disabling ad personalisation on Google means the ads become less relevant. Google continues collecting your behaviour. The collection and the targeting are separate systems. The settings mostly touch the second one.
+
+The things that make a measurable difference are less convenient. A browser that blocks third-party tracking by default. Treating app permission requests as actual decisions: a torch app has no legitimate need for your contacts, your location, or your microphone. Reading the data sharing section of a privacy policy before installing something rather than after.
+
+None of this removes you from the system. The infrastructure is too embedded to avoid completely. What it does is reduce the surface area: the number of hands your data passes through and the depth of the profile built around you. A thinner profile is a less valuable profile. A less valuable profile gets traded less frequently and ends up in fewer places.
+
+---
+
+## Your Position Inside the System
+
+The system isn't going to stop. It's too profitable, too embedded in the products billions of people use, and too useful to the companies that depend on it. What changes is your position inside it.
+
+Most people move through this infrastructure without knowing it exists. They accept permissions without reading them, install free apps without asking why they're free, and toggle privacy settings without understanding which process the toggle actually addresses. They're not careless. Nobody explained how the plumbing works.
+
+Now you know where the fingerprint comes from, what the broker does with it, how the auction runs, and who the secondary buyers are. That changes what you install. What you accept. What you assume stays between you and an app.
+
+It's not a solution. The supply chain runs with or without your awareness. But knowing the system means you're no longer making decisions inside it blind.
+
+That's the only kind of control that actually exists here.
+
+---
+
+*Mohun Shakeel Ahmad — Software Engineer at Spoon Consulting / SharinPix. MSc Data Science (Distinction), Sunway University. Writing about tech, data and software for people who want to understand what's actually going on.*
+
+*[Connect on LinkedIn](https://www.linkedin.com/in/shakeel-mohun-3b8378233)*
