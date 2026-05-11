@@ -39,3 +39,31 @@
   background: #080d14 !important;
   overflow-x: auto;
 }
+
+/* Themed scrollbar for all code blocks */
+pre,
+.astro-code {
+  scrollbar-width: thin;
+  scrollbar-color: #1e3050 #080d14;
+}
+
+pre::-webkit-scrollbar,
+.astro-code::-webkit-scrollbar {
+  height: 5px;
+}
+
+pre::-webkit-scrollbar-track,
+.astro-code::-webkit-scrollbar-track {
+  background: #080d14;
+}
+
+pre::-webkit-scrollbar-thumb,
+.astro-code::-webkit-scrollbar-thumb {
+  background: #1e3050;
+  border-radius: 3px;
+}
+
+pre::-webkit-scrollbar-thumb:hover,
+.astro-code::-webkit-scrollbar-thumb:hover {
+  background: #2a4a6e;
+}
