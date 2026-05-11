@@ -1,0 +1,243 @@
+<svg viewBox="0 0 1600 840" xmlns="http://www.w3.org/2000/svg" width="1600" height="840">
+  <defs>
+    <!-- Background -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#070612"/>
+      <stop offset="50%"  stop-color="#0b0918"/>
+      <stop offset="100%" stop-color="#06050f"/>
+    </linearGradient>
+
+    <!-- Cluster halos -->
+    <radialGradient id="haloA" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#f87171" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#f87171" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="haloB" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#60a5fa" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#60a5fa" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="haloC" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#34d399" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Grid -->
+    <pattern id="grid" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(150,130,255,0.05)" stroke-width="0.5"/>
+    </pattern>
+
+    <!-- Vignette -->
+    <radialGradient id="vig" cx="50%" cy="50%" r="70%">
+      <stop offset="0%"   stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.75"/>
+    </radialGradient>
+
+    <!-- Glow filters -->
+    <filter id="dotGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="centGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="textGlow" x="-10%" y="-30%" width="120%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="haloBlur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="45"/>
+    </filter>
+    <filter id="lineGlow" x="-5%" y="-100%" width="110%" height="300%">
+      <feGaussianBlur stdDeviation="2"/>
+    </filter>
+
+    <clipPath id="canvas">
+      <rect width="1600" height="840"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#canvas)">
+    <!-- Base -->
+    <rect width="1600" height="840" fill="url(#bg)"/>
+    <rect width="1600" height="840" fill="url(#grid)"/>
+
+    <!-- Cluster atmosphere blobs -->
+    <ellipse cx="520"  cy="520" rx="220" ry="190" fill="url(#haloA)" filter="url(#haloBlur)"/>
+    <ellipse cx="900"  cy="280" rx="210" ry="180" fill="url(#haloB)" filter="url(#haloBlur)"/>
+    <ellipse cx="1200" cy="580" rx="230" ry="195" fill="url(#haloC)" filter="url(#haloBlur)"/>
+
+    <!-- Axes -->
+    <line x1="160" y1="760" x2="1480" y2="760" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+    <line x1="160" y1="760" x2="160"  y2="60"  stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+    <!-- Arrow heads -->
+    <polygon points="1480,756 1495,760 1480,764" fill="rgba(255,255,255,0.12)"/>
+    <polygon points="156,60 160,45 164,60"       fill="rgba(255,255,255,0.12)"/>
+
+    <!-- Axis tick marks -->
+    <line x1="400"  y1="757" x2="400"  y2="763" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <line x1="640"  y1="757" x2="640"  y2="763" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <line x1="880"  y1="757" x2="880"  y2="763" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <line x1="1120" y1="757" x2="1120" y2="763" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <line x1="1360" y1="757" x2="1360" y2="763" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <line x1="157"  y1="600" x2="163"  y2="600" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <line x1="157"  y1="440" x2="163"  y2="440" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <line x1="157"  y1="280" x2="163"  y2="280" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <line x1="157"  y1="120" x2="163"  y2="120" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+    <!-- ── CLUSTER A — red — lower left ── -->
+    <!-- Dots -->
+    <circle cx="450" cy="540" r="7"  fill="#f87171" opacity="0.9"  filter="url(#dotGlow)"/>
+    <circle cx="480" cy="510" r="6"  fill="#f87171" opacity="0.75"/>
+    <circle cx="510" cy="535" r="8"  fill="#f87171" opacity="0.85" filter="url(#dotGlow)"/>
+    <circle cx="540" cy="505" r="6"  fill="#f87171" opacity="0.7"/>
+    <circle cx="570" cy="545" r="7"  fill="#f87171" opacity="0.8"  filter="url(#dotGlow)"/>
+    <circle cx="465" cy="570" r="6"  fill="#f87171" opacity="0.65"/>
+    <circle cx="555" cy="568" r="7"  fill="#f87171" opacity="0.75"/>
+    <circle cx="490" cy="590" r="6"  fill="#f87171" opacity="0.6"/>
+    <circle cx="575" cy="515" r="6"  fill="#f87171" opacity="0.65"/>
+    <circle cx="440" cy="595" r="5"  fill="#f87171" opacity="0.55"/>
+    <circle cx="525" cy="490" r="6"  fill="#f87171" opacity="0.7"/>
+    <circle cx="470" cy="490" r="5"  fill="#f87171" opacity="0.6"/>
+    <circle cx="595" cy="555" r="6"  fill="#f87171" opacity="0.65"/>
+    <circle cx="420" cy="555" r="5"  fill="#f87171" opacity="0.55"/>
+    <circle cx="545" cy="590" r="5"  fill="#f87171" opacity="0.5"/>
+    <circle cx="610" cy="525" r="5"  fill="#f87171" opacity="0.55"/>
+    <circle cx="485" cy="610" r="5"  fill="#f87171" opacity="0.5"/>
+    <circle cx="530" cy="610" r="4"  fill="#f87171" opacity="0.45"/>
+    <circle cx="405" cy="520" r="5"  fill="#f87171" opacity="0.5"/>
+    <circle cx="585" cy="490" r="4"  fill="#f87171" opacity="0.45"/>
+
+    <!-- ── CLUSTER B — blue — upper centre ── -->
+    <circle cx="840" cy="290" r="7"  fill="#60a5fa" opacity="0.9"  filter="url(#dotGlow)"/>
+    <circle cx="870" cy="265" r="6"  fill="#60a5fa" opacity="0.75"/>
+    <circle cx="900" cy="285" r="8"  fill="#60a5fa" opacity="0.85" filter="url(#dotGlow)"/>
+    <circle cx="930" cy="260" r="6"  fill="#60a5fa" opacity="0.7"/>
+    <circle cx="960" cy="290" r="7"  fill="#60a5fa" opacity="0.8"  filter="url(#dotGlow)"/>
+    <circle cx="855" cy="315" r="6"  fill="#60a5fa" opacity="0.65"/>
+    <circle cx="945" cy="315" r="7"  fill="#60a5fa" opacity="0.75"/>
+    <circle cx="905" cy="330" r="6"  fill="#60a5fa" opacity="0.6"/>
+    <circle cx="975" cy="270" r="6"  fill="#60a5fa" opacity="0.65"/>
+    <circle cx="830" cy="330" r="5"  fill="#60a5fa" opacity="0.55"/>
+    <circle cx="920" cy="245" r="6"  fill="#60a5fa" opacity="0.7"/>
+    <circle cx="865" cy="245" r="5"  fill="#60a5fa" opacity="0.6"/>
+    <circle cx="985" cy="305" r="6"  fill="#60a5fa" opacity="0.65"/>
+    <circle cx="820" cy="305" r="5"  fill="#60a5fa" opacity="0.55"/>
+    <circle cx="960" cy="335" r="5"  fill="#60a5fa" opacity="0.5"/>
+    <circle cx="998" cy="275" r="5"  fill="#60a5fa" opacity="0.5"/>
+    <circle cx="840" cy="350" r="4"  fill="#60a5fa" opacity="0.45"/>
+    <circle cx="880" cy="220" r="5"  fill="#60a5fa" opacity="0.5"/>
+    <circle cx="940" cy="220" r="4"  fill="#60a5fa" opacity="0.45"/>
+    <circle cx="1000" cy="250" r="4" fill="#60a5fa" opacity="0.4"/>
+
+    <!-- ── CLUSTER C — green — lower right ── -->
+    <circle cx="1140" cy="590" r="7"  fill="#34d399" opacity="0.9"  filter="url(#dotGlow)"/>
+    <circle cx="1170" cy="565" r="6"  fill="#34d399" opacity="0.75"/>
+    <circle cx="1200" cy="585" r="8"  fill="#34d399" opacity="0.85" filter="url(#dotGlow)"/>
+    <circle cx="1230" cy="560" r="6"  fill="#34d399" opacity="0.7"/>
+    <circle cx="1260" cy="595" r="7"  fill="#34d399" opacity="0.8"  filter="url(#dotGlow)"/>
+    <circle cx="1155" cy="615" r="6"  fill="#34d399" opacity="0.65"/>
+    <circle cx="1245" cy="618" r="7"  fill="#34d399" opacity="0.75"/>
+    <circle cx="1200" cy="635" r="6"  fill="#34d399" opacity="0.6"/>
+    <circle cx="1275" cy="570" r="6"  fill="#34d399" opacity="0.65"/>
+    <circle cx="1130" cy="630" r="5"  fill="#34d399" opacity="0.55"/>
+    <circle cx="1220" cy="545" r="6"  fill="#34d399" opacity="0.7"/>
+    <circle cx="1165" cy="545" r="5"  fill="#34d399" opacity="0.6"/>
+    <circle cx="1290" cy="610" r="6"  fill="#34d399" opacity="0.65"/>
+    <circle cx="1115" cy="605" r="5"  fill="#34d399" opacity="0.55"/>
+    <circle cx="1255" cy="640" r="5"  fill="#34d399" opacity="0.5"/>
+    <circle cx="1305" cy="580" r="5"  fill="#34d399" opacity="0.5"/>
+    <circle cx="1145" cy="650" r="4"  fill="#34d399" opacity="0.45"/>
+    <circle cx="1185" cy="525" r="5"  fill="#34d399" opacity="0.5"/>
+    <circle cx="1240" cy="520" r="4"  fill="#34d399" opacity="0.45"/>
+    <circle cx="1310" cy="555" r="4"  fill="#34d399" opacity="0.4"/>
+
+    <!-- ── CENTROIDS — glowing stars ── -->
+    <!-- Centroid A -->
+    <circle cx="510" cy="540" r="30" fill="#f87171" opacity="0.08" filter="url(#haloBlur)"/>
+    <circle cx="510" cy="540" r="18" fill="#f87171" opacity="0.15"/>
+    <circle cx="510" cy="540" r="12" fill="#f87171" opacity="0.3" filter="url(#centGlow)"/>
+    <polygon points="510,520 515,532 528,532 518,540 522,553 510,546 498,553 502,540 492,532 505,532"
+             fill="#f87171" opacity="0.95" filter="url(#centGlow)"/>
+
+    <!-- Centroid B -->
+    <circle cx="905" cy="285" r="30" fill="#60a5fa" opacity="0.08" filter="url(#haloBlur)"/>
+    <circle cx="905" cy="285" r="18" fill="#60a5fa" opacity="0.15"/>
+    <circle cx="905" cy="285" r="12" fill="#60a5fa" opacity="0.3" filter="url(#centGlow)"/>
+    <polygon points="905,265 910,277 923,277 913,285 917,298 905,291 893,298 897,285 887,277 900,277"
+             fill="#60a5fa" opacity="0.95" filter="url(#centGlow)"/>
+
+    <!-- Centroid C -->
+    <circle cx="1200" cy="590" r="30" fill="#34d399" opacity="0.08" filter="url(#haloBlur)"/>
+    <circle cx="1200" cy="590" r="18" fill="#34d399" opacity="0.15"/>
+    <circle cx="1200" cy="590" r="12" fill="#34d399" opacity="0.3" filter="url(#centGlow)"/>
+    <polygon points="1200,570 1205,582 1218,582 1208,590 1212,603 1200,596 1188,603 1192,590 1182,582 1195,582"
+             fill="#34d399" opacity="0.95" filter="url(#centGlow)"/>
+
+    <!-- Voronoi boundary suggestions -->
+    <path d="M 160 160 Q 500 350 700 760" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="8 16"/>
+    <path d="M 700 760 Q 1000 580 1500 760" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="8 16"/>
+    <path d="M 160 160 Q 700 400 1500 160" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="5 20"/>
+
+    <!-- Centroid movement trail lines — show algorithm path -->
+    <!-- Trail A -->
+    <line x1="350" y1="400" x2="430" y2="480" stroke="#f87171" stroke-width="1" opacity="0.2" stroke-dasharray="4 8"/>
+    <line x1="430" y1="480" x2="480" y2="525" stroke="#f87171" stroke-width="1" opacity="0.3" stroke-dasharray="4 8"/>
+    <line x1="480" y1="525" x2="510" y2="540" stroke="#f87171" stroke-width="1.5" opacity="0.4"/>
+    <circle cx="350" cy="400" r="4" fill="#f87171" opacity="0.25"/>
+    <circle cx="430" cy="480" r="4" fill="#f87171" opacity="0.35"/>
+    <circle cx="480" cy="525" r="4" fill="#f87171" opacity="0.45"/>
+
+    <!-- Trail B -->
+    <line x1="780" y1="180" x2="850" y2="230" stroke="#60a5fa" stroke-width="1" opacity="0.2" stroke-dasharray="4 8"/>
+    <line x1="850" y1="230" x2="885" y2="265" stroke="#60a5fa" stroke-width="1" opacity="0.3" stroke-dasharray="4 8"/>
+    <line x1="885" y1="265" x2="905" y2="285" stroke="#60a5fa" stroke-width="1.5" opacity="0.4"/>
+    <circle cx="780" cy="180" r="4" fill="#60a5fa" opacity="0.25"/>
+    <circle cx="850" cy="230" r="4" fill="#60a5fa" opacity="0.35"/>
+    <circle cx="885" cy="265" r="4" fill="#60a5fa" opacity="0.45"/>
+
+    <!-- Trail C -->
+    <line x1="1340" y1="440" x2="1280" y2="510" stroke="#34d399" stroke-width="1" opacity="0.2" stroke-dasharray="4 8"/>
+    <line x1="1280" y1="510" x2="1240" y2="555" stroke="#34d399" stroke-width="1" opacity="0.3" stroke-dasharray="4 8"/>
+    <line x1="1240" y1="555" x2="1200" y2="590" stroke="#34d399" stroke-width="1.5" opacity="0.4"/>
+    <circle cx="1340" cy="440" r="4" fill="#34d399" opacity="0.25"/>
+    <circle cx="1280" cy="510" r="4" fill="#34d399" opacity="0.35"/>
+    <circle cx="1240" cy="555" r="4" fill="#34d399" opacity="0.45"/>
+
+    <!-- ── TITLE TEXT ── -->
+    <!-- Label top left -->
+    <text x="200" y="110" font-family="monospace" font-size="13" fill="rgba(167,139,250,0.5)" letter-spacing="3">K-MEANS CLUSTERING</text>
+    <line x1="200" y1="118" x2="520" y2="118" stroke="rgba(167,139,250,0.2)" stroke-width="0.5"/>
+
+    <!-- Big K= label -->
+    <text x="200" y="200" font-family="Georgia, serif" font-size="120" font-weight="900"
+          fill="transparent" stroke="rgba(255,255,255,0.06)" stroke-width="1"
+          font-style="italic">K=3</text>
+
+    <!-- Iteration badge top right -->
+    <rect x="1340" y="60" width="200" height="44" rx="4"
+          fill="rgba(167,139,250,0.08)" stroke="rgba(167,139,250,0.2)" stroke-width="1"/>
+    <text x="1440" y="88" text-anchor="middle" font-family="monospace" font-size="13"
+          fill="#a78bfa" letter-spacing="2">CONVERGED ✓</text>
+
+    <!-- Cluster legend bottom -->
+    <circle cx="220" cy="795" r="6" fill="#f87171" opacity="0.8"/>
+    <text x="234" y="800" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.3)" letter-spacing="1">Cluster A</text>
+    <circle cx="320" cy="795" r="6" fill="#60a5fa" opacity="0.8"/>
+    <text x="334" y="800" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.3)" letter-spacing="1">Cluster B</text>
+    <circle cx="420" cy="795" r="6" fill="#34d399" opacity="0.8"/>
+    <text x="434" y="800" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.3)" letter-spacing="1">Cluster C</text>
+    <polygon points="540,790 543,797 550,797 545,801 547,808 540,804 533,808 535,801 530,797 537,797"
+             fill="rgba(255,255,255,0.4)" transform="scale(0.85) translate(95 95)"/>
+    <text x="570" y="800" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.3)" letter-spacing="1">Centroid</text>
+
+    <!-- Author bottom right -->
+    <text x="1440" y="790" text-anchor="end" font-family="monospace" font-size="12"
+          fill="rgba(255,255,255,0.2)" letter-spacing="1">Mohun Shakeel Ahmad</text>
+    <text x="1440" y="810" text-anchor="end" font-family="monospace" font-size="10"
+          fill="rgba(255,255,255,0.12)" letter-spacing="1">chatquill.dev</text>
+
+    <!-- Vignette -->
+    <rect width="1600" height="840" fill="url(#vig)"/>
+  </g>
+</svg>

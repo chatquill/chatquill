@@ -1,20 +1,27 @@
 ---
 interface Props {
+  src?: string;
   caption?: string;
   alt?: string;
 }
-const { caption, alt = '' } = Astro.props;
+const { src, caption, alt = '' } = Astro.props;
 ---
 
 <figure class="my-9">
-  <div class="w-full bg-[#161f2c] border border-[#1e2d3d] rounded-[4px] overflow-hidden flex items-center justify-center flex-col gap-2 py-12 px-6" style="aspect-ratio: 16/9;">
-    <slot>
-      <!-- Optional: pass an <img> tag as child, or leave empty for placeholder -->
-      <div class="w-10 h-[30px] border border-[#3d5166]/50 rounded-[3px] opacity-50"
-        style="background: repeating-linear-gradient(135deg, transparent, transparent 4px, #1e2d3d 4px, #1e2d3d 5px);"
-      ></div>
-      {alt && <span class="font-mono text-[10px] text-[#3d5166] tracking-[0.5px] text-center">{alt}</span>}
-    </slot>
+  <div class="w-full bg-[#161f2c] border border-[#1e2d3d] rounded-[4px] overflow-hidden" style="aspect-ratio: 16/9;">
+    {src ? (
+      <img src={src} alt={alt} class="w-full h-full object-contain" />
+    ) : (
+      <div class="w-full h-full flex items-center justify-center flex-col gap-2 py-12 px-6">
+        <slot>
+          <!-- Optional: pass an <img> tag as child, or leave empty for placeholder -->
+          <div class="w-10 h-[30px] border border-[#3d5166]/50 rounded-[3px] opacity-50"
+            style="background: repeating-linear-gradient(135deg, transparent, transparent 4px, #1e2d3d 4px, #1e2d3d 5px);"
+          ></div>
+          {alt && <span class="font-mono text-[10px] text-[#3d5166] tracking-[0.5px] text-center">{alt}</span>}
+        </slot>
+      </div>
+    )}
   </div>
   {caption && (
     <figcaption class="mt-2.5 font-body italic text-[13px] text-[#7a90a4] text-center leading-[1.5]">
