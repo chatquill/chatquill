@@ -5,6 +5,7 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import HeroSection from '../components/HeroSection.astro';
 import ArticleCard from '../components/ArticleCard.astro';
+import TopicsSidebar from '../components/TopicsSidebar.astro';
 
 const allPosts = await getCollection('blog');
 
@@ -13,105 +14,207 @@ const posts = allPosts.sort((a, b) => {
 });
 
 const featured = posts.find((p) => p.data.featured) ?? posts[0];
-const gridPosts = posts.filter((p) => p.slug !== featured.slug);
+const gridPosts = posts;
+
+const topicDefs = [
+  { key: 'all',          label: 'All' },
+  { key: 'AI',           label: 'AI' },
+  { key: 'Tech',         label: 'Tech' },
+  { key: 'Data Science', label: 'Data Science' },
+  { key: 'Beginner',     label: 'Beginner' },
+];
+
+const topics = topicDefs.map((t) => ({
+  ...t,
+  count: t.key === 'all'
+    ? posts.length
+    : posts.filter((p) => p.data.tags.includes(t.key as any)).length,
+}));
 ---
 
 <BaseLayout>
   <Nav />
 
-  <main class="page-enter">
-    <HeroSection
-      slug={featured.slug}
-      title={featured.data.title}
-      tags={featured.data.tags}
-      readtime={featured.data.readtime}
-      date={featured.data.date}
-      coverGradient={featured.data.coverGradient ?? ''}
-      coverGlow={featured.data.coverGlow ?? ''}
-      coverImage={featured.data.coverImage}
-    />
+  <!-- Mobile topic chip row (hidden on ≥769px) -->
+  <div class="mobile-chips" id="mobile-chips">
+    {topics.map((t) => (
+      <button class="chip nav-link" data-cat={t.key}>
+        {t.label}
+        <span class="chip-count">{String(t.count).padStart(2, '0')}</span>
+      </button>
+    ))}
+  </div>
 
-    <!-- Section header -->
-    <div class="flex items-baseline justify-between px-[clamp(16px,5vw,48px)] pt-10 pb-6">
-      <span class="font-mono text-[11px] uppercase tracking-[2px] text-[#7a90a4]">Recent Articles</span>
-      <span class="font-mono text-[11px] text-[#00e5a0] cursor-pointer hover:opacity-70 transition-opacity" id="view-all">View all →</span>
-    </div>
+  <div class="page-layout">
+    <TopicsSidebar topics={topics} />
 
-    <!-- Card grid -->
-    <div
-      class="grid gap-6 px-[clamp(16px,5vw,48px)] pb-16"
-      id="card-grid"
-      style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));"
-    >
-      {gridPosts.map((post) => (
-        <ArticleCard
-          slug={post.slug}
-          title={post.data.title}
-          description={post.data.description}
-          tags={post.data.tags}
-          readtime={post.data.readtime}
-          date={post.data.date}
-          coverGradient={post.data.coverGradient ?? ''}
-          coverGlow={post.data.coverGlow ?? ''}
-          coverImage={post.data.coverImage}
-        />
-      ))}
-    </div>
+    <main class="content-area page-enter">
+      <HeroSection
+        slug={featured.slug}
+        title={featured.data.title}
+        tags={featured.data.tags}
+        readtime={featured.data.readtime}
+        date={featured.data.date}
+        coverGradient={featured.data.coverGradient ?? ''}
+        coverGlow={featured.data.coverGlow ?? ''}
+        coverImage={featured.data.coverImage}
+      />
 
-        <!-- Author bio -->
-    <section class="border-b border-[#1e2d3d] px-[clamp(16px,5vw,48px)] py-10">
-      <div class="flex items-start gap-5 max-w-3xl">
-        <div class="w-12 h-12 rounded-full bg-[#1c2739] border-2 border-[#00e5a0] flex items-center justify-center font-display text-lg font-bold text-[#00e5a0] shrink-0 mt-0.5">
-          M
-        </div>
-        <div>
-          <div class="flex items-baseline gap-3 flex-wrap mb-1">
-            <span class="font-display font-bold text-[#e4eff8] text-[17px]">Mohun Shakeel Ahmad</span>
-            <span class="font-mono text-[10px] text-[#3d5166] tracking-[0.3px]">Software Engineer @ SharinPix · MSc Data Science · Mauritius</span>
-          </div>
-          <p class="text-[14px] text-[#7a90a4] leading-[1.65] max-w-[580px]">
-            Code that ships. Data that matters. Writing that doesn't waste your time.
-          </p>
-          <div class="flex gap-2 mt-3 flex-wrap">
-            {(['AI', 'Data Science', 'Beginner'] as const).map((t) => (
-              <span class="font-mono text-[9px] uppercase tracking-[1.5px] text-[#3d5166] border border-[#243447] px-2 py-[3px] rounded-[2px]">
-                {t}
-              </span>
-            ))}
-          </div>
-        </div>
+      <!-- Section header -->
+      <div class="flex items-baseline justify-between px-[clamp(16px,5vw,48px)] pt-10 pb-6">
+        <span class="font-mono text-[11px] uppercase tracking-[2px] text-[#7a90a4]">Recent Articles</span>
+        <span class="font-mono text-[11px] text-[#00e5a0] cursor-pointer hover:opacity-70 transition-opacity" id="view-all">View all →</span>
       </div>
-    </section>
 
-    <Footer />
-  </main>
+      <!-- Card grid -->
+      <div
+        class="grid gap-6 px-[clamp(16px,5vw,48px)] pb-16"
+        id="card-grid"
+        style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));"
+      >
+        {gridPosts.map((post) => (
+          <ArticleCard
+            slug={post.slug}
+            title={post.data.title}
+            description={post.data.description}
+            tags={post.data.tags}
+            readtime={post.data.readtime}
+            date={post.data.date}
+            coverGradient={post.data.coverGradient ?? ''}
+            coverGlow={post.data.coverGlow ?? ''}
+            coverImage={post.data.coverImage}
+          />
+        ))}
+      </div>
+
+      <!-- Author bio -->
+      <section class="border-b border-[#1e2d3d] px-[clamp(16px,5vw,48px)] py-10">
+        <div class="flex items-start gap-5 max-w-3xl">
+          <div class="w-12 h-12 rounded-full bg-[#1c2739] border-2 border-[#00e5a0] flex items-center justify-center font-display text-lg font-bold text-[#00e5a0] shrink-0 mt-0.5">
+            M
+          </div>
+          <div>
+            <div class="flex items-baseline gap-3 flex-wrap mb-1">
+              <span class="font-display font-bold text-[#e4eff8] text-[17px]">Mohun Shakeel Ahmad</span>
+              <span class="font-mono text-[10px] text-[#3d5166] tracking-[0.3px]">Software Engineer @ SharinPix · MSc Data Science · Mauritius</span>
+            </div>
+            <p class="text-[14px] text-[#7a90a4] leading-[1.65] max-w-[580px]">
+              Code that ships. Data that matters. Writing that doesn't waste your time.
+            </p>
+            <div class="flex gap-2 mt-3 flex-wrap">
+              {(['AI', 'Data Science', 'Beginner'] as const).map((t) => (
+                <span class="font-mono text-[9px] uppercase tracking-[1.5px] text-[#3d5166] border border-[#243447] px-2 py-[3px] rounded-[2px]">
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </main>
+  </div>
 </BaseLayout>
 
+<style>
+  .page-layout {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .content-area {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Mobile chip row */
+  .mobile-chips {
+    display: none;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 8px;
+    padding: 10px clamp(16px, 5vw, 48px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .mobile-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    color: #7a90a4;
+    background: #161f2c;
+    border: 1px solid #1e2d3d;
+    border-radius: 99px;
+    padding: 5px 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 150ms, border-color 150ms;
+    flex-shrink: 0;
+  }
+
+  .chip.active {
+    color: #00e5a0;
+    border-color: #00e5a0;
+  }
+
+  .chip-count {
+    font-size: 9px;
+    color: #3d5166;
+  }
+
+  .chip.active .chip-count {
+    color: #00e5a0;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-chips {
+      display: flex;
+    }
+  }
+</style>
+
 <script>
-  const links = document.querySelectorAll<HTMLButtonElement>('.nav-link');
+  // All elements that act as category selectors (sidebar links + mobile chips)
+  const selectors = document.querySelectorAll<HTMLElement>('[data-cat]');
   const cards = document.querySelectorAll<HTMLElement>('.card');
 
   function setActive(cat: string) {
-    links.forEach((l) => {
-      l.classList.toggle('active', l.dataset.cat === cat);
+    selectors.forEach((el) => {
+      el.classList.toggle('active', el.dataset.cat === cat);
     });
+
     cards.forEach((c) => {
-      // data-cats is a comma-separated list, e.g. "Data Science,Beginner"
       const cardCats = c.dataset.cats?.split(',') ?? [];
       const show = cat === 'all' || cardCats.includes(cat);
-      (c as HTMLElement).style.display = show ? '' : 'none';
+      c.style.display = show ? '' : 'none';
     });
+
     const url = new URL(window.location.href);
     if (cat === 'all') url.searchParams.delete('cat');
     else url.searchParams.set('cat', cat);
     window.history.replaceState(null, '', url.toString());
   }
 
+  // Restore state from URL on load
   const params = new URLSearchParams(window.location.search);
   setActive(params.get('cat') ?? 'all');
 
-  links.forEach((link) => {
-    link.addEventListener('click', () => setActive(link.dataset.cat ?? 'all'));
+  // Wire up sidebar links and mobile chips
+  selectors.forEach((el) => {
+    el.addEventListener('click', (e) => {
+      // Sidebar links are <a> tags — prevent navigation, handle client-side
+      e.preventDefault();
+      setActive(el.dataset.cat ?? 'all');
+    });
   });
 
   document.getElementById('view-all')?.addEventListener('click', () => setActive('all'));

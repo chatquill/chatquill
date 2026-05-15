@@ -1,58 +1,188 @@
 ---
-// Nav renders on every page. Category filtering is handled client-side via JS.
+const path = Astro.url.pathname;
+const isArticles = path === '/' || path.startsWith('/blog');
+const isContact = path.startsWith('/contact');
 ---
 
-<nav class="sticky top-0 z-[100] flex items-center justify-between gap-6 h-[58px] px-[clamp(16px,5vw,48px)] border-b border-[#1e2d3d]" id="site-nav">
-  <a href="/" class="font-display font-bold text-xl text-[#e4eff8] tracking-[0.5px] shrink-0 leading-none">
-    chat<span class="text-[#00e5a0]">quill</span>
+<div class="top-hairline" aria-hidden="true"></div>
+
+<nav class="site-nav" id="site-nav">
+  <a href="/" class="wordmark">
+    chat<span class="wordmark-accent">quill</span>
   </a>
 
-  <div class="nav-links-scroll flex items-center gap-1.5" id="nav-links">
-    {(['All', 'AI', 'Tech', 'Data Science', 'Beginner'] as const).map((label) => {
-      const cat = label === 'All' ? 'all' : label;
-      return (
-        <button
-          class="nav-link font-mono text-[11px] tracking-[0.5px] text-[#7a90a4] px-2.5 py-[5px] rounded-[3px] cursor-pointer transition-colors duration-150 hover:text-[#e4eff8] hover:bg-[#161f2c] whitespace-nowrap"
-          data-cat={cat}
-        >
-          {label}
-        </button>
-      );
-    })}
+  <div class="nav-links" id="nav-desktop">
+    <a href="/" class:list={['nav-page-link', isArticles && 'active']}>articles</a>
+    <a href="/contact" class:list={['nav-page-link', isContact && 'active']}>get in touch</a>
   </div>
 
-  <!-- spacer balances logo on desktop; hidden on mobile to give filters full width -->
-  <div class="w-6 shrink-0 hidden sm:block" />
+  <button class="hamburger" id="menu-toggle" aria-label="Toggle menu">[menu]</button>
 </nav>
 
+<div class="mobile-overlay" id="mobile-overlay" aria-hidden="true">
+  <div class="mobile-overlay-inner">
+    <a href="/" class="mobile-nav-link">articles</a>
+    <a href="/contact" class="mobile-nav-link">get in touch</a>
+    <hr class="mobile-divider" />
+    <div class="mobile-topics" id="mobile-topics">
+      <!-- populated by client JS so counts match -->
+    </div>
+  </div>
+  <button class="mobile-close" id="menu-close" aria-label="Close menu">✕</button>
+</div>
+
 <style>
-  #site-nav {
+  .top-hairline {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, #5b4b8a 20%, #5b4b8a 80%, transparent 100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 101;
+  }
+
+  .site-nav {
+    position: sticky;
+    top: 1px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    padding: 0 clamp(16px, 5vw, 56px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     background: rgba(13, 17, 23, 0.92);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
 
-  .nav-link.active {
+  .wordmark {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
+    color: #e4eff8;
+    text-decoration: none;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .wordmark-accent {
+    color: #00e5a0;
+    font-style: italic;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+  }
+
+  .nav-page-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: #e4eff8;
+    text-decoration: none;
+    transition: color 150ms;
+  }
+
+  .nav-page-link:hover,
+  .nav-page-link.active {
     color: #00e5a0;
   }
 
-  /* Scrollable filter strip on mobile — no links hidden */
-  .nav-links-scroll {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
-  }
-  .nav-links-scroll::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
+  .hamburger {
+    display: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #e4eff8;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
   }
 
-  @media (max-width: 640px) {
-    .nav-links-scroll {
-      gap: 6px;
-    }
-    .nav-link {
-      font-size: 10px;
-      padding: 4px 8px;
-    }
+  /* Mobile overlay */
+  .mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0d1117;
+    z-index: 200;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-overlay.open {
+    display: flex;
+  }
+
+  .mobile-overlay-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+    text-align: center;
+  }
+
+  .mobile-nav-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.4rem;
+    color: #e4eff8;
+    text-decoration: none;
+    transition: color 150ms;
+  }
+
+  .mobile-nav-link:hover {
+    color: #00e5a0;
+  }
+
+  .mobile-divider {
+    width: 60px;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin: 0;
+  }
+
+  .mobile-topics {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .mobile-close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    color: #7a90a4;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: block; }
   }
 </style>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const close = document.getElementById('menu-close');
+  const overlay = document.getElementById('mobile-overlay');
+
+  toggle?.addEventListener('click', () => {
+    overlay?.classList.add('open');
+    overlay?.setAttribute('aria-hidden', 'false');
+  });
+
+  close?.addEventListener('click', () => {
+    overlay?.classList.remove('open');
+    overlay?.setAttribute('aria-hidden', 'true');
+  });
+</script>

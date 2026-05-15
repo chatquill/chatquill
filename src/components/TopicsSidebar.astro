@@ -1,0 +1,184 @@
+---
+interface Topic {
+  key: string;
+  label: string;
+  count: number;
+}
+
+interface Props {
+  topics: Topic[];
+}
+
+const { topics } = Astro.props;
+---
+
+<aside class="topics-sidebar" id="topics-sidebar">
+  <div class="sidebar-header">
+    <p class="topics-label">TOPICS</p>
+    <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Collapse sidebar">‹</button>
+  </div>
+  <ul class="topics-list">
+    {topics.map((t) => (
+      <li>
+        <a
+          href={t.key === 'all' ? '/' : `/?cat=${encodeURIComponent(t.key)}`}
+          class="topic-link"
+          data-cat={t.key}
+        >
+          <span class="topic-name">{t.label}</span>
+          <span class="topic-count">{String(t.count).padStart(2, '0')}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</aside>
+
+<style>
+  .topics-sidebar {
+    width: 220px;
+    min-width: 220px;
+    padding: 28px 24px 28px 56px;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    position: sticky;
+    top: 65px;
+    align-self: flex-start;
+    max-height: calc(100vh - 65px);
+    overflow: hidden;
+    flex-shrink: 0;
+    transition: width 250ms ease, min-width 250ms ease, padding 250ms ease;
+  }
+
+  .topics-sidebar.collapsed {
+    width: 36px;
+    min-width: 36px;
+    padding: 28px 0;
+  }
+
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-left: 10px;
+  }
+
+  .topics-sidebar.collapsed .sidebar-header {
+    justify-content: center;
+    padding-left: 0;
+  }
+
+  .topics-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #3d5166;
+    margin: 0;
+    white-space: nowrap;
+    transition: opacity 200ms ease, width 200ms ease;
+  }
+
+  .topics-sidebar.collapsed .topics-label {
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    overflow: hidden;
+  }
+
+  .sidebar-toggle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    color: #3d5166;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 6px;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: color 150ms, transform 250ms ease;
+    margin-left: 8px;
+  }
+
+  .sidebar-toggle:hover {
+    color: #00e5a0;
+  }
+
+  .topics-sidebar.collapsed .sidebar-toggle {
+    transform: rotate(180deg);
+    margin-left: 0;
+  }
+
+  .topics-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    transition: opacity 200ms ease;
+  }
+
+  .topics-sidebar.collapsed .topics-list {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .topic-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 10px;
+    border-left: 2px solid transparent;
+    text-decoration: none;
+    color: #7a90a4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    transition: color 150ms;
+    white-space: nowrap;
+  }
+
+  .topic-link:hover {
+    color: #e4eff8;
+  }
+
+  .topic-link.active {
+    color: #00e5a0;
+    border-left-color: #00e5a0;
+  }
+
+  .topic-count {
+    font-size: 10px;
+    color: #3d5166;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .topic-link.active .topic-count {
+    color: #00e5a0;
+  }
+
+  @media (max-width: 1024px) and (min-width: 769px) {
+    .topics-sidebar {
+      width: 180px;
+      min-width: 180px;
+      padding: 28px 16px 28px 32px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .topics-sidebar {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const sidebar = document.getElementById('topics-sidebar');
+  const toggle = document.getElementById('sidebar-toggle');
+
+  toggle?.addEventListener('click', () => {
+    sidebar?.classList.toggle('collapsed');
+    const isCollapsed = sidebar?.classList.contains('collapsed');
+    toggle.setAttribute('aria-label', isCollapsed ? 'Expand sidebar' : 'Collapse sidebar');
+  });
+</script>

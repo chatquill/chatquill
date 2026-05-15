@@ -1,0 +1,589 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="Get in touch — ChatQuill" description="About Mohun Shakeel Ahmad — software engineer, data scientist, and writer.">
+  <Nav />
+
+  <main class="contact-page page-enter">
+    <div class="contact-wrap">
+
+      <!-- ── Hero ─────────────────────────────────────────────────── -->
+      <header class="hero">
+        <span class="section-eyebrow">ABOUT</span>
+        <div class="hero-identity">
+          <div class="avatar" aria-hidden="true">M</div>
+          <div class="hero-text">
+            <h1 class="hero-name">Mohun Shakeel Ahmad</h1>
+            <p class="hero-tagline">Software Engineer.</p>
+            <p class="hero-location">
+              <span class="location-dot" aria-hidden="true">●</span>
+              Mauritius
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <hr class="divider" />
+
+      <!-- ── Hi, I'm Mohun ──────────────────────────────────────── -->
+      <section class="prose-section">
+        <h2 class="section-label">HI, I'M Shakeel</h2>
+        <div class="prose-body">
+          <p>
+            I'm a software engineer based in Mauritius. I write code professionally, study data on the side, and write
+            about both here on <strong>ChatQuill</strong> when something feels worth sharing.
+          </p>
+          <p>
+            My writing tends to come from real situations — not tutorials. If I publish something, it's because I spent
+            time being confused about it and want to spare someone else the same confusion.
+          </p>
+        </div>
+      </section>
+
+      <!-- ── What I Do ──────────────────────────────────────────── -->
+      <section class="prose-section">
+        <h2 class="section-label">WHAT I DO</h2>
+        <div class="prose-body">
+          <h3 class="role-title">Software Engineer at SharinPix</h3>
+          <p>
+            I work with various technologies including Ruby on Rails, Ember JS, Heroku and AWS. SharinPix taught me a lot about reliability, performance, and
+            the long tail of edge cases that show up only in production.
+          </p>
+        </div>
+      </section>
+
+      <!-- ── Background & Current Focus ───────────────────────── -->
+      <section class="prose-section">
+        <h2 class="section-label">BACKGROUND &amp; CURRENT FOCUS</h2>
+        <div class="bg-focus-grid">
+          <!-- Timeline -->
+          <div class="timeline">
+            <div class="timeline-item">
+              <h3 class="tl-title">MSc Data Science — Distinction</h3>
+              <p class="tl-meta">Sunway University · <span class="tl-years">2023 – 2025</span></p>
+              <p class="tl-desc">Thesis on NLP-Based Detection of PTSD in Social Media Text</p>
+            </div>
+            <div class="timeline-item">
+              <h3 class="tl-title">BSc Computer Science</h3>
+              <p class="tl-meta">University of Mauritius · <span class="tl-years">2019 – 2022</span></p>
+              <p class="tl-desc">Dissertation on Social Media Mining to Detect Users Suffering from Depression</p>
+            </div>
+            <div class="timeline-item">
+              <h3 class="tl-title">Software Engineer · SharinPix</h3>
+              <p class="tl-meta"><span class="tl-years">2022 – Present</span></p>
+              <p class="tl-desc">Software Engineer</p>
+            </div>
+          </div>
+
+          <!-- Now box -->
+          <div class="now-box">
+            <h3 class="now-title">Now (May 2026)</h3>
+            <p>
+              Outside of work,
+              exploring how small LLMs can be used as practical tools.
+            </p>
+            <p>
+              Also writing the next <em>ChatQuill</em> piece ;)
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── What I Write About ────────────────────────────────── -->
+      <section class="prose-section">
+        <h2 class="section-label">WHAT I WRITE ABOUT</h2>
+        <div class="prose-body">
+          <p class="topics-intro">Three buckets, roughly:</p>
+          <div class="tag-cloud">
+            {([
+              { label: 'AI in practice',       accent: true  },
+              { label: 'Software engineering', accent: true  },
+              { label: 'Data science',         accent: true  },
+              { label: 'Beginner Friendly',  accent: false },
+            ]).map(({ label, accent }) => (
+              <span class:list={['tag', accent && 'tag-accent']}>{label}</span>
+            ))}
+          </div>
+      </section>
+
+      <!-- ── Tech Stack ────────────────────────────────────────── -->
+      <section class="prose-section">
+        <h2 class="section-label">TECH STACK</h2>
+        <div class="stack-grid">
+          {([
+            {
+              heading: 'LANGUAGES',
+              items: ['Ruby', 'Python', 'JS/TS', 'SQL', 'C++', 'Java', 'C'],
+            },
+            {
+              heading: 'BACKEND',
+              items: ['Ruby on Rails', 'Elasticsearch', 'PostgreSQL', 'Redis'],
+            },
+            {
+              heading: 'DATA / ML',
+              items: ['pandas, NumPy', 'scikit-learn', 'PyTorch', 'Jupyter'],
+            },
+            {
+              heading: 'INFRA & TOOLS',
+              items: ['AWS', 'Docker', 'Git / GitHub'],
+            },
+          ]).map(({ heading, items }) => (
+            <div class="stack-card">
+              <p class="stack-heading">{heading}</p>
+              <ul class="stack-list">
+                {items.map((item) => <li>{item}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <hr class="divider" />
+
+      <!-- ── Get in Touch ──────────────────────────────────────── -->
+      <section class="prose-section">
+        <h2 class="section-label">GET IN TOUCH</h2>
+        <div class="prose-body">
+
+          <div class="contact-cards">
+            <a href="mailto:mohun@chatquill.com" class="contact-card">
+              <span class="contact-card-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              </span>
+              <div class="contact-card-body">
+                <span class="contact-card-label">EMAIL</span>
+                <span class="contact-card-value">shakmo2406@gmail.com</span>
+              </div>
+              <span class="contact-card-arrow">→</span>
+            </a>
+            <a href="https://www.linkedin.com/in/shakeel-mohun-3b8378233" target="_blank" rel="noopener" class="contact-card">
+              <span class="contact-card-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              </span>
+              <div class="contact-card-body">
+                <span class="contact-card-label">LINKEDIN</span>
+                <span class="contact-card-value">shakeel-mohun</span>
+              </div>
+              <span class="contact-card-arrow">→</span>
+            </a>
+            <a href="https://github.com/chatquill" target="_blank" rel="noopener" class="contact-card">
+              <span class="contact-card-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+              </span>
+              <div class="contact-card-body">
+                <span class="contact-card-label">GITHUB</span>
+                <span class="contact-card-value">@chatquill</span>
+              </div>
+              <span class="contact-card-arrow">→</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /contact-wrap -->
+
+    <Footer showBack />
+  </main>
+</BaseLayout>
+
+<style>
+  .contact-page {
+    min-height: calc(100vh - 65px);
+  }
+
+  .contact-wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: clamp(48px, 8vh, 80px) clamp(16px, 5vw, 56px) 0;
+  }
+
+  /* ── Section label ───────────────────────── */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #3d5166;
+    margin: 0 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    white-space: nowrap;
+  }
+
+  .section-label::after {
+    content: '';
+    display: block;
+    flex: 1;
+    height: 1px;
+    background: #1e2d3d;
+  }
+
+  .section-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #00e5a0;
+    display: block;
+    margin-bottom: 24px;
+  }
+
+  /* ── Hero ────────────────────────────────── */
+  .hero {
+    margin-bottom: 40px;
+  }
+
+  .hero-identity {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #161f2c;
+    border: 2px solid #00e5a0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #00e5a0;
+    flex-shrink: 0;
+  }
+
+  .hero-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 700;
+    color: #e4eff8;
+    margin: 0 0 10px;
+    line-height: 1.15;
+  }
+
+  .hero-tagline {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 17px;
+    font-style: italic;
+    color: #00e5a0;
+    margin: 0 0 12px;
+    line-height: 1.5;
+  }
+
+  .hero-location {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #7a90a4;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .location-dot {
+    color: #00e5a0;
+    font-size: 8px;
+  }
+
+  /* ── Divider ─────────────────────────────── */
+  .divider {
+    border: none;
+    border-top: 1px solid #1e2d3d;
+    margin: 40px 0;
+  }
+
+  /* ── Prose sections ──────────────────────── */
+  .prose-section {
+    margin-bottom: 48px;
+  }
+
+  .prose-body p {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #b8ccdb;
+    margin: 0 0 18px;
+  }
+
+  .prose-body p:last-child {
+    margin-bottom: 0;
+  }
+
+  .prose-body strong {
+    color: #e4eff8;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9em;
+  }
+
+  .prose-body em {
+    font-style: italic;
+  }
+
+  .role-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #e4eff8;
+    margin: 0 0 14px;
+  }
+
+  /* ── Background / Focus grid ─────────────── */
+  .bg-focus-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  @media (max-width: 640px) {
+    .bg-focus-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .timeline-item {
+    border-left: 2px solid #1e2d3d;
+    padding-left: 16px;
+  }
+
+  .tl-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #e4eff8;
+    margin: 0 0 4px;
+  }
+
+  .tl-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #7a90a4;
+    margin: 0 0 6px;
+  }
+
+  .tl-years {
+    color: #00e5a0;
+  }
+
+  .tl-desc {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #7a90a4;
+    margin: 0;
+  }
+
+  .now-box {
+    background: #111820;
+    border: 1px solid #1e2d3d;
+    border-left: 3px solid #00e5a0;
+    border-radius: 4px;
+    padding: 20px 22px;
+  }
+
+  .now-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #e4eff8;
+    margin: 0 0 14px;
+  }
+
+  .now-box p {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 14px;
+    line-height: 1.75;
+    color: #b8ccdb;
+    margin: 0 0 12px;
+  }
+
+  .now-box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .now-box em {
+    font-style: italic;
+  }
+
+  /* ── Tag cloud ───────────────────────────── */
+  .topics-intro {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 16px;
+    color: #b8ccdb;
+    margin: 0 0 16px !important;
+  }
+
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #7a90a4;
+    border: 1px solid #1e2d3d;
+    border-radius: 3px;
+    padding: 5px 12px;
+    white-space: nowrap;
+  }
+
+  .tag-accent {
+    color: #00e5a0;
+    border-color: #00e5a0;
+  }
+
+  /* ── Tech stack ──────────────────────────── */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  @media (max-width: 768px) {
+    .stack-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .stack-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .stack-card {
+    background: #111820;
+    border: 1px solid #1e2d3d;
+    border-radius: 4px;
+    padding: 18px 16px;
+  }
+
+  .stack-heading {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #00e5a0;
+    margin: 0 0 12px;
+  }
+
+  .stack-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .stack-list li {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 14px;
+    color: #b8ccdb;
+    padding-left: 14px;
+    position: relative;
+  }
+
+  .stack-list li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: #3d5166;
+  }
+
+  /* ── Contact cards ───────────────────────── */
+  .contact-intro {
+    color: #b8ccdb;
+    margin-bottom: 24px !important;
+  }
+
+  .contact-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  @media (max-width: 640px) {
+    .contact-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .contact-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #111820;
+    border: 1px solid #1e2d3d;
+    border-radius: 4px;
+    padding: 18px 16px;
+    text-decoration: none;
+    transition: border-color 150ms, background 150ms;
+  }
+
+  .contact-card:hover {
+    border-color: #243447;
+    background: #161f2c;
+  }
+
+  .contact-card-icon {
+    color: #00e5a0;
+    flex-shrink: 0;
+    display: flex;
+  }
+
+  .contact-card-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .contact-card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #3d5166;
+  }
+
+  .contact-card-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #b8ccdb;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .contact-card-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #3d5166;
+    flex-shrink: 0;
+    transition: color 150ms;
+  }
+
+  .contact-card:hover .contact-card-arrow {
+    color: #00e5a0;
+  }
+</style>
