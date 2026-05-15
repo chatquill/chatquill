@@ -14,80 +14,192 @@ const { slug, title, tags, readtime, date, coverGradient, coverGlow, coverImage 
 ---
 
 <a href={`/blog/${slug}`} class="hero group block relative overflow-hidden cursor-pointer">
-  <!-- Background cover -->
+
+  <!-- Background (spans full width) -->
   {coverImage ? (
     <img
       src={coverImage}
       alt={title}
-      class="hero-img w-full h-full object-cover transition-transform duration-[600ms] ease-in-out group-hover:scale-[1.02]"
+      class="hero-bg-img"
     />
   ) : (
-    <div
-      class="hero-img w-full h-full flex items-center justify-center relative transition-transform duration-[600ms] ease-in-out group-hover:scale-[1.02]"
-      style={`background: ${coverGradient};`}
-    >
-      <div
-        class="absolute inset-0"
-        style={`background: radial-gradient(ellipse at 30% 60%, ${coverGlow} 0%, transparent 60%);`}
-      ></div>
+    <div class="hero-bg-gradient" style={`background: ${coverGradient};`}>
+      <div class="hero-glow" style={`background: radial-gradient(ellipse at 20% 60%, ${coverGlow} 0%, transparent 55%);`}></div>
     </div>
   )}
 
-  <!-- Gradient overlay -->
-  <div class="hero-gradient absolute inset-0 pointer-events-none"></div>
+  <!-- Dark overlay -->
+  <div class="hero-overlay" aria-hidden="true"></div>
 
-  <!-- Content -->
-  <div class="absolute bottom-0 left-0 right-0 max-w-[860px] p-[clamp(20px,4vw,48px)]">
-    <div class="flex items-center gap-2 mb-4 flex-wrap">
-      {tags.map((t) => (
-        <span class="font-mono text-[10px] uppercase tracking-[1.5px] text-[#0d1117] bg-[#00e5a0] px-2 py-[3px] rounded-[2px] font-semibold">
-          {t}
-        </span>
-      ))}
-      <span class="font-mono text-[10px] text-[#7a90a4] tracking-[0.5px]">{readtime}</span>
+  <!-- Two-column content layout -->
+  <div class="hero-inner">
+    <!-- Left: article info -->
+    <div class="hero-content">
+      <div class="flex items-center gap-2 mb-4 flex-wrap">
+        {tags.map((t) => (
+          <span class="font-mono text-[10px] uppercase tracking-[1.5px] text-[#0d1117] bg-[#00e5a0] px-2 py-[3px] rounded-[2px] font-semibold">
+            {t}
+          </span>
+        ))}
+        <span class="font-mono text-[10px] text-[#7a90a4] tracking-[0.5px]">{readtime}</span>
+      </div>
+
+      <h1 class="font-display font-bold text-[clamp(22px,3.2vw,44px)] text-[#e4eff8] leading-[1.2] mb-4" style="text-wrap: pretty;">
+        {title}
+      </h1>
+
+      <div class="flex items-center gap-3 font-mono text-[11px] text-[#7a90a4] mb-5 flex-wrap">
+        <span>Mohun Shakeel Ahmad</span>
+        <span class="text-[#3d5166]">·</span>
+        <span>{date}</span>
+        <span class="text-[#3d5166]">·</span>
+        <span>{readtime}</span>
+      </div>
+
+      <div class="hero-cta inline-flex items-center gap-2 font-mono text-[11px] text-[#00e5a0] border-b border-[#00e5a0] pb-px tracking-[0.5px] transition-[gap] duration-200 group-hover:gap-3">
+        Read article <span>→</span>
+      </div>
     </div>
 
-    <h1 class="font-display font-bold text-[clamp(22px,4vw,44px)] text-[#e4eff8] leading-[1.2] mb-4" style="text-wrap: pretty;">
-      {title}
-    </h1>
-
-    <div class="flex items-center gap-3 font-mono text-[11px] text-[#7a90a4] mb-5">
-      <span>Mohun Shakeel Ahmad</span>
-      <span class="text-[#3d5166]">·</span>
-      <span>{date}</span>
-      <span class="text-[#3d5166]">·</span>
-      <span>{readtime}</span>
-    </div>
-
-    <div class="hero-cta inline-flex items-center gap-2 font-mono text-[11px] text-[#00e5a0] border-b border-[#00e5a0] pb-px tracking-[0.5px] transition-[gap] duration-200 group-hover:gap-3">
-      Read article <span>→</span>
+    <!-- Right: logo illustration (hidden on small screens) -->
+    <div class="hero-logo-panel" aria-hidden="true">
+      <div class="hero-logo-ring">
+        <img
+          src="/images/logo-circle.png"
+          alt=""
+          class="hero-logo-img"
+        />
+      </div>
     </div>
   </div>
 </a>
 
 <style>
   .hero {
-    height: clamp(380px, 55vw, 640px);
+    height: clamp(380px, 52vw, 620px);
   }
 
-  .hero-img {
+  /* Full-bleed background layers */
+  .hero-bg-img,
+  .hero-bg-gradient {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    transition: transform 600ms ease-in-out;
   }
 
-  .hero-gradient {
+  .group:hover .hero-bg-img,
+  .group:hover .hero-bg-gradient {
+    transform: scale(1.02);
+  }
+
+  .hero-glow {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
     background: linear-gradient(
-      to bottom,
-      transparent 20%,
-      rgba(13, 17, 23, 0.4) 50%,
-      rgba(13, 17, 23, 0.95) 85%,
-      #0d1117 100%
+      to right,
+      rgba(13, 17, 23, 0.92) 0%,
+      rgba(13, 17, 23, 0.75) 50%,
+      rgba(13, 17, 23, 0.15) 100%
     );
+    pointer-events: none;
   }
 
-  @media (max-width: 640px) {
+  /* Two-column inner layout */
+  .hero-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: stretch;
+  }
+
+  .hero-content {
+    flex: 0 0 55%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: clamp(20px, 4vw, 48px);
+    max-width: 600px;
+  }
+
+  .hero-logo-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+  }
+
+  .hero-logo-ring {
+    width: clamp(150px, 20vw, 300px);
+    height: clamp(150px, 20vw, 300px);
+    border-radius: 50%;
+    background: rgba(13, 17, 23, 0.45);
+    border: 1.5px solid rgba(0, 229, 160, 0.35);
+    box-shadow:
+      0 0 0 6px rgba(0, 229, 160, 0.06),
+      inset 0 0 60px rgba(0, 229, 160, 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 300ms ease, box-shadow 300ms ease, transform 600ms ease;
+  }
+
+  .group:hover .hero-logo-ring {
+    border-color: rgba(0, 229, 160, 0.55);
+    box-shadow:
+      0 0 0 6px rgba(0, 229, 160, 0.1),
+      inset 0 0 60px rgba(0, 229, 160, 0.07);
+    transform: scale(1.03);
+  }
+
+  .hero-logo-img {
+    width: 72%;
+    height: 72%;
+    object-fit: contain;
+    opacity: 0.95;
+    transform: translateX(10%);
+    transition: opacity 300ms ease;
+  }
+
+  .group:hover .hero-logo-img {
+    opacity: 1;
+  }
+
+  /* On small screens: hide logo panel, restore full-width content */
+  @media (max-width: 768px) {
     .hero {
       height: max(65vw, 300px);
+    }
+
+    .hero-overlay {
+      background: linear-gradient(
+        to bottom,
+        transparent 20%,
+        rgba(13, 17, 23, 0.5) 50%,
+        rgba(13, 17, 23, 0.96) 85%,
+        #0d1117 100%
+      );
+    }
+
+    .hero-inner {
+      align-items: flex-end;
+    }
+
+    .hero-content {
+      flex: 1;
+      max-width: 100%;
+    }
+
+    .hero-logo-panel {
+      display: none;
     }
   }
 </style>

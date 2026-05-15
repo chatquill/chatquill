@@ -8,6 +8,7 @@ const isContact = path.startsWith('/contact');
 
 <nav class="site-nav" id="site-nav">
   <a href="/" class="wordmark">
+    <img src="/images/logo-circle.png" alt="" class="wordmark-logo" aria-hidden="true" />
     chat<span class="wordmark-accent">quill</span>
   </a>
 
@@ -66,6 +67,18 @@ const isContact = path.startsWith('/contact');
     text-decoration: none;
     line-height: 1;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .wordmark-logo {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 4px rgba(0, 229, 160, 0.5));
+    transform: translateX(10%);
   }
 
   .wordmark-accent {

@@ -14,7 +14,9 @@ import Footer from '../components/Footer.astro';
       <header class="hero">
         <span class="section-eyebrow">ABOUT</span>
         <div class="hero-identity">
-          <div class="avatar" aria-hidden="true">M</div>
+          <div class="avatar" aria-hidden="true">
+            <img src="/images/logo-circle.png" alt="" class="avatar-logo" />
+          </div>
           <div class="hero-text">
             <h1 class="hero-name">Mohun Shakeel Ahmad</h1>
             <p class="hero-tagline">Software Engineer.</p>
@@ -245,19 +247,25 @@ import Footer from '../components/Footer.astro';
   }
 
   .avatar {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    background: #161f2c;
-    border: 2px solid #00e5a0;
+    background: rgba(13, 17, 23, 0.45);
+    border: 1.5px solid rgba(0, 229, 160, 0.35);
+    box-shadow:
+      0 0 0 6px rgba(0, 229, 160, 0.06),
+      inset 0 0 40px rgba(0, 229, 160, 0.04);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #00e5a0;
     flex-shrink: 0;
+  }
+
+  .avatar-logo {
+    width: 75%;
+    height: 75%;
+    object-fit: contain;
+    transform: translateX(10%);
   }
 
   .hero-name {
