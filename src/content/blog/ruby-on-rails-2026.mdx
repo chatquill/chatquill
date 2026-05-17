@@ -1,0 +1,192 @@
+---
+title: 'Why I Still Love Ruby on Rails in 2026'
+description: 'Four years of production code. Real deadlines, real bugs, real clients. Here is what Rails still gets right — and where I genuinely reach for something else.'
+date: 'May 17, 2026'
+tags: ['Tech']
+readtime: '6 min read'
+featured: false
+coverGradient: 'linear-gradient(135deg, #1a0a08 0%, #200c08 50%, #140806 100%)'
+coverGlow: 'rgba(204,34,0,0.18)'
+coverImage: '/images/cover_rails_2026.svg'
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+import InlineImg from '../../components/InlineImg.astro';
+
+# Why I Still Love Ruby on Rails in 2026
+
+> Four years of production code. Real deadlines, real bugs, real clients. Here is what Rails still gets right:
+
+---
+
+I have been writing Rails code at SharinPix since 2022. Full-stack. Backend services, API integrations, background jobs, file uploads, database migrations. The kind of work where you find out quickly whether a framework holds up or starts fighting you.
+
+Rails holds up. Most of the time.
+
+But I am not here to write a love letter. Those already exist and they all sound the same. What I want to do is be honest about what keeps me coming back, and equally honest about the moments I look at a Rails codebase and think — there has to be a better way to do this.
+
+---
+
+## What Rails Still Gets Right
+
+### You Write Less to Get More
+
+This is the thing that still impresses me every time I sit down in a new framework for comparison. The amount of code Rails removes from your day is genuinely significant.
+
+Here is a simple example. You need a model that validates presence, has a relationship, and sends an email after being created.
+
+In Rails:
+
+```ruby
+class Order < ApplicationRecord
+  belongs_to :user
+  validates :product_name, presence: true
+
+  after_create :send_confirmation
+
+  private
+
+  def send_confirmation
+    OrderMailer.confirmation(self).deliver_later
+  end
+end
+```
+
+That is it. The database connection, the table mapping, the SQL, the email queue — all handled. You described what you want, not how to get it.
+
+In most other frameworks you are writing that infrastructure yourself or hunting for the right library to do each piece. Rails ships with all of it already decided.
+
+### Conventions Mean You Can Read Anyone's Code
+
+When I look at a Rails codebase I have never seen before, I can find my way around in minutes. Routes live in `config/routes.rb`. Business logic lives in `app/services`. Mailers live in `app/mailers`. Background jobs in `app/jobs`.
+
+This is not an accident. It is the opinionated part of Rails doing its job.
+
+Compare that to a Node.js project where every team structures things differently, names things differently, and you spend the first two hours just understanding the folder layout. Neither is wrong. But one costs less time.
+
+### ActiveRecord Is Genuinely Pleasant
+
+SQL is fine. I know SQL. But writing it by hand for every query gets tedious and error-prone. ActiveRecord hits the right balance between readable and powerful.
+
+```ruby
+# Find orders placed in the last 7 days, for active users, ordered by amount
+Order
+  .joins(:user)
+  .where(users: { active: true })
+  .where(created_at: 7.days.ago..)
+  .order(amount: :desc)
+```
+
+That is readable. A junior developer can look at that and understand what it does without knowing SQL at all. And it generates clean, parameterised SQL under the hood.
+
+The alternative:
+
+```sql
+SELECT orders.* FROM orders
+INNER JOIN users ON users.id = orders.user_id
+WHERE users.active = true
+AND orders.created_at >= NOW() - INTERVAL '7 days'
+ORDER BY orders.amount DESC;
+```
+
+Both work. I prefer to write the first one and have Rails handle the second.
+
+---
+
+## Where Rails Genuinely Struggles
+
+### Background Jobs Get Complicated Fast
+
+Sidekiq with Rails works well for straightforward jobs. But once you have jobs that depend on other jobs, jobs that need to retry with different logic, or jobs that need to run in a specific sequence — it gets messy quickly.
+
+A simple job is fine:
+
+```ruby
+class ProcessUploadJob < ApplicationJob
+  queue_as :default
+
+  def perform(upload_id)
+    upload = Upload.find(upload_id)
+    upload.process!
+  end
+end
+```
+
+But then the requirements change. Now it needs to wait for another job. Now it needs to retry three times with exponential backoff. Now it needs to notify a different service when it fails. Now there is state to manage between steps.
+
+Sometimes the job code started looking more complex than the feature code. Rails does not give you a great answer here out of the box. You end up building your own patterns or reaching for a state machine gem that adds another layer of abstraction.
+
+Python with Celery handles complex workflows more naturally. I am not switching, but I notice it.
+
+### The Asset Pipeline Still Causes Pain
+
+Modern frontend development has moved fast. React, TypeScript, Vite, bundlers that compile in milliseconds. Rails has Propshaft now, Importmap for JavaScript without a bundler, and Hotwire for interactivity without writing much JavaScript.
+
+For simple applications this is fine. For anything with a more complex frontend, it gets awkward.
+
+If you are building a heavy single-page application, Rails' frontend story requires more glue than a Node.js backend with a dedicated frontend framework would.
+
+### N+1 Queries Require Constant Vigilance
+
+ActiveRecord's lazy loading is convenient right up until it quietly destroys your performance.
+
+```ruby
+# This looks fine
+users = User.all
+users.each do |user|
+  puts user.orders.count
+end
+```
+
+That is one query to fetch the users and then one query per user to count their orders. If you have 500 users, that is 501 database queries. Your page takes three seconds to load and you have no idea why.
+
+The fix is straightforward:
+
+```ruby
+users = User.includes(:orders).all
+users.each do |user|
+  puts user.orders.size
+end
+```
+
+Now it is two queries total. But the problem is that the first version does not look wrong. It looks correct. It runs fine in development with five test users. It only becomes a problem in production with real data.
+
+Every Rails developer has this story. The N+1 query that slipped through and caused a production slowdown. Tools like Bullet help catch them in development, but you have to install and configure them yourself. It should be a default.
+
+### Large Codebases Get Heavy
+
+Rails is opinionated about where things go. That is great when the application is small. When the application is large, those opinions sometimes put the wrong things next to each other.
+
+Fat models are the classic Rails problem. The convention says put logic in models. So you put logic in models. And then your `User` model is 800 lines long with validation logic, business logic, notification logic, and utility methods all mixed together.
+
+```ruby
+class User < ApplicationRecord
+  # 50 lines of validations
+  # 30 lines of associations
+  # 100 lines of business logic
+  # 40 lines of helper methods
+  # 20 lines of callbacks
+  # ...
+end
+```
+
+The community answer is service objects. Extract the logic into `app/services`. But Rails itself does not enforce this or give you a pattern to follow. You are on your own to decide how to structure it, and different teams decide differently, which means the convention that was supposed to make codebases readable stops working.
+
+This is where something like a well-structured Django application, with its explicit app separation, sometimes feels cleaner to navigate at scale.
+
+---
+
+## The Honest Verdict
+
+Rails is not the best tool for everything. It is not the most performant, not the most flexible for complex frontends, and not the best choice for systems that need fine-grained control over every layer.
+
+But for building a web application that needs to work, needs to ship fast, and needs to be maintained by a team: Rails is still one of the best answers in 2026. The conventions reduce the number of decisions you have to make. The ecosystem is mature and battle-tested. The community has seen most problems before and has opinions about how to solve them.
+
+Four years in, I still reach for it first. Not because I have not seen alternatives. Because I have, and Rails still makes more days easier than it makes hard.
+
+---
+
+*Mohun Shakeel Ahmad — Software Engineer at Spoon Consulting / SharinPix. MSc Data Science (Distinction), Sunway University. BSc Computer Science (First Class Honours), University of Mauritius. Writing about software engineering, data science and AI for practitioners.*
+
+*[Connect on LinkedIn](https://www.linkedin.com/in/shakeel-mohun-3b8378233)*
