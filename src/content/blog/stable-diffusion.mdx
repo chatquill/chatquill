@@ -1,0 +1,119 @@
+---
+title: 'How AI Image Generators Work — Stable Diffusion Without the Equations'
+description: 'You typed a sentence and got a painting. Here is what actually happened between those two things.'
+date: 'May 25, 2026'
+tags: ['AI', 'Beginner']
+readtime: '6 min read'
+featured: false
+coverGradient: 'linear-gradient(135deg, #0d0b1e 0%, #110e28 50%, #0a0818 100%)'
+coverGlow: 'rgba(124,58,237,0.18)'
+coverImage: '/images/stable-diffusion.svg'
+---
+
+# How AI Image Generators Work — Stable Diffusion Without the Equations
+
+> You typed a sentence and got a painting. Here is what actually happened between those two things.
+
+---
+
+You have probably used one of them. Midjourney, DALL-E, Stable Diffusion. You type something like "a fox reading a newspaper in a rainy Tokyo street, oil painting style" and thirty seconds later you are looking at exactly that. A specific image that has never existed before. Generated from words.
+
+The first time most people see this, there are two reactions. The first is wonder. The second, usually a few seconds later, is: how does that actually work?
+
+This is the honest answer. No equations. No jargon. Just the real idea.
+
+---
+
+## Start Here — What the Model Learned
+
+Before a model like Stable Diffusion can generate anything, it goes through a training phase. During that phase it looked at hundreds of millions of images from the internet, each one paired with a text description.
+
+A photo of a golden retriever running on a beach labelled "golden retriever running on beach." A painting of mountains at sunset labelled "impressionist landscape, mountains, golden hour." A portrait of a woman in a red dress labelled "portrait photography, red dress, studio lighting."
+
+Hundreds of millions of these pairs. The model studied them until it built an internal understanding of how words and visual concepts connect. It learned that "misty" tends to involve soft grey tones and blurred edges. That "oil painting" involves visible brushstrokes and rich saturated colour. That "cyberpunk city" involves neon lights, rain-slicked streets and high contrast between dark shadows and bright signs.
+
+This is not a database of images. It is something closer to a compressed understanding of what things look like — stored as numbers, not pictures.
+
+---
+
+## The Noise Trick — The Key Idea Behind Everything
+
+Here is the concept that makes the whole thing work, and once you understand it, the rest falls into place.
+
+Imagine taking a photograph and adding snow to it. Not real snow — digital noise. Random pixels scattered across the image, obscuring what's underneath. Add a little noise and the image is still recognisable. Add more and it starts to blur. Add enough and the original image disappears completely and you are left with nothing but static.
+
+During training, the model spent enormous amounts of time learning to reverse this process. It was shown a noisy version of an image and asked: what was the original? It was shown a slightly noisier version and asked the same question. Again and again, across millions of images, with increasing levels of noise.
+
+Over time the model became extremely good at one specific task: given a noisy image and a text description, predict what the image should look like with a little less noise.
+
+That is the entire mechanism. Nothing more complicated than that.
+
+---
+
+## How Your Prompt Becomes an Image
+
+When you type your prompt, the model does not paint the image from left to right like a human artist would. It starts from pure noise and removes it.
+
+The process works like this.
+
+The model starts with a completely random image — pure static, like a television with no signal. It then looks at that static alongside your text prompt and asks: if this were the image described by these words, which parts of the static should I remove first?
+
+It makes a small adjustment. The image is still mostly noise, but now it has the faintest suggestion of structure. The model looks again. Makes another adjustment. The structure becomes slightly clearer. Hundreds of small steps later, the noise has been removed almost entirely and what remains is a coherent image that matches your description.
+
+Each step is guided by what the model learned during training — the connection between words and visual patterns. "Fox" pulls the composition toward the shapes and colours it associates with foxes. "Oil painting" influences the texture of every brushstroke. "Rainy Tokyo street" shapes the lighting, the architecture, the mood.
+
+Your prompt is not a search query. It is a compass. At every step of the noise-removal process, it is steering the image toward a specific region of everything the model understands.
+
+---
+
+## Why Every Image Is Different
+
+You can type the same prompt twice and get two completely different images. This is because the starting point is always different.
+
+The initial static — the random noise the model starts from — is generated freshly every time. Two runs of the same prompt begin from different random starting points, and since each step of the process builds on the last, small differences in the starting point lead to very different final images.
+
+This is also why you can set a seed. When you pin the random starting point, you get the same image every time from the same prompt. Change one word in the prompt while keeping the seed, and you can see exactly how that single word change affected the final result.
+
+---
+
+## What "Style" Actually Means
+
+When you add "in the style of Van Gogh" to your prompt, you are doing something specific.
+
+The model saw thousands of images labelled with Van Gogh's name during training. It learned the visual patterns associated with his work — the swirling, energetic brushstrokes, the thick impasto texture, the way he used curved lines to suggest movement in skies and fields, his characteristic palette of yellows and deep blues.
+
+When you include his name, you are telling the model to steer the noise-removal process toward those patterns. Every step it takes is influenced not just by the subject of your prompt but by the visual language associated with that name.
+
+Style transfer is not a separate process. It is the same noise-removal process, just aimed at a different region of everything the model knows.
+
+---
+
+## What the Model Cannot Do
+
+It helps to understand the limits.
+
+The model has no concept of meaning. It does not understand that a fox is an animal, that Tokyo is a city, or that oil paint is a physical material. It learned statistical associations — what pixels tend to appear together when these words are used as descriptions. The output looks correct to a human eye because the associations were learned from human-made images. But the model has no understanding of the world those images represent.
+
+This is why image generators produce hands with six fingers, text that looks like text but is actually random shapes, and faces that blur into each other at the edges. The model never learned the rules of anatomy, typography or spatial logic. It learned patterns. When the pattern breaks down, the image breaks down with it.
+
+It is also why the same prompt can produce a photorealistic image one time and a watercolour the next. The model is navigating a probabilistic space. The compass of your prompt points in a direction. It does not guarantee a specific destination.
+
+---
+
+## The Part That Should Blow Your Mind a Little
+
+Every image you generate is genuinely new. It has never existed before and will never exist again in exactly that form. The model did not retrieve it from a database or assemble it from pieces of other images. It constructed it, step by step, from noise, guided by an understanding of visual language that was built from looking at more images than any human could see in a thousand lifetimes.
+
+The fox in the rainy Tokyo street reading a newspaper in oil paint style does not exist anywhere in the training data. The model never saw that specific scene. It understood the words well enough to build something that matches them.
+
+That is not a trick. That is not a lookup table. That is something genuinely new in the history of image-making — and it runs on your laptop.
+
+---
+
+## What This Means
+
+These tools are three or four years old. They have already changed visual design, concept art, advertising and film production. They are getting faster, higher resolution and more controllable every year.
+
+Understanding how they work does not make the images less impressive. If anything it makes them more so. Knowing that every image started as static and was assembled one denoising step at a time — guided by nothing more than the connection between words and pixels learned from the internet — makes the output feel stranger and more remarkable than it did before.
+
+You are not looking at a photograph. You are looking at what a machine dreamed when you told it what to dream.

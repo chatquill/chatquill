@@ -1,0 +1,293 @@
+<svg viewBox="0 0 1600 840" xmlns="http://www.w3.org/2000/svg" width="1600" height="840">
+  <defs>
+
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"  stop-color="#0d0b1e"/>
+      <stop offset="50%" stop-color="#110e28"/>
+      <stop offset="100%" stop-color="#0a0818"/>
+    </linearGradient>
+
+    <radialGradient id="violetGlow" cx="62%" cy="50%" r="45%">
+      <stop offset="0%"  stop-color="#7c3aed" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="amberGlow" cx="62%" cy="50%" r="30%">
+      <stop offset="0%"  stop-color="#f59e0b" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="leftGlow" cx="25%" cy="50%" r="35%">
+      <stop offset="0%"  stop-color="#4c1d95" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#4c1d95" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Noise-to-image transition gradient -->
+    <linearGradient id="noiseToImage" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.12"/>
+      <stop offset="35%"  stop-color="#7c3aed" stop-opacity="0.25"/>
+      <stop offset="65%"  stop-color="#f59e0b" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.05"/>
+    </linearGradient>
+
+    <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+      <stop offset="0%"   stop-color="#000" stop-opacity="0"/>
+      <stop offset="70%"  stop-color="#000" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.85"/>
+    </radialGradient>
+
+    <radialGradient id="foxGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="#f59e0b" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="atmosBlur">
+      <feGaussianBlur stdDeviation="60"/>
+    </filter>
+    <filter id="softBlur">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+    <filter id="tinyBlur">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+    <filter id="glowFilter" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="textGlow" x="-5%" y="-20%" width="110%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <clipPath id="canvas">
+      <rect width="1600" height="840"/>
+    </clipPath>
+
+    <!-- Noise texture filter -->
+    <filter id="noiseFilter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feBlend in="SourceGraphic" in2="grayNoise" mode="overlay"/>
+    </filter>
+
+  </defs>
+
+  <g clip-path="url(#canvas)">
+
+    <!-- Base background -->
+    <rect width="1600" height="840" fill="url(#bg)"/>
+    <rect width="1600" height="840" fill="url(#violetGlow)"/>
+    <rect width="1600" height="840" fill="url(#amberGlow)"/>
+    <rect width="1600" height="840" fill="url(#leftGlow)"/>
+
+    <!-- ── NOISE PANEL — left third, fading right ── -->
+    <!-- Pure noise blocks representing random static -->
+    <!-- Row 1 -->
+    <rect x="820" y="100" width="12" height="12" fill="#e8d5ff" opacity="0.45"/>
+    <rect x="836" y="100" width="12" height="12" fill="#2d1b69" opacity="0.6"/>
+    <rect x="852" y="100" width="12" height="12" fill="#c4b5fd" opacity="0.5"/>
+    <rect x="868" y="100" width="12" height="12" fill="#1e1040" opacity="0.7"/>
+    <rect x="884" y="100" width="12" height="12" fill="#7c3aed" opacity="0.55"/>
+    <rect x="900" y="100" width="12" height="12" fill="#f5f0ff" opacity="0.4"/>
+    <rect x="916" y="100" width="12" height="12" fill="#3b1d8c" opacity="0.65"/>
+    <rect x="932" y="100" width="12" height="12" fill="#ddd6fe" opacity="0.45"/>
+    <rect x="948" y="100" width="12" height="12" fill="#1a0e3f" opacity="0.7"/>
+    <rect x="964" y="100" width="12" height="12" fill="#a78bfa" opacity="0.5"/>
+    <rect x="980" y="100" width="12" height="12" fill="#0d0b1e" opacity="0.8"/>
+    <rect x="996" y="100" width="12" height="12" fill="#c4b5fd" opacity="0.4"/>
+
+    <!-- Rows 2-40 of noise blocks — creating a noise field that fades right -->
+    <!-- Row 2 -->
+    <rect x="820" y="116" width="12" height="12" fill="#3b1d8c" opacity="0.6"/>
+    <rect x="836" y="116" width="12" height="12" fill="#f5f0ff" opacity="0.35"/>
+    <rect x="852" y="116" width="12" height="12" fill="#1a0e3f" opacity="0.7"/>
+    <rect x="868" y="116" width="12" height="12" fill="#7c3aed" opacity="0.5"/>
+    <rect x="884" y="116" width="12" height="12" fill="#e8d5ff" opacity="0.4"/>
+    <rect x="900" y="116" width="12" height="12" fill="#2d1b69" opacity="0.65"/>
+    <rect x="916" y="116" width="12" height="12" fill="#a78bfa" opacity="0.45"/>
+    <rect x="932" y="116" width="12" height="12" fill="#0d0b1e" opacity="0.8"/>
+    <rect x="948" y="116" width="12" height="12" fill="#ddd6fe" opacity="0.4"/>
+    <rect x="964" y="116" width="12" height="12" fill="#4c1d95" opacity="0.55"/>
+    <rect x="980" y="116" width="12" height="12" fill="#f5f0ff" opacity="0.35"/>
+    <rect x="996" y="116" width="12" height="12" fill="#1e1040" opacity="0.65"/>
+
+    <!-- Rows 3 through 50 — full noise field -->
+    <!-- I'll use a more efficient approach with opacity fade groups -->
+
+    <!-- Noise region — full grid, high opacity left, fading right -->
+    <!-- Using overlapping semi-transparent colored rectangles to simulate noise -->
+    <g opacity="0.85">
+      <!-- Column group 1 — leftmost, full opacity -->
+      <rect x="820" y="132" width="12" height="12" fill="#7c3aed"/>
+      <rect x="820" y="148" width="12" height="12" fill="#1a0e3f"/>
+      <rect x="820" y="164" width="12" height="12" fill="#e8d5ff"/>
+      <rect x="820" y="180" width="12" height="12" fill="#3b1d8c"/>
+      <rect x="820" y="196" width="12" height="12" fill="#a78bfa"/>
+      <rect x="820" y="212" width="12" height="12" fill="#0d0b1e"/>
+      <rect x="820" y="228" width="12" height="12" fill="#c4b5fd"/>
+      <rect x="820" y="244" width="12" height="12" fill="#2d1b69"/>
+      <rect x="820" y="260" width="12" height="12" fill="#7c3aed"/>
+      <rect x="820" y="276" width="12" height="12" fill="#f5f0ff"/>
+      <rect x="820" y="292" width="12" height="12" fill="#1e1040"/>
+      <rect x="820" y="308" width="12" height="12" fill="#a78bfa"/>
+      <rect x="820" y="324" width="12" height="12" fill="#4c1d95"/>
+      <rect x="820" y="340" width="12" height="12" fill="#ddd6fe"/>
+      <rect x="820" y="356" width="12" height="12" fill="#0d0b1e"/>
+      <rect x="820" y="372" width="12" height="12" fill="#7c3aed"/>
+      <rect x="820" y="388" width="12" height="12" fill="#e8d5ff"/>
+      <rect x="820" y="404" width="12" height="12" fill="#1a0e3f"/>
+      <rect x="820" y="420" width="12" height="12" fill="#c4b5fd"/>
+      <rect x="820" y="436" width="12" height="12" fill="#3b1d8c"/>
+      <rect x="820" y="452" width="12" height="12" fill="#f5f0ff"/>
+      <rect x="820" y="468" width="12" height="12" fill="#7c3aed"/>
+      <rect x="820" y="484" width="12" height="12" fill="#2d1b69"/>
+      <rect x="820" y="500" width="12" height="12" fill="#a78bfa"/>
+      <rect x="820" y="516" width="12" height="12" fill="#1e1040"/>
+      <rect x="820" y="532" width="12" height="12" fill="#ddd6fe"/>
+      <rect x="820" y="548" width="12" height="12" fill="#4c1d95"/>
+      <rect x="820" y="564" width="12" height="12" fill="#7c3aed"/>
+      <rect x="820" y="580" width="12" height="12" fill="#0d0b1e"/>
+      <rect x="820" y="596" width="12" height="12" fill="#c4b5fd"/>
+      <rect x="820" y="612" width="12" height="12" fill="#3b1d8c"/>
+      <rect x="820" y="628" width="12" height="12" fill="#e8d5ff"/>
+      <rect x="820" y="644" width="12" height="12" fill="#1a0e3f"/>
+      <rect x="820" y="660" width="12" height="12" fill="#a78bfa"/>
+      <rect x="820" y="676" width="12" height="12" fill="#7c3aed"/>
+      <rect x="820" y="692" width="12" height="12" fill="#2d1b69"/>
+      <rect x="820" y="708" width="12" height="12" fill="#ddd6fe"/>
+      <rect x="820" y="724" width="12" height="12" fill="#0d0b1e"/>
+      <rect x="820" y="740" width="12" height="12" fill="#c4b5fd"/>
+    </g>
+
+    <!-- More noise columns with varying content -->
+    <g opacity="0.78">
+      <rect x="836" y="132" width="12" height="580" fill="url(#bg)" opacity="0.1"/>
+      <!-- Individual cells -->
+      <rect x="836" y="132" width="12" height="12" fill="#1a0e3f"/>
+      <rect x="836" y="148" width="12" height="12" fill="#c4b5fd"/>
+      <rect x="836" y="164" width="12" height="12" fill="#7c3aed"/>
+      <rect x="836" y="180" width="12" height="12" fill="#f5f0ff"/>
+      <rect x="836" y="196" width="12" height="12" fill="#2d1b69"/>
+      <rect x="836" y="212" width="12" height="12" fill="#a78bfa"/>
+      <rect x="836" y="228" width="12" height="12" fill="#3b1d8c"/>
+      <rect x="836" y="244" width="12" height="12" fill="#ddd6fe"/>
+      <rect x="836" y="260" width="12" height="12" fill="#0d0b1e"/>
+      <rect x="836" y="276" width="12" height="12" fill="#7c3aed"/>
+      <rect x="836" y="292" width="12" height="12" fill="#e8d5ff"/>
+      <rect x="836" y="308" width="12" height="12" fill="#1e1040"/>
+      <rect x="836" y="324" width="12" height="12" fill="#4c1d95"/>
+      <rect x="836" y="340" width="12" height="12" fill="#c4b5fd"/>
+      <rect x="836" y="356" width="12" height="12" fill="#a78bfa"/>
+      <rect x="836" y="372" width="12" height="12" fill="#0d0b1e"/>
+      <rect x="836" y="388" width="12" height="12" fill="#3b1d8c"/>
+      <rect x="836" y="404" width="12" height="12" fill="#7c3aed"/>
+      <rect x="836" y="420" width="12" height="12" fill="#f5f0ff"/>
+      <rect x="836" y="436" width="12" height="12" fill="#1a0e3f"/>
+      <rect x="836" y="452" width="12" height="12" fill="#ddd6fe"/>
+      <rect x="836" y="468" width="12" height="12" fill="#2d1b69"/>
+      <rect x="836" y="484" width="12" height="12" fill="#c4b5fd"/>
+      <rect x="836" y="500" width="12" height="12" fill="#7c3aed"/>
+      <rect x="836" y="516" width="12" height="12" fill="#0d0b1e"/>
+      <rect x="836" y="532" width="12" height="12" fill="#a78bfa"/>
+      <rect x="836" y="548" width="12" height="12" fill="#3b1d8c"/>
+      <rect x="836" y="564" width="12" height="12" fill="#e8d5ff"/>
+      <rect x="836" y="580" width="12" height="12" fill="#4c1d95"/>
+      <rect x="836" y="596" width="12" height="12" fill="#1e1040"/>
+      <rect x="836" y="612" width="12" height="12" fill="#7c3aed"/>
+      <rect x="836" y="628" width="12" height="12" fill="#ddd6fe"/>
+      <rect x="836" y="644" width="12" height="12" fill="#c4b5fd"/>
+      <rect x="836" y="660" width="12" height="12" fill="#0d0b1e"/>
+      <rect x="836" y="676" width="12" height="12" fill="#a78bfa"/>
+      <rect x="836" y="692" width="12" height="12" fill="#2d1b69"/>
+      <rect x="836" y="708" width="12" height="12" fill="#7c3aed"/>
+      <rect x="836" y="724" width="12" height="12" fill="#f5f0ff"/>
+      <rect x="836" y="740" width="12" height="12" fill="#1a0e3f"/>
+    </g>
+
+    <!-- Gradient overlay that fades noise right to reveal image -->
+    <rect x="820" y="80" width="760" height="700"
+          fill="url(#noiseToImage)" opacity="0.6"
+          filter="url(#tinyBlur)"/>
+
+    <!-- Semi-transparent noise overlay across full right panel -->
+    <rect x="820" y="80" width="760" height="700" fill="#0d0b1e" opacity="0.15"/>
+
+    <!-- ── STEP ARROWS — denoising process ── -->
+    <!-- Arrow row showing noise → clearer → image -->
+    <!-- Step 1: pure noise indicator -->
+    <rect x="850" y="780" width="80" height="4" rx="2" fill="#4c1d95" opacity="0.5"/>
+    <rect x="950" y="780" width="100" height="4" rx="2" fill="#6d28d9" opacity="0.6"/>
+    <rect x="1070" y="780" width="100" height="4" rx="2" fill="#7c3aed" opacity="0.7"/>
+    <rect x="1190" y="780" width="100" height="4" rx="2" fill="#a78bfa" opacity="0.75"/>
+    <rect x="1310" y="780" width="100" height="4" rx="2" fill="#f59e0b" opacity="0.8"/>
+    <!-- Arrow heads -->
+    <polygon points="940,776 955,780 940,784" fill="#6d28d9" opacity="0.5"/>
+    <polygon points="1060,776 1075,780 1060,784" fill="#7c3aed" opacity="0.6"/>
+    <polygon points="1180,776 1195,780 1180,784" fill="#a78bfa" opacity="0.65"/>
+    <polygon points="1300,776 1315,780 1300,784" fill="#f59e0b" opacity="0.7"/>
+
+    <!-- Step labels -->
+    <text x="870" y="810" font-family="monospace" font-size="11" fill="#c4b5fd" text-anchor="middle" letter-spacing="1" font-weight="500">NOISE</text>
+    <text x="990" y="810" font-family="monospace" font-size="11" fill="#c4b5fd" text-anchor="middle" letter-spacing="1" font-weight="500">STEP 1</text>
+    <text x="1110" y="810" font-family="monospace" font-size="11" fill="#c4b5fd" text-anchor="middle" letter-spacing="1" font-weight="500">STEP 2</text>
+    <text x="1230" y="810" font-family="monospace" font-size="11" fill="#c4b5fd" text-anchor="middle" letter-spacing="1" font-weight="500">STEP N</text>
+    <text x="1360" y="810" font-family="monospace" font-size="11" fill="#fbbf24" text-anchor="middle" letter-spacing="1" font-weight="500">IMAGE</text>
+
+    <!-- ── RIGHT SIDE — emerging image (fox shape, amber glow) ── -->
+    <ellipse cx="1380" cy="420" rx="140" ry="160" fill="#f59e0b" opacity="0.05" filter="url(#atmosBlur)"/>
+    <ellipse cx="1380" cy="420" rx="80" ry="100" fill="#f59e0b" opacity="0.08" filter="url(#softBlur)"/>
+
+    <!-- Abstract fox silhouette suggestion — amber shapes -->
+    <!-- Body -->
+    <ellipse cx="1370" cy="460" rx="55" ry="70" fill="#f59e0b" opacity="0.12" filter="url(#tinyBlur)"/>
+    <!-- Head -->
+    <circle cx="1375" cy="340" r="42" fill="#f59e0b" opacity="0.10" filter="url(#tinyBlur)"/>
+    <!-- Ears -->
+    <polygon points="1355,308 1345,270 1370,295" fill="#f59e0b" opacity="0.10"/>
+    <polygon points="1395,308 1408,270 1385,295" fill="#f59e0b" opacity="0.08"/>
+    <!-- Tail curl -->
+    <path d="M 1420 490 Q 1470 540 1450 580 Q 1430 610 1400 590" fill="none" stroke="#f59e0b" stroke-width="12" opacity="0.08" stroke-linecap="round"/>
+
+    <!-- Prompt text below image area -->
+    <rect x="1220" y="678" width="280" height="64" rx="4" fill="rgba(124,58,237,0.15)" stroke="rgba(124,58,237,0.35)" stroke-width="1"/>
+    <text x="1360" y="704" text-anchor="middle" font-family="monospace" font-size="12" fill="#c4b5fd" letter-spacing="1" font-weight="500">PROMPT:</text>
+    <text x="1360" y="726" text-anchor="middle" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.55)" letter-spacing="0.5">"fox, rainy tokyo, oil paint"</text>
+
+    <!-- ── LEFT PANEL — headline ── -->
+
+    <!-- Top label -->
+    <text x="80" y="108" font-family="monospace" font-size="14" fill="#c4b5fd" letter-spacing="3" font-weight="500">AI · IMAGE GENERATION · EXPLAINER</text>
+    <line x1="80" y1="118" x2="480" y2="118" stroke="rgba(167,139,250,0.3)" stroke-width="0.8"/>
+
+    <!-- Main headline -->
+    <text x="80" y="220" font-family="Georgia, serif" font-size="78" font-weight="900" fill="#ffffff" letter-spacing="-1.5">How AI</text>
+    <text x="80" y="308" font-family="Georgia, serif" font-size="78" font-weight="900" fill="#ffffff" letter-spacing="-1.5">Image</text>
+    <text x="80" y="396" font-family="Georgia, serif" font-size="78" font-weight="900" fill="#ffffff" letter-spacing="-1.5">Generators</text>
+    <text x="80" y="484" font-family="Georgia, serif" font-size="96" font-weight="900"
+          fill="#f59e0b" letter-spacing="-2" font-style="italic"
+          filter="url(#textGlow)">Work</text>
+
+    <!-- Subtext -->
+    <text x="80" y="548" font-family="monospace" font-size="18" fill="#e2d9ff" letter-spacing="1" font-weight="500">Stable Diffusion · Without the Equations</text>
+
+    <!-- Divider -->
+    <line x1="80" y1="582" x2="700" y2="582" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+
+    <!-- Description -->
+    <text x="80" y="614" font-family="Georgia, serif" font-size="20" font-style="italic" fill="rgba(255,255,255,0.6)">You typed a sentence and got a painting.</text>
+    <text x="80" y="640" font-family="Georgia, serif" font-size="20" font-style="italic" fill="rgba(255,255,255,0.6)">Here is what actually happened.</text>
+
+    <!-- Author row -->
+    <line x1="80" y1="688" x2="740" y2="688" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+    <text x="80" y="716" font-family="monospace" font-size="14" fill="rgba(255,255,255,0.65)" letter-spacing="1">Mohun Shakeel Ahmad</text>
+    <text x="80" y="738" font-family="monospace" font-size="12" fill="rgba(196,181,253,0.5)" letter-spacing="1">Software Engineer · MSc Data Science · chatquill.dev</text>
+
+    <!-- Read time -->
+    <rect x="588" y="700" width="132" height="32" rx="2" fill="rgba(124,58,237,0.15)" stroke="rgba(124,58,237,0.35)" stroke-width="1"/>
+    <text x="654" y="721" text-anchor="middle" font-family="monospace" font-size="12" fill="#c4b5fd" letter-spacing="1">6 MIN READ</text>
+
+    <!-- Vignette -->
+    <rect width="1600" height="840" fill="url(#vignette)"/>
+
+  </g>
+</svg>
