@@ -9,10 +9,26 @@ ChatQuill is a personal tech blog for Mohun Shakeel Ahmad, a software engineer b
 ## Commands
 
 ```bash
-npm run dev      # Dev server (localhost:4321)
-npm run build    # Production build → dist/
-npm run preview  # Preview the production build
+npm run dev           # Dev server (localhost:4321)
+npm run build         # Production build → dist/
+npm run preview       # Preview the production build
+npm run lint          # ESLint check
+npm test              # Unit tests (Vitest)
+npm run test:coverage # Unit tests + coverage report
+npm run test:e2e      # Playwright E2E tests (auto-starts dev server)
 ```
+
+## Before pushing
+
+**MANDATORY — always run all three before any `git push`:**
+
+```bash
+npm run lint       # Must exit 0
+npm test           # All 52 unit tests must pass
+npm run test:e2e   # All 36 E2E tests must pass
+```
+
+The pre-push git hook (`.githooks/pre-push`) enforces this automatically, but run them manually first to catch failures early. Never skip or bypass the hook (`--no-verify`).
 
 ## Project structure
 

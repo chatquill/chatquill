@@ -7,3 +7,11 @@ node_modules/
 !.env.example
 *.local
 .astro/
+
+# Test output
+coverage/
+playwright-report/
+test-results/
+
+# Local Claude Code settings
+.claude/
