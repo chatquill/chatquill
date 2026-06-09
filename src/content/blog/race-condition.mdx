@@ -20,9 +20,9 @@ import InlineImg from '../../components/InlineImg.astro';
 
 ---
 
-At SharinPix we once had a bug that appeared maybe once every few hundred requests. No stack trace. No error logged. Just a user who occasionally got charged twice, or not at all, depending on timing we could not control or reproduce in development.
+I once had a bug that appeared maybe once every few hundred requests. No stack trace. No error logged. Just a error who occasionally got charged twice, or not at all, depending on timing we could not control or reproduce in development.
 
-It took us three days to find it. The fix was four lines of code. The explanation took about forty minutes to write in the post-mortem.
+It took three days to find it and the fix was four lines of code. The explanation took about forty minutes to write in the post-mortem.
 
 That bug was a race condition.
 
@@ -139,9 +139,9 @@ end`} />
 
 The `.lock` call in Rails issues a `SELECT ... FOR UPDATE` which prevents other transactions from reading that row until this one completes. Two simultaneous requests for the same user will now execute sequentially at the database level.
 
-<PullQuote cite="Post-mortem, SharinPix">We had the transaction. We did not have the lock on the user record inside it. The window between reading the balance and writing it back was long enough for a second request to slip through.</PullQuote>
+<PullQuote cite="Post-mortem">The transaction did not have the lock on the user record inside it. The window between reading the balance and writing it back was long enough for a second request to slip through.</PullQuote>
 
-This is what we missed at SharinPix. We had the transaction. We did not have the lock on the user record inside it. The window between reading the balance and writing it back was long enough for a second request to slip through.
+The transaction did not have the lock on the user record inside it. The window between reading the balance and writing it back was long enough for a second request to slip through.
 
 ### Optimistic Locking
 
@@ -170,7 +170,7 @@ db.incr("counter")`} />
 
 Redis's `INCR` command is atomic by design. The database handles the increment as a single indivisible operation. No two clients can interleave. No lock needed. No transaction needed.
 
-At SharinPix we use Redis heavily for counters and queues precisely because these atomic operations exist. When you can express what you need as a single atomic command, do it. The race condition cannot occur by construction.
+Redis can be used for counters and queues precisely because these atomic operations exist. When you can express what you need as a single atomic command, do it. The race condition cannot occur by construction.
 
 ---
 
