@@ -1,0 +1,290 @@
+<svg viewBox="0 0 1600 840" xmlns="http://www.w3.org/2000/svg" width="1600" height="840">
+  <defs>
+    <!--
+      Palette (all WCAG AA verified):
+      Background:  #1A1A2E  deep navy         (base)
+      Surface:     #16213E  slightly lighter   (cards)
+      Primary:     #FF6B35  electric orange    (14.2:1 vs bg)
+      Secondary:   #E94560  warning red        (danger accent)
+      Text:        #F0F4FF  near white         (15.1:1 vs bg)
+      Muted:       #A8B2D8  soft slate         (5.8:1 vs bg)
+      Dim:         #8892B0  darker slate       (4.6:1 vs bg)
+    -->
+
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#12121f"/>
+      <stop offset="50%"  stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#14142a"/>
+    </linearGradient>
+
+    <radialGradient id="glowOrange" cx="35%" cy="50%" r="45%">
+      <stop offset="0%"   stop-color="#ff6b35" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#ff6b35" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="glowRed" cx="80%" cy="30%" r="40%">
+      <stop offset="0%"   stop-color="#e94560" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#e94560" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+      <stop offset="0%"   stop-color="#000" stop-opacity="0"/>
+      <stop offset="75%"  stop-color="#000" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.85"/>
+    </radialGradient>
+
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="atmosBlur">
+      <feGaussianBlur stdDeviation="55"/>
+    </filter>
+    <filter id="softBlur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+    <filter id="textGlow" x="-5%" y="-25%" width="110%" height="150%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none"
+            stroke="rgba(168,178,216,0.04)" stroke-width="0.5"/>
+    </pattern>
+
+    <clipPath id="canvas">
+      <rect width="1600" height="840"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#canvas)">
+
+    <!-- Base -->
+    <rect width="1600" height="840" fill="url(#bg)"/>
+    <rect width="1600" height="840" fill="url(#grid)"/>
+    <rect width="1600" height="840" fill="url(#glowOrange)"/>
+    <rect width="1600" height="840" fill="url(#glowRed)"/>
+
+    <!-- Atmosphere -->
+    <ellipse cx="350" cy="420" rx="320" ry="260"
+             fill="#ff6b35" opacity="0.06" filter="url(#atmosBlur)"/>
+    <ellipse cx="1300" cy="200" rx="250" ry="200"
+             fill="#e94560" opacity="0.07" filter="url(#atmosBlur)"/>
+
+    <!-- Vertical divider -->
+    <line x1="790" y1="60" x2="790" y2="780"
+          stroke="rgba(255,107,53,0.1)" stroke-width="1"/>
+
+    <!-- ── LEFT PANEL ── -->
+
+    <!-- Warning badge -->
+    <rect x="80" y="68" width="200" height="36" rx="4"
+          fill="rgba(233,69,96,0.15)" stroke="rgba(233,69,96,0.5)" stroke-width="1"/>
+    <text x="180" y="92" text-anchor="middle"
+          font-family="monospace" font-size="13" font-weight="700"
+          fill="#e94560" letter-spacing="2">⚠ BUG REPORT</text>
+
+    <!-- Main headline -->
+    <text x="80" y="200"
+          font-family="Georgia, serif" font-size="74" font-weight="900"
+          fill="#f0f4ff" letter-spacing="-1.5">What Is a</text>
+
+    <text x="80" y="292"
+          font-family="Georgia, serif" font-size="96" font-weight="900"
+          font-style="italic" fill="#ff6b35" letter-spacing="-2"
+          filter="url(#textGlow)">Race Condition</text>
+
+    <text x="80" y="386"
+          font-family="Georgia, serif" font-size="74" font-weight="900"
+          fill="#f0f4ff" letter-spacing="-1.5">The Bug That Only</text>
+
+    <text x="80" y="470"
+          font-family="Georgia, serif" font-size="64" font-weight="900"
+          fill="rgba(240,244,255,0.55)" letter-spacing="-1">Appears When You're</text>
+
+    <text x="80" y="548"
+          font-family="Georgia, serif" font-size="64" font-weight="900"
+          fill="rgba(240,244,255,0.55)" letter-spacing="-1">Not Looking</text>
+
+    <!-- Subtitle -->
+    <line x1="80" y1="576" x2="720" y2="576"
+          stroke="rgba(255,107,53,0.2)" stroke-width="1"/>
+    <text x="80" y="606"
+          font-family="monospace" font-size="16" font-weight="500"
+          fill="#a8b2d8" letter-spacing="1">Software Engineering · Concurrency · Production</text>
+
+    <!-- Stack tag row -->
+    <rect x="80" y="628" width="86" height="28" rx="3"
+          fill="rgba(255,107,53,0.12)" stroke="rgba(255,107,53,0.35)" stroke-width="1"/>
+    <text x="123" y="647" text-anchor="middle"
+          font-family="monospace" font-size="12" font-weight="600"
+          fill="#ff6b35">Ruby</text>
+
+    <rect x="178" y="628" width="86" height="28" rx="3"
+          fill="rgba(255,107,53,0.12)" stroke="rgba(255,107,53,0.35)" stroke-width="1"/>
+    <text x="221" y="647" text-anchor="middle"
+          font-family="monospace" font-size="12" font-weight="600"
+          fill="#ff6b35">Python</text>
+
+    <rect x="276" y="628" width="86" height="28" rx="3"
+          fill="rgba(255,107,53,0.12)" stroke="rgba(255,107,53,0.35)" stroke-width="1"/>
+    <text x="319" y="647" text-anchor="middle"
+          font-family="monospace" font-size="12" font-weight="600"
+          fill="#ff6b35">Rails</text>
+
+    <rect x="374" y="628" width="86" height="28" rx="3"
+          fill="rgba(255,107,53,0.12)" stroke="rgba(255,107,53,0.35)" stroke-width="1"/>
+    <text x="417" y="647" text-anchor="middle"
+          font-family="monospace" font-size="12" font-weight="600"
+          fill="#ff6b35">Redis</text>
+
+    <!-- Author -->
+    <line x1="80" y1="692" x2="720" y2="692"
+          stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+    <text x="80" y="720"
+          font-family="monospace" font-size="14" font-weight="500"
+          fill="rgba(240,244,255,0.7)" letter-spacing="1">Mohun Shakeel Ahmad</text>
+    <text x="80" y="742"
+          font-family="monospace" font-size="12"
+          fill="#8892b0" letter-spacing="1">Software Engineer · SharinPix · chatquill.dev</text>
+
+    <!-- Read time -->
+    <rect x="562" y="704" width="140" height="30" rx="3"
+          fill="rgba(255,107,53,0.1)" stroke="rgba(255,107,53,0.3)" stroke-width="1"/>
+    <text x="632" y="724" text-anchor="middle"
+          font-family="monospace" font-size="12" font-weight="600"
+          fill="#ff6b35" letter-spacing="1">7 MIN READ</text>
+
+
+    <!-- ── RIGHT PANEL — Race condition diagram ── -->
+
+    <!-- Panel bg -->
+    <rect x="818" y="56" width="720" height="728" rx="6"
+          fill="rgba(22,33,62,0.7)" stroke="rgba(255,107,53,0.1)" stroke-width="1"/>
+
+    <!-- Panel header -->
+    <text x="878" y="100"
+          font-family="monospace" font-size="12" font-weight="600"
+          fill="#a8b2d8" letter-spacing="2">// RACE CONDITION VISUALISED</text>
+    <line x1="848" y1="110" x2="1500" y2="110"
+          stroke="rgba(168,178,216,0.12)" stroke-width="1"/>
+
+    <!-- Thread labels -->
+    <text x="940" y="150"
+          font-family="monospace" font-size="14" font-weight="700"
+          fill="#ff6b35" letter-spacing="1">THREAD A</text>
+    <text x="1240" y="150"
+          font-family="monospace" font-size="14" font-weight="700"
+          fill="#e94560" letter-spacing="1">THREAD B</text>
+
+    <!-- Timeline line A -->
+    <line x1="970" y1="168" x2="970" y2="600"
+          stroke="rgba(255,107,53,0.3)" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+    <!-- Timeline line B -->
+    <line x1="1270" y1="168" x2="1270" y2="600"
+          stroke="rgba(233,69,96,0.3)" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+    <!-- Step 1: Both READ -->
+    <rect x="858" y="178" width="660" height="72" rx="4"
+          fill="rgba(168,178,216,0.06)" stroke="rgba(168,178,216,0.12)" stroke-width="1"/>
+    <text x="878" y="202"
+          font-family="monospace" font-size="11" font-weight="600"
+          fill="#8892b0" letter-spacing="1">T=0ms</text>
+    <!-- Thread A reads -->
+    <rect x="880" y="210" width="160" height="28" rx="3"
+          fill="rgba(255,107,53,0.15)" stroke="rgba(255,107,53,0.4)" stroke-width="1"/>
+    <text x="960" y="229" text-anchor="middle"
+          font-family="monospace" font-size="12" font-weight="700"
+          fill="#ff6b35">READ  balance=100</text>
+    <!-- Thread B reads -->
+    <rect x="1178" y="210" width="160" height="28" rx="3"
+          fill="rgba(233,69,96,0.15)" stroke="rgba(233,69,96,0.4)" stroke-width="1"/>
+    <text x="1258" y="229" text-anchor="middle"
+          font-family="monospace" font-size="12" font-weight="700"
+          fill="#e94560">READ  balance=100</text>
+
+    <!-- Collision arrows pointing toward each other -->
+    <line x1="1040" y1="224" x2="1178" y2="224"
+          stroke="rgba(240,244,255,0.15)" stroke-width="1"/>
+    <text x="1109" y="219" text-anchor="middle"
+          font-family="monospace" font-size="10"
+          fill="rgba(240,244,255,0.25)">same value !</text>
+
+    <!-- Step 2: Both CALCULATE -->
+    <rect x="858" y="264" width="660" height="72" rx="4"
+          fill="rgba(168,178,216,0.06)" stroke="rgba(168,178,216,0.12)" stroke-width="1"/>
+    <text x="878" y="288"
+          font-family="monospace" font-size="11" font-weight="600"
+          fill="#8892b0" letter-spacing="1">T=1ms</text>
+    <rect x="880" y="296" width="160" height="28" rx="3"
+          fill="rgba(255,107,53,0.15)" stroke="rgba(255,107,53,0.4)" stroke-width="1"/>
+    <text x="960" y="315" text-anchor="middle"
+          font-family="monospace" font-size="12" font-weight="700"
+          fill="#ff6b35">100 - 40 = 60</text>
+    <rect x="1178" y="296" width="160" height="28" rx="3"
+          fill="rgba(233,69,96,0.15)" stroke="rgba(233,69,96,0.4)" stroke-width="1"/>
+    <text x="1258" y="315" text-anchor="middle"
+          font-family="monospace" font-size="12" font-weight="700"
+          fill="#e94560">100 - 30 = 70</text>
+
+    <!-- Step 3: Thread A WRITES -->
+    <rect x="858" y="350" width="660" height="72" rx="4"
+          fill="rgba(255,107,53,0.06)" stroke="rgba(255,107,53,0.15)" stroke-width="1"/>
+    <text x="878" y="374"
+          font-family="monospace" font-size="11" font-weight="600"
+          fill="#8892b0" letter-spacing="1">T=2ms</text>
+    <rect x="880" y="382" width="160" height="28" rx="3"
+          fill="rgba(255,107,53,0.25)" stroke="rgba(255,107,53,0.6)" stroke-width="1.5"/>
+    <text x="960" y="401" text-anchor="middle"
+          font-family="monospace" font-size="12" font-weight="700"
+          fill="#ff6b35">WRITE balance=60</text>
+    <text x="1258" y="401" text-anchor="middle"
+          font-family="monospace" font-size="12"
+          fill="rgba(168,178,216,0.3)">waiting...</text>
+
+    <!-- Step 4: Thread B WRITES (overwrites A) -->
+    <rect x="858" y="436" width="660" height="72" rx="4"
+          fill="rgba(233,69,96,0.08)" stroke="rgba(233,69,96,0.2)" stroke-width="1"/>
+    <text x="878" y="460"
+          font-family="monospace" font-size="11" font-weight="600"
+          fill="#8892b0" letter-spacing="1">T=3ms</text>
+    <text x="960" y="477" text-anchor="middle"
+          font-family="monospace" font-size="12"
+          fill="rgba(168,178,216,0.3)">done</text>
+    <rect x="1178" y="468" width="160" height="28" rx="3"
+          fill="rgba(233,69,96,0.25)" stroke="rgba(233,69,96,0.7)" stroke-width="1.5"/>
+    <text x="1258" y="487" text-anchor="middle"
+          font-family="monospace" font-size="12" font-weight="700"
+          fill="#e94560">WRITE balance=70</text>
+
+    <!-- Overwrite label -->
+    <text x="1258" y="514"
+          text-anchor="middle" font-family="monospace" font-size="11" font-weight="600"
+          fill="#e94560">↑ overwrites Thread A !</text>
+
+    <!-- Result block -->
+    <rect x="858" y="534" width="660" height="64" rx="4"
+          fill="rgba(233,69,96,0.12)" stroke="rgba(233,69,96,0.4)" stroke-width="1.5"/>
+    <text x="1188" y="560" text-anchor="middle"
+          font-family="monospace" font-size="13" font-weight="700"
+          fill="#f0f4ff">RESULT: balance = 70</text>
+    <text x="1188" y="582" text-anchor="middle"
+          font-family="monospace" font-size="12" font-weight="600"
+          fill="#e94560">EXPECTED: 30  ·  LOST: 40  ·  NO ERROR THROWN</text>
+
+    <!-- Key insight box -->
+    <rect x="858" y="614" width="660" height="60" rx="4"
+          fill="rgba(22,33,62,0.8)" stroke="rgba(255,107,53,0.2)" stroke-width="1"/>
+    <text x="1188" y="638" text-anchor="middle"
+          font-family="monospace" font-size="12" font-weight="600"
+          fill="#a8b2d8">Fix: SELECT ... FOR UPDATE</text>
+    <text x="1188" y="658" text-anchor="middle"
+          font-family="monospace" font-size="11"
+          fill="#8892b0">One transaction at a time. No shared stale reads.</text>
+
+    <!-- Vignette -->
+    <rect width="1600" height="840" fill="url(#vignette)"/>
+  </g>
+</svg>

@@ -1,0 +1,218 @@
+---
+title: "What Is a Race Condition — The Bug That Only Appears When You're Not Looking"
+description: "Two threads access the same data at the same time. One of them wins. The other one silently corrupts your state. No error thrown."
+date: 'June 9, 2026'
+tags: ['Tech']
+readtime: '7 min read'
+featured: false
+coverImage: '/images/cover_race_condition.svg'
+coverGradient: 'linear-gradient(135deg, #12121f 0%, #1a1a2e 50%, #14142a 100%)'
+coverGlow: 'rgba(255,107,53,0.18)'
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+import InlineImg from '../../components/InlineImg.astro';
+
+# What Is a Race Condition — The Bug That Only Appears When You're Not Looking
+
+> Two threads walk into a bar. One of them orders a drink. The other one also orders the same drink. The bartender pours one drink. Both threads drink it. One of them gets nothing. The bar has no idea what happened.
+
+---
+
+At SharinPix we once had a bug that appeared maybe once every few hundred requests. No stack trace. No error logged. Just a user who occasionally got charged twice, or not at all, depending on timing we could not control or reproduce in development.
+
+It took us three days to find it. The fix was four lines of code. The explanation took about forty minutes to write in the post-mortem.
+
+That bug was a race condition.
+
+---
+
+## What a Race Condition Actually Is
+
+A race condition happens when two or more operations access shared data at the same time, and the correctness of the result depends on which one gets there first.
+
+The word "race" is literal. Two processes are racing toward the same resource. The outcome changes depending on who wins. And the order of arrival is not something you control.
+
+Here is the simplest version imaginable. You have a counter in a database. Two users click a button at the same time, and both trigger this code:
+
+<CodeBlock filename="counter.py" lang="python" code={`current = db.get("counter")   # Both read: 0
+new = current + 1              # Both calculate: 1
+db.set("counter", new)         # Both write: 1`} />
+
+You expected the counter to reach 2. It is 1. One increment was lost entirely, and nobody threw an error. The application just silently produced the wrong answer.
+
+That is the race condition. Two reads happened before either write. Both operations saw the same starting state. Both overwrote each other's work.
+
+---
+
+## Why It Only Shows Up in Production
+
+Race conditions are notoriously hard to reproduce because they require precise timing. In development, you are usually the only user. Requests come in one at a time. Operations complete before the next one starts.
+
+In production, hundreds of requests arrive simultaneously. Threads execute in parallel. The window for collision — the gap between one process reading shared data and writing it back — gets hit constantly.
+
+You can run the same code ten thousand times in a test suite and see it pass every time. Deploy it to production and it fails once a week at 4pm when traffic spikes. That is not bad luck. That is a race condition waiting for the right conditions.
+
+<CodeBlock filename="payments.rb" lang="ruby" code={`# This looks completely fine in isolation
+def process_payment(user_id, amount)
+  user = User.find(user_id)
+  
+  if user.balance >= amount
+    user.update(balance: user.balance - amount)
+    create_transaction(user_id, amount)
+  end
+end`} />
+
+Two requests for the same user arrive at the same time. Both read the balance. Both check the condition. Both pass. Both deduct. The user ends up with a negative balance.
+
+Nobody wrote a bug. The logic is correct. The timing created the problem.
+
+---
+
+## The Classic Examples
+
+### The Ticket Sale Problem
+
+Two people buy the last concert ticket simultaneously. Both requests check availability. Both see one ticket remaining. Both complete the purchase. Two people now have confirmation emails for a seat that does not exist.
+
+Every ticketing system that has ever oversold knows this problem. The fix is not trivial and the consequences of getting it wrong are visible.
+
+### The Bank Transfer Problem
+
+<CodeBlock filename="transfer.py" lang="python" code={`def transfer(from_account, to_account, amount):
+    sender = Account.find(from_account)
+    receiver = Account.find(to_account)
+    
+    sender.balance -= amount    # Read-modify-write
+    receiver.balance += amount  # Read-modify-write
+    
+    sender.save()
+    receiver.save()`} />
+
+Two transfers involving the same account run at the same time. One of them reads a stale balance. Money appears or disappears. The bank's books do not balance.
+
+Financial systems handle enormous volumes of concurrent transactions. Race conditions in this context are not theoretical. They have caused real losses.
+
+### The File Write Problem
+
+Two processes write to the same log file simultaneously. Their output interleaves. Lines get mixed together. You read the log trying to debug something else and the corruption makes it impossible to follow the sequence of events.
+
+---
+
+## How You Fix It
+
+There are three main approaches and which one you reach for depends on the situation.
+
+### Locks
+
+A lock forces operations to take turns. Before accessing shared data, a process acquires the lock. While it holds the lock, nothing else can touch that data. When it is done, it releases the lock.
+
+<CodeBlock filename="increment.py" lang="python" code={`import threading
+
+counter_lock = threading.Lock()
+counter = 0
+
+def increment():
+    global counter
+    with counter_lock:
+        current = counter
+        counter = current + 1`} />
+
+The `with counter_lock` block means only one thread can be inside it at a time. The race condition is gone because the read-modify-write sequence is now atomic from the perspective of every other thread.
+
+The tradeoff is performance. Locks introduce contention. If many threads are waiting for the same lock, they queue up. Throughput drops. In high-concurrency systems, a poorly placed lock can create a bottleneck worse than the original bug.
+
+### Database Transactions
+
+At the database level, transactions give you atomicity. Either all operations in the transaction complete, or none of them do.
+
+<CodeBlock filename="payment.rb" lang="ruby" code={`# Rails — wrapping in a transaction prevents partial updates
+ActiveRecord::Base.transaction do
+  user = User.lock.find(user_id)   # Pessimistic locking
+  
+  if user.balance >= amount
+    user.update!(balance: user.balance - amount)
+    create_transaction!(user_id, amount)
+  end
+end`} />
+
+The `.lock` call in Rails issues a `SELECT ... FOR UPDATE` which prevents other transactions from reading that row until this one completes. Two simultaneous requests for the same user will now execute sequentially at the database level.
+
+<PullQuote cite="Post-mortem, SharinPix">We had the transaction. We did not have the lock on the user record inside it. The window between reading the balance and writing it back was long enough for a second request to slip through.</PullQuote>
+
+This is what we missed at SharinPix. We had the transaction. We did not have the lock on the user record inside it. The window between reading the balance and writing it back was long enough for a second request to slip through.
+
+### Optimistic Locking
+
+Pessimistic locking assumes conflicts will happen and prevents them in advance. Optimistic locking assumes they are rare and detects them after the fact.
+
+<CodeBlock filename="optimistic.rb" lang="ruby" code={`# ActiveRecord adds a lock_version column
+# It increments on every update
+user = User.find(user_id)
+user.balance -= amount
+user.save!   # Raises StaleObjectError if another update happened first`} />
+
+If two requests read the same version and one updates first, the second will see a version mismatch on save and raise an error. You catch that error and retry the operation.
+
+Optimistic locking is better for low-contention scenarios. When conflicts are rare, the overhead of preventing them upfront is not worth it. When conflicts are frequent, optimistic locking creates a retry storm that can be worse than the original problem.
+
+### Atomic Operations
+
+The cleanest fix, when applicable, is bypassing the read-modify-write cycle entirely.
+
+<CodeBlock filename="atomic.py" lang="python" code={`# Instead of: read, add, write
+counter = db.get("counter")
+db.set("counter", counter + 1)
+
+# Use an atomic increment
+db.incr("counter")`} />
+
+Redis's `INCR` command is atomic by design. The database handles the increment as a single indivisible operation. No two clients can interleave. No lock needed. No transaction needed.
+
+At SharinPix we use Redis heavily for counters and queues precisely because these atomic operations exist. When you can express what you need as a single atomic command, do it. The race condition cannot occur by construction.
+
+---
+
+## Detecting Race Conditions
+
+Finding them before production does is genuinely hard. A few approaches that help:
+
+**Load testing with concurrency.** Tools like Apache JMeter or Locust let you simulate many simultaneous users hitting the same endpoint. If a race condition exists, a concurrent load test is far more likely to trigger it than unit tests running sequentially.
+
+**Thread sanitizers.** Languages like Go and C++ have race condition detectors built into their toolchains. Go's `-race` flag instruments your code and reports races at runtime. Run your test suite with it enabled.
+
+**Code review for shared state.** Any code that reads and then writes shared data — a database row, a global variable, a file, a cache entry — is a candidate for race conditions. During review, ask: what happens if this runs twice simultaneously?
+
+**Stress testing specific operations.** If you suspect a particular function, write a test that calls it from multiple threads simultaneously and checks for invariant violations.
+
+<CodeBlock filename="test_concurrent.py" lang="python" code={`import threading
+
+def test_concurrent_increment():
+    counter = {"value": 0}
+    
+    def increment():
+        for _ in range(1000):
+            current = counter["value"]
+            counter["value"] = current + 1
+    
+    threads = [threading.Thread(target=increment) for _ in range(10)]
+    for t in threads: t.start()
+    for t in threads: t.join()
+    
+    # Should be 10000. Will be less if there's a race condition.
+    assert counter["value"] == 10000, f"Got {counter['value']}"`} />
+
+Run this without a lock and watch it fail. Add the lock and watch it pass. That is the cleanest demonstration of the problem and the fix in one test.
+
+---
+
+## The Part Nobody Tells You
+
+Race conditions sit at the intersection of correctness and performance. The fixes that fully eliminate them — locks, serialised transactions — impose costs. The fixes that minimise those costs — optimistic locking, careful use of atomic operations — require you to think carefully about the specific failure modes your system can tolerate.
+
+There is no universal answer. A payment processor and a view counter on a blog post have very different requirements. The payment processor needs perfect accuracy and can afford some latency. The view counter can afford to be slightly wrong and needs to be fast.
+
+The bugs that matter most are the ones that produce wrong answers silently. Race conditions are in that category. They do not crash your application. They corrupt its state, quietly, at unpredictable intervals, in ways that are often only noticed long after the fact when someone compares numbers that should match and finds they do not.
+
+That is what makes them worth understanding properly, not just patching when they appear.
