@@ -1,0 +1,219 @@
+<svg viewBox="0 0 1600 840" xmlns="http://www.w3.org/2000/svg" width="1600" height="840">
+  <defs>
+    <!--
+      Palette (contrast vs #150A1E background):
+      Background:  #150A1E  plum black        (base)
+      Surface:     #221030  raised plum       (cards)
+      Primary:     #FFE14D  electric yellow   (14.6:1)
+      Secondary:   #FF3D9A  hot magenta       (5.9:1)
+      Text:        #FFF8F0  warm white        (18.1:1)
+      Muted:       #D9C9E8  pale lilac        (12.2:1)
+      Dim:         #B39CC9  soft lilac        (7.9:1)
+    -->
+
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#120818"/>
+      <stop offset="50%"  stop-color="#1c0d26"/>
+      <stop offset="100%" stop-color="#150a1e"/>
+    </linearGradient>
+
+    <radialGradient id="glowYellow" cx="28%" cy="42%" r="45%">
+      <stop offset="0%"   stop-color="#ffe14d" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#ffe14d" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="glowMagenta" cx="82%" cy="24%" r="42%">
+      <stop offset="0%"   stop-color="#ff3d9a" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#ff3d9a" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="vignette" cx="50%" cy="50%" r="75%">
+      <stop offset="0%"   stop-color="#000" stop-opacity="0"/>
+      <stop offset="80%"  stop-color="#000" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.7"/>
+    </radialGradient>
+
+    <filter id="atmosBlur">
+      <feGaussianBlur stdDeviation="55"/>
+    </filter>
+    <filter id="textGlow" x="-5%" y="-25%" width="110%" height="150%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <pattern id="dots" width="32" height="32" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="rgba(217,201,232,0.07)"/>
+    </pattern>
+
+    <clipPath id="canvas">
+      <rect width="1600" height="840"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#canvas)">
+
+    <!-- Base -->
+    <rect width="1600" height="840" fill="url(#bg)"/>
+    <rect width="1600" height="840" fill="url(#dots)"/>
+    <rect width="1600" height="840" fill="url(#glowYellow)"/>
+    <rect width="1600" height="840" fill="url(#glowMagenta)"/>
+
+    <!-- Atmosphere -->
+    <ellipse cx="380" cy="360" rx="320" ry="240"
+             fill="#ffe14d" opacity="0.05" filter="url(#atmosBlur)"/>
+    <ellipse cx="1320" cy="180" rx="260" ry="200"
+             fill="#ff3d9a" opacity="0.09" filter="url(#atmosBlur)"/>
+
+    <!-- Vertical divider -->
+    <line x1="790" y1="60" x2="790" y2="780"
+          stroke="rgba(255,225,77,0.14)" stroke-width="1"/>
+
+    <!-- ── LEFT PANEL ── -->
+
+    <!-- Badge -->
+    <rect x="80" y="68" width="236" height="36" rx="4"
+          fill="rgba(255,61,154,0.16)" stroke="rgba(255,61,154,0.6)" stroke-width="1"/>
+    <text x="198" y="92" text-anchor="middle"
+          font-family="monospace" font-size="13" font-weight="700"
+          fill="#ff6fb5" letter-spacing="2">NO MAGIC SPELLS</text>
+
+    <!-- Headline -->
+    <text x="80" y="222"
+          font-family="Georgia, serif" font-size="104" font-weight="900"
+          fill="#fff8f0" letter-spacing="-2">Prompt</text>
+
+    <text x="80" y="330"
+          font-family="Georgia, serif" font-size="104" font-weight="900"
+          font-style="italic" fill="#ffe14d" letter-spacing="-2"
+          filter="url(#textGlow)">Engineering</text>
+
+    <text x="80" y="428"
+          font-family="Georgia, serif" font-size="82" font-weight="900"
+          fill="#fff8f0" letter-spacing="-1.5">for Dummies</text>
+
+    <text x="80" y="520"
+          font-family="Georgia, serif" font-size="82" font-weight="900"
+          fill="#ff3d9a" letter-spacing="-1.5">in 2026</text>
+
+    <!-- Subtitle -->
+    <line x1="80" y1="560" x2="720" y2="560"
+          stroke="rgba(255,225,77,0.3)" stroke-width="1"/>
+    <text x="80" y="594"
+          font-family="monospace" font-size="17" font-weight="600"
+          fill="#d9c9e8" letter-spacing="0.5">Name the change, the place and the check.</text>
+
+    <!-- Tag row -->
+    <rect x="80" y="620" width="120" height="30" rx="3"
+          fill="rgba(255,225,77,0.12)" stroke="rgba(255,225,77,0.5)" stroke-width="1"/>
+    <text x="140" y="640" text-anchor="middle"
+          font-family="monospace" font-size="13" font-weight="700"
+          fill="#ffe14d">AI Coding</text>
+
+    <rect x="212" y="620" width="120" height="30" rx="3"
+          fill="rgba(255,225,77,0.12)" stroke="rgba(255,225,77,0.5)" stroke-width="1"/>
+    <text x="272" y="640" text-anchor="middle"
+          font-family="monospace" font-size="13" font-weight="700"
+          fill="#ffe14d">Beginner</text>
+
+    <rect x="344" y="620" width="120" height="30" rx="3"
+          fill="rgba(255,225,77,0.12)" stroke="rgba(255,225,77,0.5)" stroke-width="1"/>
+    <text x="404" y="640" text-anchor="middle"
+          font-family="monospace" font-size="13" font-weight="700"
+          fill="#ffe14d">Tokens</text>
+
+    <!-- Author -->
+    <line x1="80" y1="692" x2="720" y2="692"
+          stroke="rgba(255,248,240,0.1)" stroke-width="1"/>
+    <text x="80" y="722"
+          font-family="monospace" font-size="15" font-weight="600"
+          fill="#fff8f0" letter-spacing="1">Mohun Shakeel Ahmad</text>
+    <text x="80" y="746"
+          font-family="monospace" font-size="13"
+          fill="#b39cc9" letter-spacing="1">Software Engineer · chatquill.dev</text>
+
+    <!-- Read time -->
+    <rect x="580" y="708" width="140" height="32" rx="3"
+          fill="#ffe14d"/>
+    <text x="650" y="729" text-anchor="middle"
+          font-family="monospace" font-size="13" font-weight="700"
+          fill="#150a1e" letter-spacing="1">8 MIN READ</text>
+
+
+    <!-- ── RIGHT PANEL — bad prompt vs good prompt ── -->
+
+    <rect x="818" y="56" width="720" height="728" rx="8"
+          fill="rgba(34,16,48,0.75)" stroke="rgba(255,225,77,0.16)" stroke-width="1"/>
+
+    <!-- BAD prompt -->
+    <text x="858" y="104"
+          font-family="monospace" font-size="14" font-weight="700"
+          fill="#ff6fb5" letter-spacing="2">✕  2023 PROMPT</text>
+
+    <rect x="858" y="122" width="640" height="212" rx="6"
+          fill="rgba(255,61,154,0.08)" stroke="rgba(255,61,154,0.55)" stroke-width="1.5"/>
+
+    <g font-family="monospace" font-size="18" fill="#d9c9e8">
+      <text x="886" y="166">Hi! You are a WORLD-CLASS senior engineer.</text>
+      <text x="886" y="206">Could you kindly fix the discount bug?</text>
+      <text x="886" y="246">Think step by step. MAKE NO MISTAKES.</text>
+      <text x="886" y="286">This is CRITICAL. Thanks so much!!</text>
+    </g>
+    <g stroke="#ff3d9a" stroke-width="2.5" stroke-linecap="round">
+      <line x1="882" y1="160" x2="1344" y2="160"/>
+      <line x1="882" y1="200" x2="1300" y2="200"/>
+      <line x1="882" y1="240" x2="1290" y2="240"/>
+      <line x1="882" y1="280" x2="1258" y2="280"/>
+    </g>
+    <text x="886" y="318"
+          font-family="monospace" font-size="13" font-weight="700"
+          fill="#ff6fb5" letter-spacing="1">27 words · 1 vague hint about the task</text>
+
+    <!-- Arrow -->
+    <line x1="1178" y1="346" x2="1178" y2="378"
+          stroke="#ffe14d" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 1166 370 L 1178 386 L 1190 370"
+          fill="none" stroke="#ffe14d" stroke-width="3"
+          stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- GOOD prompt -->
+    <text x="858" y="426"
+          font-family="monospace" font-size="14" font-weight="700"
+          fill="#ffe14d" letter-spacing="2">✓  2026 PROMPT</text>
+
+    <rect x="858" y="444" width="640" height="252" rx="6"
+          fill="rgba(255,225,77,0.07)" stroke="rgba(255,225,77,0.7)" stroke-width="1.5"/>
+
+    <!-- Label chips -->
+    <g font-family="monospace" font-size="12" font-weight="700"
+       fill="#150a1e" text-anchor="middle" letter-spacing="1">
+      <rect x="882" y="466" width="104" height="28" rx="3" fill="#ffe14d"/>
+      <text x="934" y="485">GOAL</text>
+      <rect x="882" y="510" width="104" height="28" rx="3" fill="#ffe14d"/>
+      <text x="934" y="529">WHERE</text>
+      <rect x="882" y="554" width="104" height="28" rx="3" fill="#ffe14d"/>
+      <text x="934" y="573">CONTEXT</text>
+      <rect x="882" y="598" width="104" height="28" rx="3" fill="#ffe14d"/>
+      <text x="934" y="617">SCOPE</text>
+      <rect x="882" y="642" width="104" height="28" rx="3" fill="#ff3d9a"/>
+      <text x="934" y="661" fill="#fff8f0">DONE WHEN</text>
+    </g>
+
+    <g font-family="monospace" font-size="17" font-weight="600" fill="#fff8f0">
+      <text x="1006" y="486">Fix apply_discount: returns 0, not 15%</text>
+      <text x="1006" y="530">@pricing.py · apply_discount()</text>
+      <text x="1006" y="574">Fails when quantity &gt; 100</text>
+      <text x="1006" y="618">Change only that function</text>
+      <text x="1006" y="662">pytest tests/test_pricing.py passes</text>
+    </g>
+
+    <!-- Footer strip -->
+    <rect x="858" y="716" width="640" height="44" rx="4"
+          fill="rgba(255,225,77,0.1)" stroke="rgba(255,225,77,0.35)" stroke-width="1"/>
+    <text x="1178" y="744" text-anchor="middle"
+          font-family="monospace" font-size="14" font-weight="700"
+          fill="#ffe14d" letter-spacing="1">CHANGE  +  PLACE  +  CHECK.  EVERYTHING ELSE IS OPTIONAL.</text>
+
+    <!-- Vignette -->
+    <rect width="1600" height="840" fill="url(#vignette)"/>
+  </g>
+</svg>
