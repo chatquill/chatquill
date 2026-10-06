@@ -1,6 +1,7 @@
 ---
 const path = Astro.url.pathname;
 const isArticles = path === '/' || path.startsWith('/blog');
+const isSkills = path.startsWith('/skills');
 const isContact = path.startsWith('/contact');
 ---
 
@@ -14,6 +15,7 @@ const isContact = path.startsWith('/contact');
 
   <div class="nav-links" id="nav-desktop">
     <a href="/" class:list={['nav-page-link', isArticles && 'active']}>articles</a>
+    <a href="/skills" class:list={['nav-page-link', isSkills && 'active']}>skills</a>
     <a href="/contact" class:list={['nav-page-link', isContact && 'active']}>get in touch</a>
   </div>
 
@@ -23,6 +25,7 @@ const isContact = path.startsWith('/contact');
 <div class="mobile-overlay" id="mobile-overlay" aria-hidden="true">
   <div class="mobile-overlay-inner">
     <a href="/" class="mobile-nav-link">articles</a>
+    <a href="/skills" class="mobile-nav-link">skills</a>
     <a href="/contact" class="mobile-nav-link">get in touch</a>
     <hr class="mobile-divider" />
     <div class="mobile-topics" id="mobile-topics">
