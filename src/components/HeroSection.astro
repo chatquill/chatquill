@@ -2,6 +2,7 @@
 interface Props {
   slug: string;
   title: string;
+  description: string;
   tags: string[];
   readtime: string;
   date: string;
@@ -10,196 +11,124 @@ interface Props {
   coverImage?: string;
 }
 
-const { slug, title, tags, readtime, date, coverGradient, coverGlow, coverImage } = Astro.props;
+const { slug, title, description, tags, readtime, date, coverGradient, coverGlow, coverImage } = Astro.props;
 ---
 
-<a href={`/blog/${slug}`} class="hero group block relative overflow-hidden cursor-pointer">
-
-  <!-- Background (spans full width) -->
-  {coverImage ? (
-    <img
-      src={coverImage}
-      alt={title}
-      class="hero-bg-img"
-    />
-  ) : (
-    <div class="hero-bg-gradient" style={`background: ${coverGradient};`}>
-      <div class="hero-glow" style={`background: radial-gradient(ellipse at 20% 60%, ${coverGlow} 0%, transparent 55%);`}></div>
-    </div>
-  )}
-
-  <!-- Dark overlay -->
-  <div class="hero-overlay" aria-hidden="true"></div>
-
-  <!-- Two-column content layout -->
-  <div class="hero-inner">
-    <!-- Left: article info -->
-    <div class="hero-content">
-      <div class="flex items-center gap-2 mb-4 flex-wrap">
-        {tags.map((t) => (
-          <span class="font-mono text-[10px] uppercase tracking-[1.5px] text-[#0d1117] bg-[#00e5a0] px-2 py-[3px] rounded-[2px] font-semibold">
-            {t}
-          </span>
-        ))}
-        <span class="font-mono text-[10px] text-[#7a90a4] tracking-[0.5px]">{readtime}</span>
-      </div>
-
-      <h1 class="font-display font-bold text-[clamp(22px,3.2vw,44px)] text-[#e4eff8] leading-[1.2] mb-4" style="text-wrap: pretty;">
-        {title}
-      </h1>
-
-      <div class="flex items-center gap-3 font-mono text-[11px] text-[#7a90a4] mb-5 flex-wrap">
-        <span>Mohun Shakeel Ahmad</span>
-        <span class="text-[#3d5166]">·</span>
-        <span>{date}</span>
-        <span class="text-[#3d5166]">·</span>
-        <span>{readtime}</span>
-      </div>
-
-      <div class="hero-cta inline-flex items-center gap-2 font-mono text-[11px] text-[#00e5a0] border-b border-[#00e5a0] pb-px tracking-[0.5px] transition-[gap] duration-200 group-hover:gap-3">
-        Read article <span>→</span>
-      </div>
+<section class="hero" data-cats={tags.join(',')}>
+  <div class="hero-text">
+    <div class="flex items-center gap-2 mb-4 flex-wrap">
+      {tags.map((t) => (
+        <span class="font-mono text-[11px] uppercase tracking-[1.5px] text-bg bg-accent px-2 py-[3px] rounded-[2px] font-semibold">
+          {t}
+        </span>
+      ))}
     </div>
 
-    <!-- Right: logo illustration (hidden on small screens) -->
-    <div class="hero-logo-panel" aria-hidden="true">
-      <div class="hero-logo-ring">
-        <img
-          src="/images/logo-circle.png"
-          alt=""
-          class="hero-logo-img"
-        />
-      </div>
+    <h1 class="font-display font-bold text-[clamp(26px,3.2vw,44px)] text-off-white leading-[1.15] mb-4" style="text-wrap: balance;">
+      <a href={`/blog/${slug}`} class="hero-link">{title}</a>
+    </h1>
+
+    <p class="text-[16px] text-body leading-[1.65] mb-5 max-w-[52ch]">{description}</p>
+
+    <div class="flex items-center gap-x-5 gap-y-1 font-mono text-[11px] text-dim mb-5 flex-wrap">
+      <span>Mohun Shakeel Ahmad</span>
+      <span>{date}</span>
+      <span>{readtime}</span>
     </div>
+
+    <span class="hero-cta" aria-hidden="true">Read article <span>→</span></span>
   </div>
-</a>
+
+  <div class="hero-cover">
+    {coverImage ? (
+      <img src={coverImage} alt="" width="1600" height="840" fetchpriority="high" />
+    ) : (
+      <div class="w-full h-full relative" style={`background: ${coverGradient};`}>
+        <div class="absolute inset-0" style={`background: radial-gradient(ellipse at 20% 60%, ${coverGlow} 0%, transparent 55%);`}></div>
+      </div>
+    )}
+  </div>
+</section>
 
 <style>
   .hero {
-    height: clamp(380px, 52vw, 620px);
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    align-items: center;
+    gap: clamp(24px, 4vw, 56px);
+    padding: clamp(28px, 4vw, 56px) clamp(16px, 5vw, 48px);
+    border-bottom: 1px solid #1e2d3d;
   }
 
-  /* Full-bleed background layers */
-  .hero-bg-img,
-  .hero-bg-gradient {
+  /* The title link covers the whole block, so the cover is clickable too */
+  .hero-link {
+    transition: color 200ms;
+  }
+
+  .hero-link::after {
+    content: '';
     position: absolute;
     inset: 0;
+  }
+
+  .hero:hover .hero-link {
+    color: #00e5a0;
+  }
+
+  .hero-link:focus-visible {
+    outline: none;
+  }
+
+  .hero:has(.hero-link:focus-visible) {
+    outline: 2px solid #00e5a0;
+    outline-offset: -2px;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    color: #00e5a0;
+    border-bottom: 1px solid #00e5a0;
+    padding-bottom: 1px;
+  }
+
+  .hero-cta span {
+    transition: transform 200ms;
+  }
+
+  .hero:hover .hero-cta span {
+    transform: translateX(4px);
+  }
+
+  .hero-cover {
+    aspect-ratio: 1600 / 840;
+    border: 1px solid #1e2d3d;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .hero-cover img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 600ms ease-in-out;
+    transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .group:hover .hero-bg-img,
-  .group:hover .hero-bg-gradient {
+  .hero:hover .hero-cover img {
     transform: scale(1.02);
   }
 
-  .hero-glow {
-    position: absolute;
-    inset: 0;
-  }
-
-  .hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to right,
-      rgba(13, 17, 23, 0.92) 0%,
-      rgba(13, 17, 23, 0.75) 50%,
-      rgba(13, 17, 23, 0.15) 100%
-    );
-    pointer-events: none;
-  }
-
-  /* Two-column inner layout */
-  .hero-inner {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: stretch;
-  }
-
-  .hero-content {
-    flex: 0 0 55%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: clamp(20px, 4vw, 48px);
-    max-width: 600px;
-  }
-
-  .hero-logo-panel {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 32px;
-  }
-
-  .hero-logo-ring {
-    width: clamp(150px, 20vw, 300px);
-    height: clamp(150px, 20vw, 300px);
-    border-radius: 50%;
-    background: rgba(13, 17, 23, 0.45);
-    border: 1.5px solid rgba(0, 229, 160, 0.35);
-    box-shadow:
-      0 0 0 6px rgba(0, 229, 160, 0.06),
-      inset 0 0 60px rgba(0, 229, 160, 0.04);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: border-color 300ms ease, box-shadow 300ms ease, transform 600ms ease;
-  }
-
-  .group:hover .hero-logo-ring {
-    border-color: rgba(0, 229, 160, 0.55);
-    box-shadow:
-      0 0 0 6px rgba(0, 229, 160, 0.1),
-      inset 0 0 60px rgba(0, 229, 160, 0.07);
-    transform: scale(1.03);
-  }
-
-  .hero-logo-img {
-    width: 72%;
-    height: 72%;
-    object-fit: contain;
-    opacity: 0.95;
-    transform: translateX(10%);
-    transition: opacity 300ms ease;
-  }
-
-  .group:hover .hero-logo-img {
-    opacity: 1;
-  }
-
-  /* On small screens: hide logo panel, restore full-width content */
-  @media (max-width: 768px) {
+  @media (max-width: 1100px) {
     .hero {
-      height: max(65vw, 300px);
+      grid-template-columns: minmax(0, 1fr);
     }
 
-    .hero-overlay {
-      background: linear-gradient(
-        to bottom,
-        transparent 20%,
-        rgba(13, 17, 23, 0.5) 50%,
-        rgba(13, 17, 23, 0.96) 85%,
-        #0d1117 100%
-      );
-    }
-
-    .hero-inner {
-      align-items: flex-end;
-    }
-
-    .hero-content {
-      flex: 1;
-      max-width: 100%;
-    }
-
-    .hero-logo-panel {
-      display: none;
+    .hero-cover {
+      order: -1;
     }
   }
 </style>

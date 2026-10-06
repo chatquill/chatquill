@@ -4,6 +4,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import AuthorBio from '../../components/AuthorBio.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { sortPostsByDateDesc } from '../../utils/sort';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -20,48 +22,54 @@ interface Props {
 const { post } = Astro.props;
 const { Content } = await post.render();
 const { title, tags, readtime, date, coverGradient, coverGlow, coverImage, description } = post.data;
+
+// Keep reading: newest posts that share a tag first, then the newest of the rest
+const others = sortPostsByDateDesc(await getCollection('blog')).filter((p) => p.slug !== post.slug);
+const sharesTag = (p: CollectionEntry<'blog'>) => p.data.tags.some((t) => tags.includes(t));
+const related = [...others.filter(sharesTag), ...others.filter((p) => !sharesTag(p))].slice(0, 2);
 ---
 
-<BaseLayout title={`${title} — ChatQuill`} description={description}>
+<BaseLayout title={`${title} — ChatQuill`} description={description} image={coverImage}>
   <Nav />
 
-  <main class="page-enter">
+  <main id="main">
     <!-- Article title ABOVE the cover image -->
     <header class="max-w-[740px] mx-auto px-[clamp(16px,5vw,48px)] pt-10 pb-8">
       <div class="flex items-center gap-2.5 mb-5 flex-wrap">
         {tags.map((t) => (
-          <span class="font-mono text-[10px] uppercase tracking-[1.5px] text-[#0d1117] bg-[#00e5a0] px-[9px] py-[3px] rounded-[2px] font-semibold">
+          <span class="font-mono text-[11px] uppercase tracking-[1.5px] text-bg bg-accent px-[9px] py-[3px] rounded-[2px] font-semibold">
             {t}
           </span>
         ))}
-        <span class="font-mono text-[11px] text-[#7a90a4]">{readtime}</span>
-        <span class="font-mono text-[11px] text-[#3d5166]">{date}</span>
+        <span class="font-mono text-[11px] text-dim">{readtime}</span>
+        <span class="font-mono text-[11px] text-dim">· {date}</span>
       </div>
 
       <h1
-        class="font-display font-bold text-[clamp(26px,4vw,42px)] text-[#e4eff8] leading-[1.2] mb-6"
+        class="font-display font-bold text-[clamp(26px,4vw,42px)] text-off-white leading-[1.2] mb-6"
         style="text-wrap: pretty;"
       >
         {title}
       </h1>
 
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-full bg-[#1c2739] border border-[#3d5166] flex items-center justify-center font-display text-sm font-bold text-[#00e5a0] shrink-0">
+        <div aria-hidden="true" class="w-10 h-10 rounded-full bg-bg-4 border border-muted flex items-center justify-center font-display text-sm font-bold text-accent shrink-0">
           M
         </div>
         <div>
-          <div class="font-display text-sm font-semibold text-[#e4eff8]">Mohun Shakeel Ahmad</div>
-          <div class="font-mono text-[10px] text-[#7a90a4] mt-0.5">
+          <div class="font-display text-sm font-semibold text-off-white">Mohun Shakeel Ahmad</div>
+          <div class="font-mono text-[11px] text-dim mt-0.5">
             Software Engineer @ SharinPix · MSc Data Science, Sunway University
           </div>
         </div>
       </div>
     </header>
 
-    <!-- Full-bleed cover image (below title) -->
-    <div class="w-full overflow-hidden mb-10 border-y border-[#1e2d3d]" style="aspect-ratio: 1600/840;">
+    <!-- Cover: a little wider than the text column, so the first paragraph stays close to the title -->
+    <div class="max-w-[900px] mx-auto px-[clamp(16px,5vw,48px)] mb-10">
+      <div class="w-full overflow-hidden border border-border rounded-[4px]" style="aspect-ratio: 1600/840;">
       {coverImage ? (
-        <img src={coverImage} alt={title} class="w-full h-full object-cover" />
+        <img src={coverImage} alt="" width="1600" height="840" fetchpriority="high" class="w-full h-full object-cover" />
       ) : (
         <div class="w-full h-full relative" style={`background: ${coverGradient};`}>
           <div
@@ -70,6 +78,7 @@ const { title, tags, readtime, date, coverGradient, coverGlow, coverImage, descr
           ></div>
         </div>
       )}
+      </div>
     </div>
 
     <!-- Article body -->
@@ -77,10 +86,39 @@ const { title, tags, readtime, date, coverGradient, coverGlow, coverImage, descr
       <Content />
     </article>
 
+    <section class="max-w-[900px] mx-auto px-[clamp(16px,5vw,48px)] pb-16" aria-labelledby="keep-reading">
+      <h2 class="font-mono text-[11px] font-normal uppercase tracking-[2px] text-dim mb-6" id="keep-reading">Keep reading</h2>
+      <div class="grid gap-6 sm:grid-cols-2">
+        {related.map((p) => (
+          <ArticleCard
+            slug={p.slug}
+            title={p.data.title}
+            description={p.data.description}
+            tags={p.data.tags}
+            readtime={p.data.readtime}
+            date={p.data.date}
+            coverGradient={p.data.coverGradient ?? ''}
+            coverGlow={p.data.coverGlow ?? ''}
+            coverImage={p.data.coverImage}
+          />
+        ))}
+      </div>
+    </section>
+
     <AuthorBio />
-    <Footer showBack />
   </main>
+
+  <Footer showBack />
 </BaseLayout>
+
+<script>
+  // Tables scroll sideways on narrow screens; make that scroll reachable by keyboard
+  document.querySelectorAll('.article-body table').forEach((table) => {
+    table.setAttribute('tabindex', '0');
+    table.setAttribute('role', 'region');
+    table.setAttribute('aria-label', 'Table, scrolls sideways');
+  });
+</script>
 
 <style>
   /* Prose styles scoped to .article-body */
@@ -145,6 +183,19 @@ const { title, tags, readtime, date, coverGradient, coverGlow, coverImage, descr
     font-family: 'Lora', Georgia, serif;
   }
 
+  /* Tailwind's reset removes list markers; prose needs them back */
+  .article-body :global(ul) {
+    list-style: disc;
+  }
+
+  .article-body :global(ol) {
+    list-style: decimal;
+  }
+
+  .article-body :global(li::marker) {
+    color: #7a90a4;
+  }
+
   .article-body :global(li) {
     margin-bottom: 8px;
   }
@@ -152,7 +203,7 @@ const { title, tags, readtime, date, coverGradient, coverGlow, coverImage, descr
   /* inline code */
   .article-body :global(code:not(pre > code)) {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
+    font-size: 0.85em;
     color: #00e5a0;
     background: rgba(0, 229, 160, 0.08);
     padding: 1px 5px;
@@ -172,12 +223,15 @@ const { title, tags, readtime, date, coverGradient, coverGlow, coverImage, descr
     width: 100%;
     border-collapse: collapse;
     margin: 32px 0;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 15px;
+    line-height: 1.55;
   }
   .article-body :global(th) {
     background: #161f2c;
     color: #e4eff8;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
     font-weight: 600;
     padding: 10px 14px;
     border: 1px solid #1e2d3d;
@@ -204,11 +258,10 @@ const { title, tags, readtime, date, coverGradient, coverGlow, coverImage, descr
 
   /* Blockquotes */
   .article-body :global(blockquote) {
-    margin: 36px 0;
-    padding: 22px 28px;
-    border-left: 3px solid #00e5a0;
-    background: #111820;
-    border-radius: 0 4px 4px 0;
+    margin: 40px 0;
+    padding: 24px 0;
+    border-top: 1px solid #1e2d3d;
+    border-bottom: 1px solid #1e2d3d;
   }
   .article-body :global(blockquote p) {
     font-family: 'Playfair Display', Georgia, serif;

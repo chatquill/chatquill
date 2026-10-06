@@ -15,9 +15,11 @@ const { topics } = Astro.props;
 <aside class="topics-sidebar" id="topics-sidebar">
   <div class="sidebar-header">
     <p class="topics-label">TOPICS</p>
-    <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Collapse sidebar">‹</button>
+    <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Collapse sidebar" aria-expanded="true" aria-controls="topics-list">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+    </button>
   </div>
-  <ul class="topics-list">
+  <ul class="topics-list" id="topics-list">
     {topics.map((t) => (
       <li>
         <a
@@ -69,13 +71,13 @@ const { topics } = Astro.props;
 
   .topics-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #3d5166;
+    color: #7a90a4;
     margin: 0;
     white-space: nowrap;
-    transition: opacity 200ms ease, width 200ms ease;
+    transition: opacity 200ms ease;
   }
 
   .topics-sidebar.collapsed .topics-label {
@@ -86,14 +88,12 @@ const { topics } = Astro.props;
   }
 
   .sidebar-toggle {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 16px;
-    color: #3d5166;
+    display: flex;
+    color: #7a90a4;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 4px 6px;
-    line-height: 1;
+    padding: 9px;
     flex-shrink: 0;
     transition: color 150ms, transform 250ms ease;
     margin-left: 8px;
@@ -120,13 +120,14 @@ const { topics } = Astro.props;
 
   .topics-sidebar.collapsed .topics-list {
     opacity: 0;
-    pointer-events: none;
+    visibility: hidden;
   }
 
   .topic-link {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 8px;
     padding: 7px 10px;
     border-left: 2px solid transparent;
     text-decoration: none;
@@ -148,8 +149,8 @@ const { topics } = Astro.props;
   }
 
   .topic-count {
-    font-size: 10px;
-    color: #3d5166;
+    font-size: 11px;
+    color: #7a90a4;
     font-variant-numeric: tabular-nums;
   }
 
@@ -180,5 +181,6 @@ const { topics } = Astro.props;
     sidebar?.classList.toggle('collapsed');
     const isCollapsed = sidebar?.classList.contains('collapsed');
     toggle.setAttribute('aria-label', isCollapsed ? 'Expand sidebar' : 'Collapse sidebar');
+    toggle.setAttribute('aria-expanded', String(!isCollapsed));
   });
 </script>

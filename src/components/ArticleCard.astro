@@ -15,7 +15,7 @@ const { slug, title, description, tags, readtime, date, coverGradient, coverGlow
 ---
 
 <article
-  class="card group bg-[#111820] border border-[#1e2d3d] rounded-[4px] overflow-hidden cursor-pointer flex flex-col transition-all duration-200 hover:border-[#243447] hover:-translate-y-[3px] hover:shadow-[0_12px_40px_rgba(0,0,0,0.4)]"
+  class="card group bg-bg-2 border border-border rounded-[4px] overflow-hidden cursor-pointer flex flex-col transition-all duration-200 hover:border-border-2 hover:-translate-y-[3px] hover:shadow-[0_12px_40px_rgba(0,0,0,0.4)]"
   data-cats={tags.join(',')}
 >
   <a href={`/blog/${slug}`} class="flex flex-col flex-1">
@@ -24,19 +24,23 @@ const { slug, title, description, tags, readtime, date, coverGradient, coverGlow
       {coverImage ? (
         <img
           src={coverImage}
-          alt={title}
+          alt=""
+          width="1600"
+          height="840"
+          loading="lazy"
+          decoding="async"
           class="w-full h-full object-cover transition-transform duration-[400ms] ease-in-out group-hover:scale-[1.04]"
         />
       ) : (
         <div
-          class="w-full h-full flex items-end p-4 relative transition-transform duration-[400ms] ease-in-out group-hover:scale-[1.04]"
+          class="w-full h-full relative transition-transform duration-[400ms] ease-in-out group-hover:scale-[1.04]"
           style={`background: ${coverGradient};`}
         >
           <div
             class="absolute inset-0"
             style={`background: radial-gradient(ellipse at 60% 40%, ${coverGlow} 0%, transparent 60%);`}
           ></div>
-          <span class="font-display font-bold italic text-white/90 leading-[1.25] relative z-10 text-[clamp(12px,1.8vw,18px)]" style="text-shadow: 0 2px 12px rgba(0,0,0,0.5);">
+          <span class="absolute left-4 right-4 bottom-4 font-display font-bold italic text-white/90 leading-[1.25] text-[clamp(12px,1.8vw,18px)]" aria-hidden="true">
             {title}
           </span>
         </div>
@@ -45,25 +49,25 @@ const { slug, title, description, tags, readtime, date, coverGradient, coverGlow
 
     <!-- Card body -->
     <div class="flex flex-col gap-2 p-[18px_20px_20px] flex-1">
-      <!-- Tags row -->
+      <!-- Tags are labels, not controls, so they stay quiet -->
       <div class="flex flex-wrap gap-1.5">
         {tags.map((t) => (
-          <span class="font-mono text-[9px] uppercase tracking-[1.5px] text-[#00e5a0] border border-[#00e5a0] px-[7px] py-[2px] rounded-[2px]">
+          <span class="font-mono text-[11px] uppercase tracking-[1.5px] text-dim border border-border-2 px-[7px] py-[2px] rounded-[2px]">
             {t}
           </span>
         ))}
       </div>
-      <div class="font-display font-bold text-[17px] text-[#e4eff8] leading-[1.35] flex-1 transition-colors duration-200 group-hover:text-[#00e5a0]" style="text-wrap: pretty;">
+      <h3 class="font-display font-bold text-[17px] text-off-white leading-[1.35] transition-colors duration-200 group-hover:text-accent" style="text-wrap: pretty;">
         {title}
-      </div>
-      <div class="text-[13px] text-[#7a90a4] leading-[1.5] line-clamp-1">
+      </h3>
+      <p class="text-[13px] text-dim leading-[1.5] line-clamp-2">
         {description}
-      </div>
-      <div class="flex items-center gap-2 font-mono text-[10px] text-[#3d5166] mt-1">
+      </p>
+      <div class="flex items-center gap-2 font-mono text-[11px] text-dim mt-auto pt-1">
         <span>Mohun S.A.</span>
-        <span class="text-[#243447]">·</span>
+        <span aria-hidden="true">·</span>
         <span>{date}</span>
-        <span class="text-[#243447]">·</span>
+        <span aria-hidden="true">·</span>
         <span>{readtime}</span>
       </div>
     </div>
@@ -71,10 +75,13 @@ const { slug, title, description, tags, readtime, date, coverGradient, coverGlow
 </article>
 
 <style>
-  .line-clamp-1 {
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  /* The card clips its children, so the focus ring goes on the card itself */
+  .card a:focus-visible {
+    outline: none;
+  }
+
+  .card:has(a:focus-visible) {
+    outline: 2px solid #00e5a0;
+    outline-offset: 2px;
   }
 </style>
