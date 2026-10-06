@@ -62,4 +62,29 @@ test.describe('Article page', () => {
     const text = await body.textContent();
     expect(text?.trim().length).toBeGreaterThan(100);
   });
+
+  test('article ends with two related articles', async ({ page }) => {
+    await page.goto('/blog/prompt-engineering-2026');
+    await expect(page.locator('section[aria-labelledby="keep-reading"] .card')).toHaveCount(2);
+  });
+
+  test('table of contents links jump to a section', async ({ page }) => {
+    await page.goto('/blog/prompt-engineering-2026');
+    await page.locator('.toc summary').click();
+    const link = page.locator('.toc a').first();
+    const target = await link.getAttribute('href');
+    await link.click();
+    await expect(page).toHaveURL(new RegExp(`${target}$`));
+  });
+
+  test('code blocks get a copy button', async ({ page }) => {
+    await page.goto('/blog/prompt-engineering-2026');
+    await expect(page.locator('.article-body .code-copy').first()).toBeAttached();
+  });
+
+  test('unknown URLs show the not-found page', async ({ page }) => {
+    const response = await page.goto('/blog/no-such-article');
+    expect(response?.status()).toBe(404);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(/isn't here/);
+  });
 });

@@ -74,7 +74,7 @@ const { topics } = Astro.props;
     font-size: 11px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #7a90a4;
+    color: theme('colors.dim');
     margin: 0;
     white-space: nowrap;
     transition: opacity 200ms ease;
@@ -89,7 +89,7 @@ const { topics } = Astro.props;
 
   .sidebar-toggle {
     display: flex;
-    color: #7a90a4;
+    color: theme('colors.dim');
     background: none;
     border: none;
     cursor: pointer;
@@ -100,7 +100,7 @@ const { topics } = Astro.props;
   }
 
   .sidebar-toggle:hover {
-    color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
   }
 
   .topics-sidebar.collapsed .sidebar-toggle {
@@ -131,7 +131,7 @@ const { topics } = Astro.props;
     padding: 7px 10px;
     border-left: 2px solid transparent;
     text-decoration: none;
-    color: #7a90a4;
+    color: theme('colors.dim');
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
     letter-spacing: 0.02em;
@@ -140,22 +140,22 @@ const { topics } = Astro.props;
   }
 
   .topic-link:hover {
-    color: #e4eff8;
+    color: theme('colors.off-white');
   }
 
   .topic-link.active {
-    color: #00e5a0;
-    border-left-color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
+    border-left-color: theme('colors.accent.DEFAULT');
   }
 
   .topic-count {
     font-size: 11px;
-    color: #7a90a4;
+    color: theme('colors.dim');
     font-variant-numeric: tabular-nums;
   }
 
   .topic-link.active .topic-count {
-    color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
   }
 
   @media (max-width: 1024px) and (min-width: 769px) {

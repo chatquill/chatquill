@@ -12,6 +12,7 @@ ChatQuill is a personal tech blog for Mohun Shakeel Ahmad, a software engineer b
 npm run dev           # Dev server (localhost:4321)
 npm run build         # Production build → dist/
 npm run preview       # Preview the production build
+npm run og            # Re-render share images (public/images/og/) after adding or changing an SVG cover
 npm run lint          # ESLint check
 npm test              # Unit tests (Vitest)
 npm run test:coverage # Unit tests + coverage report
@@ -25,7 +26,7 @@ npm run test:e2e      # Playwright E2E tests (auto-starts dev server)
 ```bash
 npm run lint       # Must exit 0
 npm test           # All 52 unit tests must pass
-npm run test:e2e   # All 41 E2E tests must pass
+npm run test:e2e   # All 49 E2E tests must pass
 ```
 
 The pre-push git hook (`.githooks/pre-push`) enforces this automatically, but run them manually first to catch failures early. Never skip or bypass the hook (`--no-verify`).

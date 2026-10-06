@@ -14,6 +14,11 @@ export default {
           DEFAULT: '#1e2d3d',
           2: '#243447',
         },
+        code: {
+          DEFAULT: '#080d14',
+          thumb: '#1e3050',
+          'thumb-hover': '#2a4a6e',
+        },
         muted: '#3d5166',
         dim: '#7a90a4',
         body: '#b8ccdb',
