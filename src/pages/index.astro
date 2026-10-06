@@ -6,15 +6,13 @@ import Footer from '../components/Footer.astro';
 import HeroSection from '../components/HeroSection.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import TopicsSidebar from '../components/TopicsSidebar.astro';
+import { getEffectiveFeatured, sortPostsByDateDesc } from '../utils/sort';
 
-const allPosts = await getCollection('blog');
+const posts = sortPostsByDateDesc(await getCollection('blog'));
 
-const posts = allPosts.sort((a, b) => {
-  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
-});
-
-const featured = posts.find((p) => p.data.featured) ?? posts[0];
-const gridPosts = posts;
+const featured = getEffectiveFeatured(posts)!;
+// The hero already shows the featured post, so the grid lists the rest
+const gridPosts = posts.filter((p) => p !== featured);
 
 const topicDefs = [
   { key: 'all',          label: 'All' },
@@ -38,7 +36,7 @@ const topics = topicDefs.map((t) => ({
   <!-- Mobile topic chip row (hidden on ≥769px) -->
   <div class="mobile-chips" id="mobile-chips">
     {topics.map((t) => (
-      <button class="chip nav-link" data-cat={t.key}>
+      <button class="chip" data-cat={t.key} aria-pressed="false">
         {t.label}
         <span class="chip-count">{String(t.count).padStart(2, '0')}</span>
       </button>
@@ -48,10 +46,11 @@ const topics = topicDefs.map((t) => ({
   <div class="page-layout">
     <TopicsSidebar topics={topics} />
 
-    <main class="content-area page-enter">
+    <main class="content-area" id="main">
       <HeroSection
         slug={featured.slug}
         title={featured.data.title}
+        description={featured.data.description}
         tags={featured.data.tags}
         readtime={featured.data.readtime}
         date={featured.data.date}
@@ -61,9 +60,12 @@ const topics = topicDefs.map((t) => ({
       />
 
       <!-- Section header -->
-      <div class="flex items-baseline justify-between px-[clamp(16px,5vw,48px)] pt-10 pb-6">
-        <span class="font-mono text-[11px] uppercase tracking-[2px] text-[#7a90a4]">Recent Articles</span>
-        <span class="font-mono text-[11px] text-[#00e5a0] cursor-pointer hover:opacity-70 transition-opacity" id="view-all">View all →</span>
+      <div class="flex items-center justify-between gap-4 px-[clamp(16px,5vw,48px)] pt-10 pb-6">
+        <div class="flex items-baseline gap-3 flex-wrap">
+          <h2 class="font-mono text-[11px] font-normal uppercase tracking-[2px] text-dim" id="grid-label">Recent Articles</h2>
+          <span class="font-mono text-[11px] text-dim" id="filter-status" aria-live="polite"></span>
+        </div>
+        <button class="view-all" id="view-all" hidden>View all →</button>
       </div>
 
       <!-- Card grid -->
@@ -87,34 +89,31 @@ const topics = topicDefs.map((t) => ({
         ))}
       </div>
 
+      <p class="px-[clamp(16px,5vw,48px)] pb-16 text-[15px] text-dim" id="empty-state" hidden>
+        No articles in this topic yet.
+      </p>
+
       <!-- Author bio -->
-      <section class="border-b border-[#1e2d3d] px-[clamp(16px,5vw,48px)] py-10">
+      <section class="border-t border-border px-[clamp(16px,5vw,48px)] py-10">
         <div class="flex items-start gap-5 max-w-3xl">
-          <div class="w-12 h-12 rounded-full bg-[#1c2739] border-2 border-[#00e5a0] flex items-center justify-center font-display text-lg font-bold text-[#00e5a0] shrink-0 mt-0.5">
+          <div class="w-12 h-12 rounded-full bg-bg-4 border-2 border-accent flex items-center justify-center font-display text-lg font-bold text-accent shrink-0 mt-0.5" aria-hidden="true">
             M
           </div>
           <div>
             <div class="flex items-baseline gap-3 flex-wrap mb-1">
-              <span class="font-display font-bold text-[#e4eff8] text-[17px]">Mohun Shakeel Ahmad</span>
-              <span class="font-mono text-[10px] text-[#3d5166] tracking-[0.3px]">Software Engineer @ SharinPix · MSc Data Science · Mauritius</span>
+              <span class="font-display font-bold text-off-white text-[17px]">Mohun Shakeel Ahmad</span>
+              <span class="font-mono text-[11px] text-dim tracking-[0.3px]">Software Engineer @ SharinPix · MSc Data Science · Mauritius</span>
             </div>
-            <p class="text-[14px] text-[#7a90a4] leading-[1.65] max-w-[580px]">
+            <p class="text-[14px] text-dim leading-[1.65] max-w-[580px]">
               Code that ships. Data that matters. Writing that doesn't waste your time.
             </p>
-            <div class="flex gap-2 mt-3 flex-wrap">
-              {(['AI', 'Data Science', 'Beginner'] as const).map((t) => (
-                <span class="font-mono text-[9px] uppercase tracking-[1.5px] text-[#3d5166] border border-[#243447] px-2 py-[3px] rounded-[2px]">
-                  {t}
-                </span>
-              ))}
-            </div>
           </div>
         </div>
       </section>
-
-      <Footer />
     </main>
   </div>
+
+  <Footer />
 </BaseLayout>
 
 <style>
@@ -128,15 +127,37 @@ const topics = topicDefs.map((t) => ({
     min-width: 0;
   }
 
-  /* Mobile chip row */
+  .view-all {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #00e5a0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    min-height: 44px;
+    padding: 0 4px;
+    transition: opacity 150ms;
+  }
+
+  .view-all:hover {
+    opacity: 0.7;
+  }
+
+  /* Mobile chip row: sticks under the nav so the active filter stays in view */
   .mobile-chips {
     display: none;
+    position: sticky;
+    top: 65px;
+    z-index: 50;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     gap: 8px;
-    padding: 10px clamp(16px, 5vw, 48px);
+    padding: 6px 48px 6px clamp(16px, 5vw, 48px);
+    background: #0d1117;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    /* Fade the right edge to hint that the row scrolls */
+    mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent);
   }
 
   .mobile-chips::-webkit-scrollbar {
@@ -145,13 +166,14 @@ const topics = topicDefs.map((t) => ({
 
   .chip {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.02em;
-    color: #7a90a4;
+    color: #b8ccdb;
     background: #161f2c;
     border: 1px solid #1e2d3d;
     border-radius: 99px;
-    padding: 5px 12px;
+    min-height: 44px;
+    padding: 0 14px;
     cursor: pointer;
     white-space: nowrap;
     display: inline-flex;
@@ -167,8 +189,8 @@ const topics = topicDefs.map((t) => ({
   }
 
   .chip-count {
-    font-size: 9px;
-    color: #3d5166;
+    font-size: 11px;
+    color: #7a90a4;
   }
 
   .chip.active .chip-count {
@@ -183,32 +205,55 @@ const topics = topicDefs.map((t) => ({
 </style>
 
 <script>
-  // All elements that act as category selectors (sidebar links + mobile chips)
+  // Category selectors (sidebar links + mobile chips) and the things they filter (hero + cards)
   const selectors = document.querySelectorAll<HTMLElement>('[data-cat]');
-  const cards = document.querySelectorAll<HTMLElement>('.card');
+  const items = document.querySelectorAll<HTMLElement>('[data-cats]');
+  const known = new Set([...selectors].map((el) => el.dataset.cat));
 
-  function setActive(cat: string) {
+  const label = document.getElementById('grid-label');
+  const status = document.getElementById('filter-status');
+  const viewAll = document.getElementById('view-all');
+  const empty = document.getElementById('empty-state');
+
+  function render(requested: string) {
+    const cat = known.has(requested) ? requested : 'all';
+
     selectors.forEach((el) => {
-      el.classList.toggle('active', el.dataset.cat === cat);
+      const on = el.dataset.cat === cat;
+      el.classList.toggle('active', on);
+      if (el instanceof HTMLButtonElement) el.setAttribute('aria-pressed', String(on));
+      else if (on) el.setAttribute('aria-current', 'true');
+      else el.removeAttribute('aria-current');
     });
 
-    cards.forEach((c) => {
-      const cardCats = c.dataset.cats?.split(',') ?? [];
-      const show = cat === 'all' || cardCats.includes(cat);
-      c.style.display = show ? '' : 'none';
+    let shown = 0;
+    items.forEach((item) => {
+      const show = cat === 'all' || (item.dataset.cats?.split(',') ?? []).includes(cat);
+      item.style.display = show ? '' : 'none';
+      if (show) shown++;
     });
 
+    if (label) label.textContent = cat === 'all' ? 'Recent Articles' : cat;
+    if (status) status.textContent = cat === 'all' ? '' : `${shown} ${shown === 1 ? 'article' : 'articles'}`;
+    if (viewAll) viewAll.hidden = cat === 'all';
+    if (empty) empty.hidden = shown > 0;
+    return cat;
+  }
+
+  function setActive(requested: string) {
+    const cat = render(requested);
     const url = new URL(window.location.href);
     if (cat === 'all') url.searchParams.delete('cat');
     else url.searchParams.set('cat', cat);
-    window.history.replaceState(null, '', url.toString());
+    // pushState so the browser Back button undoes a filter
+    if (url.href !== window.location.href) window.history.pushState(null, '', url);
   }
 
-  // Restore state from URL on load
-  const params = new URLSearchParams(window.location.search);
-  setActive(params.get('cat') ?? 'all');
+  const fromUrl = () => new URLSearchParams(window.location.search).get('cat') ?? 'all';
 
-  // Wire up sidebar links and mobile chips
+  render(fromUrl());
+  window.addEventListener('popstate', () => render(fromUrl()));
+
   selectors.forEach((el) => {
     el.addEventListener('click', (e) => {
       // Sidebar links are <a> tags — prevent navigation, handle client-side
@@ -217,5 +262,5 @@ const topics = topicDefs.map((t) => ({
     });
   });
 
-  document.getElementById('view-all')?.addEventListener('click', () => setActive('all'));
+  viewAll?.addEventListener('click', () => setActive('all'));
 </script>

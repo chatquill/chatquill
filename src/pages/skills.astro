@@ -36,7 +36,7 @@ const skills = [
 <BaseLayout title="Skills — ChatQuill" description="Claude skills and plugins built by Mohun Shakeel Ahmad.">
   <Nav />
 
-  <main class="skills-page page-enter">
+  <main class="skills-page" id="main">
     <div class="skills-wrap">
 
       <!-- ── Hero ─────────────────────────────────────────────────── -->
@@ -75,7 +75,7 @@ const skills = [
 
               <div class="skill-links">
                 {skill.links.map((link) => (
-                  <a href={link.href} target="_blank" rel="noopener" class="skill-link">
+                  <a href={link.href} target="_blank" rel="noopener noreferrer" class="skill-link">
                     <div class="skill-link-body">
                       <span class="skill-link-label">{link.label}</span>
                       <span class="skill-link-value">{link.value}</span>
@@ -91,52 +91,20 @@ const skills = [
 
     </div><!-- /skills-wrap -->
 
-    <Footer showBack />
   </main>
+
+  <Footer />
 </BaseLayout>
 
 <style>
-  .skills-page {
-    min-height: calc(100vh - 65px);
-  }
-
   .skills-wrap {
     max-width: 800px;
     margin: 0 auto;
     padding: clamp(48px, 8vh, 80px) clamp(16px, 5vw, 56px) 0;
   }
 
-  /* ── Section label ───────────────────────── */
-  .section-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #3d5166;
-    margin: 0 0 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    white-space: nowrap;
-  }
 
-  .section-label::after {
-    content: '';
-    display: block;
-    flex: 1;
-    height: 1px;
-    background: #1e2d3d;
-  }
 
-  .section-eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #00e5a0;
-    display: block;
-    margin-bottom: 24px;
-  }
 
   /* ── Hero ────────────────────────────────── */
   .hero {
@@ -161,16 +129,7 @@ const skills = [
     line-height: 1.5;
   }
 
-  /* ── Divider ─────────────────────────────── */
-  .divider {
-    border: none;
-    border-top: 1px solid #1e2d3d;
-    margin: 40px 0;
-  }
 
-  .prose-section {
-    margin-bottom: 48px;
-  }
 
   /* ── Skill card ──────────────────────────── */
   .skill-list {
@@ -182,7 +141,6 @@ const skills = [
   .skill-card {
     background: #111820;
     border: 1px solid #1e2d3d;
-    border-left: 3px solid #00e5a0;
     border-radius: 4px;
     padding: 24px 22px;
   }
@@ -219,23 +177,7 @@ const skills = [
     margin: 0 0 18px;
   }
 
-  /* ── Tags ────────────────────────────────── */
-  .tag-cloud {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 22px;
-  }
 
-  .tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: #7a90a4;
-    border: 1px solid #1e2d3d;
-    border-radius: 3px;
-    padding: 5px 12px;
-    white-space: nowrap;
-  }
 
   /* ── Before / after ──────────────────────── */
   .example {
@@ -244,10 +186,10 @@ const skills = [
 
   .example-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #3d5166;
+    color: #7a90a4;
     margin: 0 0 6px;
   }
 
@@ -276,13 +218,13 @@ const skills = [
   /* ── Links ───────────────────────────────── */
   .skill-links {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
 
   @media (max-width: 640px) {
     .skill-links {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 
@@ -313,7 +255,7 @@ const skills = [
 
   .skill-link-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: #00e5a0;
@@ -331,7 +273,7 @@ const skills = [
   .skill-link-arrow {
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
-    color: #3d5166;
+    color: #7a90a4;
     flex-shrink: 0;
     transition: color 150ms;
   }

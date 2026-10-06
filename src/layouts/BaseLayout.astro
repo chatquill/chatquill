@@ -4,12 +4,18 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
 }
 
 const {
   title = 'ChatQuill — Mohun Shakeel Ahmad',
   description = 'A personal tech blog covering software engineering, data science, and AI — by Mohun Shakeel Ahmad.',
+  image,
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+// Social crawlers do not render SVG, so only raster covers are advertised
+const ogImage = image && !image.endsWith('.svg') ? new URL(image, Astro.site).href : undefined;
 ---
 <!doctype html>
 <html lang="en">
@@ -17,16 +23,28 @@ const {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content={description} />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#0d1117" />
   <title>{title}</title>
+  <link rel="canonical" href={canonical} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="alternate" type="application/rss+xml" title="ChatQuill" href="/rss.xml" />
+  <meta property="og:site_name" content="ChatQuill" />
+  <meta property="og:type" content={Astro.url.pathname.startsWith('/blog/') ? 'article' : 'website'} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  {ogImage && <meta property="og:image" content={ogImage} />}
+  <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600;1,700&family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap"
     rel="stylesheet"
   />
 </head>
 <body>
+  <a href="#main" class="skip-link">Skip to content</a>
   <slot />
 </body>
 </html>

@@ -4,7 +4,7 @@
 
 @layer base {
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; color-scheme: dark; }
   img { display: block; max-width: 100%; }
   a { text-decoration: none; color: inherit; }
 
@@ -14,18 +14,108 @@
     font-family: 'Lora', Georgia, serif;
     line-height: 1.7;
     min-height: 100vh;
+    /* Column layout so the footer sits at the bottom on short pages */
+    display: flex;
+    flex-direction: column;
+  }
+
+  body > main, body > .page-layout { flex: 1 0 auto; }
+
+  ::selection {
+    background: rgba(0, 229, 160, 0.28);
+    color: #e4eff8;
+  }
+
+  :focus-visible {
+    outline: 2px solid #00e5a0;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
   }
 }
 
-@layer utilities {
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: none; }
-  }
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -100px;
+  z-index: 300;
+  padding: 10px 16px;
+  background: #00e5a0;
+  color: #0d1117;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 3px;
+}
 
-  .page-enter {
-    animation: fadeIn 0.3s ease;
-  }
+.skip-link:focus {
+  top: 12px;
+}
+
+/* Shared by the skills and contact pages */
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #7a90a4;
+  margin: 0 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  display: block;
+  flex: 1;
+  height: 1px;
+  background: #1e2d3d;
+}
+
+.section-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #00e5a0;
+  display: block;
+  margin-bottom: 24px;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #1e2d3d;
+  margin: 40px 0;
+}
+
+.prose-section {
+  margin-bottom: 48px;
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: #7a90a4;
+  border: 1px solid #1e2d3d;
+  border-radius: 3px;
+  padding: 5px 12px;
+  white-space: nowrap;
 }
 
 /* Shiki code block resets — styles applied by CodeBlock wrapper */
@@ -38,6 +128,14 @@
   line-height: 1.7 !important;
   background: #080d14 !important;
   overflow-x: auto;
+}
+
+/* Prose examples (prompts, plain text) wrap instead of scrolling sideways */
+.astro-code[data-language='text'],
+.astro-code[data-language='plaintext'],
+.astro-code[data-language='txt'] {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 /* Themed scrollbar for all code blocks */

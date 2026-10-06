@@ -105,10 +105,11 @@ Category filtering on the homepage uses the browser History API and does not cau
 Tailwind utility-first with a custom dark palette defined in `tailwind.config.mjs`.
 
 **Color tokens (custom Tailwind classes):**
-- Backgrounds: `bg-0d1117`, `bg-111820`, `bg-161f2c`, `bg-1c2739`
-- Borders: `border-1e2d3d`, `border-243447`
-- Text: `text-b8ccdb` (body), `text-e4eff8` (headings), `text-7a90a4` (dim), `text-3d5166` (muted)
-- Accent: `text-accent` / `bg-accent` → `#00e5a0`; hover → `#00c488`
+- Backgrounds: `bg-bg` (#0d1117), `bg-bg-2` (#111820), `bg-bg-3` (#161f2c), `bg-bg-4` (#1c2739)
+- Borders: `border-border` (#1e2d3d), `border-border-2` (#243447)
+- Text: `text-body` (body), `text-off-white` (headings), `text-dim` (metadata and labels)
+- `muted` (#3d5166) is for borders and decoration only; it fails contrast as text
+- Accent: `text-accent` / `bg-accent` → `#00e5a0`; hover → `accent-2` (`#00c488`)
 
 **Typography (loaded via Google Fonts in `BaseLayout.astro`):**
 - Headings: Playfair Display (serif)

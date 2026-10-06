@@ -3,37 +3,35 @@ const path = Astro.url.pathname;
 const isArticles = path === '/' || path.startsWith('/blog');
 const isSkills = path.startsWith('/skills');
 const isContact = path.startsWith('/contact');
+const current = (active: boolean) => (active ? 'page' : undefined);
 ---
 
 <div class="top-hairline" aria-hidden="true"></div>
 
-<nav class="site-nav" id="site-nav">
+<nav class="site-nav" id="site-nav" aria-label="Primary">
   <a href="/" class="wordmark">
-    <img src="/images/logo-circle.png" alt="" class="wordmark-logo" aria-hidden="true" />
+    <img src="/images/logo-circle.png" alt="" width="52" height="52" class="wordmark-logo" />
     <span>chat<span class="wordmark-accent">quill</span></span>
   </a>
 
-  <div class="nav-links" id="nav-desktop">
-    <a href="/" class:list={['nav-page-link', isArticles && 'active']}>articles</a>
-    <a href="/skills" class:list={['nav-page-link', isSkills && 'active']}>skills</a>
-    <a href="/contact" class:list={['nav-page-link', isContact && 'active']}>get in touch</a>
+  <div class="nav-links">
+    <a href="/" class:list={['nav-page-link', isArticles && 'active']} aria-current={current(path === '/')}>articles</a>
+    <a href="/skills" class:list={['nav-page-link', isSkills && 'active']} aria-current={current(isSkills)}>skills</a>
+    <a href="/contact" class:list={['nav-page-link', isContact && 'active']} aria-current={current(isContact)}>get in touch</a>
   </div>
 
-  <button class="hamburger" id="menu-toggle" aria-label="Toggle menu">[menu]</button>
+  <button class="hamburger" id="menu-toggle" aria-label="Open menu" aria-haspopup="dialog" aria-expanded="false">[menu]</button>
 </nav>
 
-<div class="mobile-overlay" id="mobile-overlay" aria-hidden="true">
-  <div class="mobile-overlay-inner">
-    <a href="/" class="mobile-nav-link">articles</a>
-    <a href="/skills" class="mobile-nav-link">skills</a>
-    <a href="/contact" class="mobile-nav-link">get in touch</a>
-    <hr class="mobile-divider" />
-    <div class="mobile-topics" id="mobile-topics">
-      <!-- populated by client JS so counts match -->
-    </div>
-  </div>
-  <button class="mobile-close" id="menu-close" aria-label="Close menu">✕</button>
-</div>
+<!-- Native dialog: Escape, focus trap, inert page and focus return come for free -->
+<dialog class="mobile-menu" id="mobile-menu" aria-label="Menu">
+  <button class="mobile-close" id="menu-close" aria-label="Close menu">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" /></svg>
+  </button>
+  <a href="/" class="mobile-nav-link">articles</a>
+  <a href="/skills" class="mobile-nav-link">skills</a>
+  <a href="/contact" class="mobile-nav-link">get in touch</a>
+</dialog>
 
 <style>
   .top-hairline {
@@ -117,31 +115,31 @@ const isContact = path.startsWith('/contact');
     background: none;
     border: none;
     cursor: pointer;
+    min-height: 44px;
     padding: 4px 8px;
   }
 
-  /* Mobile overlay */
-  .mobile-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
+  .mobile-menu {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: none;
     background: #0d1117;
-    z-index: 200;
+  }
+
+  .mobile-menu[open] {
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 0.75rem;
   }
 
-  .mobile-overlay.open {
-    display: flex;
-  }
-
-  .mobile-overlay-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.75rem;
-    text-align: center;
+  :global(html:has(.mobile-menu[open])) {
+    overflow: hidden;
   }
 
   .mobile-nav-link {
@@ -149,6 +147,7 @@ const isContact = path.startsWith('/contact');
     font-size: 1.4rem;
     color: #e4eff8;
     text-decoration: none;
+    padding: 10px 20px;
     transition: color 150ms;
   }
 
@@ -156,25 +155,15 @@ const isContact = path.startsWith('/contact');
     color: #00e5a0;
   }
 
-  .mobile-divider {
-    width: 60px;
-    border: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    margin: 0;
-  }
-
-  .mobile-topics {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
   .mobile-close {
     position: absolute;
-    top: 20px;
-    right: 24px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 16px;
+    top: 10px;
+    right: 12px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #7a90a4;
     background: none;
     border: none;
@@ -189,16 +178,13 @@ const isContact = path.startsWith('/contact');
 
 <script>
   const toggle = document.getElementById('menu-toggle');
-  const close = document.getElementById('menu-close');
-  const overlay = document.getElementById('mobile-overlay');
+  const menu = document.getElementById('mobile-menu') as HTMLDialogElement | null;
 
   toggle?.addEventListener('click', () => {
-    overlay?.classList.add('open');
-    overlay?.setAttribute('aria-hidden', 'false');
+    menu?.showModal();
+    toggle.setAttribute('aria-expanded', 'true');
   });
 
-  close?.addEventListener('click', () => {
-    overlay?.classList.remove('open');
-    overlay?.setAttribute('aria-hidden', 'true');
-  });
+  document.getElementById('menu-close')?.addEventListener('click', () => menu?.close());
+  menu?.addEventListener('close', () => toggle?.setAttribute('aria-expanded', 'false'));
 </script>

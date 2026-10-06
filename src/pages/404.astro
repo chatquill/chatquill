@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { sortPostsByDateDesc } from '../utils/sort';
+
+const latest = sortPostsByDateDesc(await getCollection('blog')).slice(0, 3);
+---
+
+<BaseLayout title="Page not found — ChatQuill" description="That page is not here.">
+  <Nav />
+
+  <main id="main" class="max-w-[1100px] mx-auto px-[clamp(16px,5vw,48px)] pt-16 pb-20">
+    <h1 class="font-display font-bold text-[clamp(28px,5vw,44px)] text-off-white leading-[1.15] mb-3">That page isn't here.</h1>
+    <p class="text-[17px] text-body mb-12">
+      The link may be old or mistyped. <a href="/" class="text-accent border-b border-accent-2">See all articles</a>, or start with one of the latest:
+    </p>
+
+    <div class="grid gap-6" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+      {latest.map((post) => (
+        <ArticleCard
+          slug={post.slug}
+          title={post.data.title}
+          description={post.data.description}
+          tags={post.data.tags}
+          readtime={post.data.readtime}
+          date={post.data.date}
+          coverGradient={post.data.coverGradient ?? ''}
+          coverGlow={post.data.coverGlow ?? ''}
+          coverImage={post.data.coverImage}
+        />
+      ))}
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
