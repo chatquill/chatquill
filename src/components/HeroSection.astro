@@ -58,7 +58,7 @@ const { slug, title, description, tags, readtime, date, coverGradient, coverGlow
     align-items: center;
     gap: clamp(24px, 4vw, 56px);
     padding: clamp(28px, 4vw, 56px) clamp(16px, 5vw, 48px);
-    border-bottom: 1px solid #1e2d3d;
+    border-bottom: 1px solid theme('colors.border.DEFAULT');
   }
 
   /* The title link covers the whole block, so the cover is clickable too */
@@ -73,7 +73,7 @@ const { slug, title, description, tags, readtime, date, coverGradient, coverGlow
   }
 
   .hero:hover .hero-link {
-    color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
   }
 
   .hero-link:focus-visible {
@@ -81,7 +81,7 @@ const { slug, title, description, tags, readtime, date, coverGradient, coverGlow
   }
 
   .hero:has(.hero-link:focus-visible) {
-    outline: 2px solid #00e5a0;
+    outline: 2px solid theme('colors.accent.DEFAULT');
     outline-offset: -2px;
   }
 
@@ -91,8 +91,8 @@ const { slug, title, description, tags, readtime, date, coverGradient, coverGlow
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
     letter-spacing: 0.5px;
-    color: #00e5a0;
-    border-bottom: 1px solid #00e5a0;
+    color: theme('colors.accent.DEFAULT');
+    border-bottom: 1px solid theme('colors.accent.DEFAULT');
     padding-bottom: 1px;
   }
 
@@ -106,7 +106,7 @@ const { slug, title, description, tags, readtime, date, coverGradient, coverGlow
 
   .hero-cover {
     aspect-ratio: 1600 / 840;
-    border: 1px solid #1e2d3d;
+    border: 1px solid theme('colors.border.DEFAULT');
     border-radius: 4px;
     overflow: hidden;
   }

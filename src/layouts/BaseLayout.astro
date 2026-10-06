@@ -14,8 +14,8 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
-// Social crawlers do not render SVG, so only raster covers are advertised
-const ogImage = image && !image.endsWith('.svg') ? new URL(image, Astro.site).href : undefined;
+// Social crawlers do not render SVG; `npm run og` renders each SVG cover to /images/og/<name>.jpg
+const ogImage = image && new URL(image.replace(/^\/images\/(.+)\.svg$/, '/images/og/$1.jpg'), Astro.site).href;
 ---
 <!doctype html>
 <html lang="en">
@@ -36,12 +36,8 @@ const ogImage = image && !image.endsWith('.svg') ? new URL(image, Astro.site).hr
   <meta property="og:url" content={canonical} />
   {ogImage && <meta property="og:image" content={ogImage} />}
   <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap"
-    rel="stylesheet"
-  />
+  <link rel="preload" href="/fonts/lora.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/playfair-display.woff2" as="font" type="font/woff2" crossorigin />
 </head>
 <body>
   <a href="#main" class="skip-link">Skip to content</a>

@@ -30,7 +30,7 @@ const topics = topicDefs.map((t) => ({
 }));
 ---
 
-<BaseLayout>
+<BaseLayout image={featured.data.coverImage}>
   <Nav />
 
   <!-- Mobile topic chip row (hidden on ≥769px) -->
@@ -60,12 +60,15 @@ const topics = topicDefs.map((t) => ({
       />
 
       <!-- Section header -->
-      <div class="flex items-center justify-between gap-4 px-[clamp(16px,5vw,48px)] pt-10 pb-6">
+      <div class="flex items-center justify-between gap-x-4 gap-y-2 flex-wrap px-[clamp(16px,5vw,48px)] pt-10 pb-6">
         <div class="flex items-baseline gap-3 flex-wrap">
           <h2 class="font-mono text-[11px] font-normal uppercase tracking-[2px] text-dim" id="grid-label">Recent Articles</h2>
           <span class="font-mono text-[11px] text-dim" id="filter-status" aria-live="polite"></span>
         </div>
-        <button class="view-all" id="view-all" hidden>View all →</button>
+        <div class="flex items-center gap-4">
+          <button class="view-all" id="view-all" hidden>View all →</button>
+          <input class="search" id="search" type="search" placeholder="Search articles" aria-label="Search articles" autocomplete="off" />
+        </div>
       </div>
 
       <!-- Card grid -->
@@ -90,7 +93,7 @@ const topics = topicDefs.map((t) => ({
       </div>
 
       <p class="px-[clamp(16px,5vw,48px)] pb-16 text-[15px] text-dim" id="empty-state" hidden>
-        No articles in this topic yet.
+        No articles found.
       </p>
 
       <!-- Author bio -->
@@ -130,7 +133,7 @@ const topics = topicDefs.map((t) => ({
   .view-all {
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
-    color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
     background: none;
     border: none;
     cursor: pointer;
@@ -141,6 +144,22 @@ const topics = topicDefs.map((t) => ({
 
   .view-all:hover {
     opacity: 0.7;
+  }
+
+  .search {
+    width: 200px;
+    min-height: 44px;
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: theme('colors.off-white');
+    background: theme('colors.bg.2');
+    border: 1px solid theme('colors.border.2');
+    border-radius: 3px;
+  }
+
+  .search::placeholder {
+    color: theme('colors.dim');
   }
 
   /* Mobile chip row: sticks under the nav so the active filter stays in view */
@@ -154,7 +173,7 @@ const topics = topicDefs.map((t) => ({
     scrollbar-width: none;
     gap: 8px;
     padding: 6px 48px 6px clamp(16px, 5vw, 48px);
-    background: #0d1117;
+    background: theme('colors.bg.DEFAULT');
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     /* Fade the right edge to hint that the row scrolls */
     mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent);
@@ -168,9 +187,9 @@ const topics = topicDefs.map((t) => ({
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
     letter-spacing: 0.02em;
-    color: #b8ccdb;
-    background: #161f2c;
-    border: 1px solid #1e2d3d;
+    color: theme('colors.body');
+    background: theme('colors.bg.3');
+    border: 1px solid theme('colors.border.DEFAULT');
     border-radius: 99px;
     min-height: 44px;
     padding: 0 14px;
@@ -184,17 +203,17 @@ const topics = topicDefs.map((t) => ({
   }
 
   .chip.active {
-    color: #00e5a0;
-    border-color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
+    border-color: theme('colors.accent.DEFAULT');
   }
 
   .chip-count {
     font-size: 11px;
-    color: #7a90a4;
+    color: theme('colors.dim');
   }
 
   .chip.active .chip-count {
-    color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
   }
 
   @media (max-width: 768px) {
@@ -214,9 +233,14 @@ const topics = topicDefs.map((t) => ({
   const status = document.getElementById('filter-status');
   const viewAll = document.getElementById('view-all');
   const empty = document.getElementById('empty-state');
+  const search = document.getElementById('search') as HTMLInputElement | null;
+
+  let current = 'all';
+  let query = '';
 
   function render(requested: string) {
     const cat = known.has(requested) ? requested : 'all';
+    current = cat;
 
     selectors.forEach((el) => {
       const on = el.dataset.cat === cat;
@@ -228,13 +252,14 @@ const topics = topicDefs.map((t) => ({
 
     let shown = 0;
     items.forEach((item) => {
-      const show = cat === 'all' || (item.dataset.cats?.split(',') ?? []).includes(cat);
+      const inCat = cat === 'all' || (item.dataset.cats?.split(',') ?? []).includes(cat);
+      const show = inCat && (item.textContent ?? '').toLowerCase().includes(query);
       item.style.display = show ? '' : 'none';
       if (show) shown++;
     });
 
     if (label) label.textContent = cat === 'all' ? 'Recent Articles' : cat;
-    if (status) status.textContent = cat === 'all' ? '' : `${shown} ${shown === 1 ? 'article' : 'articles'}`;
+    if (status) status.textContent = cat === 'all' && !query ? '' : `${shown} ${shown === 1 ? 'article' : 'articles'}`;
     if (viewAll) viewAll.hidden = cat === 'all';
     if (empty) empty.hidden = shown > 0;
     return cat;
@@ -263,4 +288,9 @@ const topics = topicDefs.map((t) => ({
   });
 
   viewAll?.addEventListener('click', () => setActive('all'));
+
+  search?.addEventListener('input', () => {
+    query = search.value.trim().toLowerCase();
+    render(current);
+  });
 </script>

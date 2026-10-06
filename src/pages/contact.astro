@@ -241,7 +241,7 @@ import Footer from '../components/Footer.astro';
     font-family: 'Playfair Display', Georgia, serif;
     font-size: clamp(28px, 5vw, 44px);
     font-weight: 700;
-    color: #e4eff8;
+    color: theme('colors.off-white');
     margin: 0 0 10px;
     line-height: 1.15;
   }
@@ -250,7 +250,7 @@ import Footer from '../components/Footer.astro';
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 17px;
     font-style: italic;
-    color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
     margin: 0 0 12px;
     line-height: 1.5;
   }
@@ -258,7 +258,7 @@ import Footer from '../components/Footer.astro';
   .hero-location {
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
-    color: #7a90a4;
+    color: theme('colors.dim');
     margin: 0;
     display: flex;
     align-items: center;
@@ -266,7 +266,7 @@ import Footer from '../components/Footer.astro';
   }
 
   .location-dot {
-    color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
     font-size: 8px;
   }
 
@@ -276,7 +276,7 @@ import Footer from '../components/Footer.astro';
     font-family: 'Lora', Georgia, serif;
     font-size: 16px;
     line-height: 1.8;
-    color: #b8ccdb;
+    color: theme('colors.body');
     margin: 0 0 18px;
   }
 
@@ -285,7 +285,7 @@ import Footer from '../components/Footer.astro';
   }
 
   .prose-body strong {
-    color: #e4eff8;
+    color: theme('colors.off-white');
     font-weight: 600;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.9em;
@@ -299,7 +299,7 @@ import Footer from '../components/Footer.astro';
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 22px;
     font-weight: 700;
-    color: #e4eff8;
+    color: theme('colors.off-white');
     margin: 0 0 14px;
   }
 
@@ -324,7 +324,7 @@ import Footer from '../components/Footer.astro';
   }
 
   .timeline-item {
-    border-left: 2px solid #1e2d3d;
+    border-left: 2px solid theme('colors.border.DEFAULT');
     padding-left: 16px;
   }
 
@@ -332,32 +332,32 @@ import Footer from '../components/Footer.astro';
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 15px;
     font-weight: 700;
-    color: #e4eff8;
+    color: theme('colors.off-white');
     margin: 0 0 4px;
   }
 
   .tl-meta {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
-    color: #7a90a4;
+    color: theme('colors.dim');
     margin: 0 0 6px;
   }
 
   .tl-years {
-    color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
   }
 
   .tl-desc {
     font-family: 'Lora', Georgia, serif;
     font-size: 14px;
     line-height: 1.65;
-    color: #7a90a4;
+    color: theme('colors.dim');
     margin: 0;
   }
 
   .now-box {
-    background: #111820;
-    border: 1px solid #1e2d3d;
+    background: theme('colors.bg.2');
+    border: 1px solid theme('colors.border.DEFAULT');
     border-radius: 4px;
     padding: 20px 22px;
   }
@@ -366,7 +366,7 @@ import Footer from '../components/Footer.astro';
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 16px;
     font-weight: 700;
-    color: #e4eff8;
+    color: theme('colors.off-white');
     margin: 0 0 14px;
   }
 
@@ -374,7 +374,7 @@ import Footer from '../components/Footer.astro';
     font-family: 'Lora', Georgia, serif;
     font-size: 14px;
     line-height: 1.75;
-    color: #b8ccdb;
+    color: theme('colors.body');
     margin: 0 0 12px;
   }
 
@@ -390,15 +390,15 @@ import Footer from '../components/Footer.astro';
   .topics-intro {
     font-family: 'Lora', Georgia, serif;
     font-size: 16px;
-    color: #b8ccdb;
+    color: theme('colors.body');
     margin: 0 0 16px !important;
   }
 
 
 
   .tag-accent {
-    color: #00e5a0;
-    border-color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
+    border-color: theme('colors.accent.DEFAULT');
   }
 
   /* ── Tech stack ──────────────────────────── */
@@ -421,8 +421,8 @@ import Footer from '../components/Footer.astro';
   }
 
   .stack-card {
-    background: #111820;
-    border: 1px solid #1e2d3d;
+    background: theme('colors.bg.2');
+    border: 1px solid theme('colors.border.DEFAULT');
     border-radius: 4px;
     padding: 18px 16px;
   }
@@ -432,7 +432,7 @@ import Footer from '../components/Footer.astro';
     font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
     margin: 0 0 12px;
   }
 
@@ -448,7 +448,7 @@ import Footer from '../components/Footer.astro';
   .stack-list li {
     font-family: 'Lora', Georgia, serif;
     font-size: 14px;
-    color: #b8ccdb;
+    color: theme('colors.body');
     padding-left: 14px;
     position: relative;
   }
@@ -457,7 +457,7 @@ import Footer from '../components/Footer.astro';
     content: '·';
     position: absolute;
     left: 0;
-    color: #7a90a4;
+    color: theme('colors.dim');
   }
 
 
@@ -477,8 +477,8 @@ import Footer from '../components/Footer.astro';
     display: flex;
     align-items: center;
     gap: 14px;
-    background: #111820;
-    border: 1px solid #1e2d3d;
+    background: theme('colors.bg.2');
+    border: 1px solid theme('colors.border.DEFAULT');
     border-radius: 4px;
     padding: 18px 16px;
     text-decoration: none;
@@ -486,12 +486,12 @@ import Footer from '../components/Footer.astro';
   }
 
   .contact-card:hover {
-    border-color: #243447;
-    background: #161f2c;
+    border-color: theme('colors.border.2');
+    background: theme('colors.bg.3');
   }
 
   .contact-card-icon {
-    color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
     flex-shrink: 0;
     display: flex;
   }
@@ -509,13 +509,13 @@ import Footer from '../components/Footer.astro';
     font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #7a90a4;
+    color: theme('colors.dim');
   }
 
   .contact-card-value {
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
-    color: #b8ccdb;
+    color: theme('colors.body');
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -524,12 +524,12 @@ import Footer from '../components/Footer.astro';
   .contact-card-arrow {
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
-    color: #7a90a4;
+    color: theme('colors.dim');
     flex-shrink: 0;
     transition: color 150ms;
   }
 
   .contact-card:hover .contact-card-arrow {
-    color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
   }
 </style>

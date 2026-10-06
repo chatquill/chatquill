@@ -115,7 +115,7 @@ const skills = [
     font-family: 'Playfair Display', Georgia, serif;
     font-size: clamp(28px, 5vw, 44px);
     font-weight: 700;
-    color: #e4eff8;
+    color: theme('colors.off-white');
     margin: 0 0 10px;
     line-height: 1.15;
   }
@@ -124,7 +124,7 @@ const skills = [
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 17px;
     font-style: italic;
-    color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
     margin: 0;
     line-height: 1.5;
   }
@@ -139,8 +139,8 @@ const skills = [
   }
 
   .skill-card {
-    background: #111820;
-    border: 1px solid #1e2d3d;
+    background: theme('colors.bg.2');
+    border: 1px solid theme('colors.border.DEFAULT');
     border-radius: 4px;
     padding: 24px 22px;
   }
@@ -158,14 +158,14 @@ const skills = [
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 22px;
     font-weight: 700;
-    color: #e4eff8;
+    color: theme('colors.off-white');
     margin: 0;
   }
 
   .skill-meta {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
-    color: #7a90a4;
+    color: theme('colors.dim');
     margin: 0;
   }
 
@@ -173,7 +173,7 @@ const skills = [
     font-family: 'Lora', Georgia, serif;
     font-size: 16px;
     line-height: 1.8;
-    color: #b8ccdb;
+    color: theme('colors.body');
     margin: 0 0 18px;
   }
 
@@ -189,7 +189,7 @@ const skills = [
     font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #7a90a4;
+    color: theme('colors.dim');
     margin: 0 0 6px;
   }
 
@@ -197,9 +197,9 @@ const skills = [
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
     line-height: 1.7;
-    color: #b8ccdb;
-    background: #0d1117;
-    border: 1px solid #1e2d3d;
+    color: theme('colors.body');
+    background: theme('colors.bg.DEFAULT');
+    border: 1px solid theme('colors.border.DEFAULT');
     border-radius: 4px;
     padding: 12px 14px;
     margin: 0 0 14px;
@@ -212,7 +212,7 @@ const skills = [
   }
 
   .example-before {
-    color: #7a90a4;
+    color: theme('colors.dim');
   }
 
   /* ── Links ───────────────────────────────── */
@@ -232,8 +232,8 @@ const skills = [
     display: flex;
     align-items: center;
     gap: 14px;
-    background: #0d1117;
-    border: 1px solid #1e2d3d;
+    background: theme('colors.bg.DEFAULT');
+    border: 1px solid theme('colors.border.DEFAULT');
     border-radius: 4px;
     padding: 14px 16px;
     text-decoration: none;
@@ -241,8 +241,8 @@ const skills = [
   }
 
   .skill-link:hover {
-    border-color: #243447;
-    background: #161f2c;
+    border-color: theme('colors.border.2');
+    background: theme('colors.bg.3');
   }
 
   .skill-link-body {
@@ -258,13 +258,13 @@ const skills = [
     font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
   }
 
   .skill-link-value {
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
-    color: #b8ccdb;
+    color: theme('colors.body');
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -273,12 +273,12 @@ const skills = [
   .skill-link-arrow {
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
-    color: #7a90a4;
+    color: theme('colors.dim');
     flex-shrink: 0;
     transition: color 150ms;
   }
 
   .skill-link:hover .skill-link-arrow {
-    color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
   }
 </style>

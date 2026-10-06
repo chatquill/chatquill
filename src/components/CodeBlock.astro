@@ -20,7 +20,7 @@ const { filename, lang = 'text', code } = Astro.props;
       <span class="font-mono text-[11px] text-dim uppercase tracking-[1px]">{lang}</span>
     </div>
   )}
-  <div class="bg-[#080d14] overflow-x-auto">
+  <div class="bg-code overflow-x-auto">
     <Code code={code.trim()} lang={lang.toLowerCase()} theme="github-dark-dimmed" />
   </div>
 </div>

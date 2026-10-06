@@ -20,7 +20,8 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content, headings } = await post.render();
+const toc = headings.filter((h) => h.depth === 2);
 const { title, tags, readtime, date, coverGradient, coverGlow, coverImage, description } = post.data;
 
 // Keep reading: newest posts that share a tag first, then the newest of the rest
@@ -81,6 +82,19 @@ const related = [...others.filter(sharesTag), ...others.filter((p) => !sharesTag
       </div>
     </div>
 
+    {toc.length >= 3 && (
+      <div class="max-w-[740px] mx-auto px-[clamp(16px,5vw,48px)] mb-8">
+        <details class="toc">
+          <summary>On this page <span>{toc.length} sections</span></summary>
+          <nav aria-label="On this page">
+            <ol>
+              {toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+            </ol>
+          </nav>
+        </details>
+      </div>
+    )}
+
     <!-- Article body -->
     <article class="article-body max-w-[740px] mx-auto px-[clamp(16px,5vw,48px)] pb-20">
       <Content />
@@ -118,9 +132,82 @@ const related = [...others.filter(sharesTag), ...others.filter((p) => !sharesTag
     table.setAttribute('role', 'region');
     table.setAttribute('aria-label', 'Table, scrolls sideways');
   });
+
+  // Copy button on every code block (CodeBlock components and markdown fences alike)
+  document.querySelectorAll<HTMLElement>('.article-body pre').forEach((pre) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'code-wrap';
+    pre.replaceWith(wrap);
+
+    const button = document.createElement('button');
+    button.className = 'code-copy';
+    button.textContent = 'Copy';
+    button.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(pre.innerText);
+      button.textContent = 'Copied';
+      setTimeout(() => (button.textContent = 'Copy'), 1500);
+    });
+
+    wrap.append(pre, button);
+  });
 </script>
 
 <style>
+  .toc {
+    border-top: 1px solid theme('colors.border.DEFAULT');
+    border-bottom: 1px solid theme('colors.border.DEFAULT');
+  }
+
+  .toc summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 48px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: theme('colors.body');
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .toc summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .toc summary span {
+    letter-spacing: 0.5px;
+    text-transform: none;
+    color: theme('colors.dim');
+  }
+
+  .toc ol {
+    list-style: decimal;
+    padding: 0 0 18px 1.5rem;
+    color: theme('colors.dim');
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .toc li {
+    padding: 5px 0;
+  }
+
+  .toc a {
+    color: theme('colors.body');
+    transition: color 150ms;
+  }
+
+  .toc a:hover {
+    color: theme('colors.accent.DEFAULT');
+  }
+
+  /* Fenced code blocks get their spacing from the wrapper the copy script adds */
+  .article-body > :global(.code-wrap) {
+    margin: 32px 0;
+  }
+
   /* Prose styles scoped to .article-body */
   /* Let long URLs / unbroken strings wrap instead of widening the page */
   .article-body {
@@ -130,7 +217,7 @@ const related = [...others.filter(sharesTag), ...others.filter((p) => !sharesTag
   .article-body :global(p) {
     font-size: 17px;
     line-height: 1.85;
-    color: #b8ccdb;
+    color: theme('colors.body');
     margin-bottom: 22px;
     text-wrap: pretty;
     font-family: 'Lora', Georgia, serif;
@@ -140,7 +227,7 @@ const related = [...others.filter(sharesTag), ...others.filter((p) => !sharesTag
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 24px;
     font-weight: 700;
-    color: #e4eff8;
+    color: theme('colors.off-white');
     margin: 40px 0 16px;
     line-height: 1.3;
   }
@@ -149,23 +236,23 @@ const related = [...others.filter(sharesTag), ...others.filter((p) => !sharesTag
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 19px;
     font-weight: 600;
-    color: #e4eff8;
+    color: theme('colors.off-white');
     margin: 32px 0 12px;
   }
 
   .article-body :global(strong) {
-    color: #e4eff8;
+    color: theme('colors.off-white');
     font-weight: 600;
   }
 
   .article-body :global(em) {
     font-style: italic;
-    color: #b8ccdb;
+    color: theme('colors.body');
   }
 
   .article-body :global(a) {
-    color: #00e5a0;
-    border-bottom: 1px solid #00c488;
+    color: theme('colors.accent.DEFAULT');
+    border-bottom: 1px solid theme('colors.accent.2');
     transition: opacity 0.15s;
   }
 
@@ -175,7 +262,7 @@ const related = [...others.filter(sharesTag), ...others.filter((p) => !sharesTag
 
   .article-body :global(ul),
   .article-body :global(ol) {
-    color: #b8ccdb;
+    color: theme('colors.body');
     font-size: 17px;
     line-height: 1.85;
     margin-bottom: 22px;
@@ -193,7 +280,7 @@ const related = [...others.filter(sharesTag), ...others.filter((p) => !sharesTag
   }
 
   .article-body :global(li::marker) {
-    color: #7a90a4;
+    color: theme('colors.dim');
   }
 
   .article-body :global(li) {
@@ -204,7 +291,7 @@ const related = [...others.filter(sharesTag), ...others.filter((p) => !sharesTag
   .article-body :global(code:not(pre > code)) {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85em;
-    color: #00e5a0;
+    color: theme('colors.accent.DEFAULT');
     background: rgba(0, 229, 160, 0.08);
     padding: 1px 5px;
     border-radius: 3px;
@@ -214,7 +301,7 @@ const related = [...others.filter(sharesTag), ...others.filter((p) => !sharesTag
   .article-body :global(pre) {
     margin: 32px 0;
     border-radius: 4px;
-    border: 1px solid #1e2d3d;
+    border: 1px solid theme('colors.border.DEFAULT');
     overflow-x: auto;
   }
 
@@ -228,23 +315,25 @@ const related = [...others.filter(sharesTag), ...others.filter((p) => !sharesTag
     line-height: 1.55;
   }
   .article-body :global(th) {
-    background: #161f2c;
-    color: #e4eff8;
+    background: theme('colors.bg.3');
+    color: theme('colors.off-white');
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
     font-weight: 600;
     padding: 10px 14px;
-    border: 1px solid #1e2d3d;
+    border: 1px solid theme('colors.border.DEFAULT');
     text-align: left;
     letter-spacing: 0.3px;
   }
   .article-body :global(td) {
     padding: 9px 14px;
-    border: 1px solid #1e2d3d;
-    color: #b8ccdb;
+    border: 1px solid theme('colors.border.DEFAULT');
+    color: theme('colors.body');
+    /* Long inline code wraps inside the cell instead of pushing the table wide */
+    overflow-wrap: anywhere;
   }
   .article-body :global(tr:nth-child(even) td) {
-    background: #0d1520;
+    background: theme('colors.bg.2');
   }
   /* On narrow screens, scroll wide tables inside the column rather than
      widening the page (iOS Safari zooms out and leaves a gap on the right) */
@@ -260,14 +349,14 @@ const related = [...others.filter(sharesTag), ...others.filter((p) => !sharesTag
   .article-body :global(blockquote) {
     margin: 40px 0;
     padding: 24px 0;
-    border-top: 1px solid #1e2d3d;
-    border-bottom: 1px solid #1e2d3d;
+    border-top: 1px solid theme('colors.border.DEFAULT');
+    border-bottom: 1px solid theme('colors.border.DEFAULT');
   }
   .article-body :global(blockquote p) {
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 19px !important;
     font-style: italic;
-    color: #e4eff8 !important;
+    color: theme('colors.off-white') !important;
     line-height: 1.5 !important;
     margin: 0 !important;
   }
@@ -280,7 +369,7 @@ const related = [...others.filter(sharesTag), ...others.filter((p) => !sharesTag
   /* Horizontal rules */
   .article-body :global(hr) {
     border: none;
-    border-top: 1px solid #1e2d3d;
+    border-top: 1px solid theme('colors.border.DEFAULT');
     margin: 40px 0;
   }
 </style>

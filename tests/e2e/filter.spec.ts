@@ -73,4 +73,28 @@ test.describe('Category filtering', () => {
     await page.goto('/?cat=AI');
     await expect(sidebarCat(page, 'AI')).toHaveClass(/active/);
   });
+
+  test('browser Back undoes the last filter', async ({ page }) => {
+    await sidebarCat(page, 'AI').click();
+    await sidebarCat(page, 'Tech').click();
+    await page.goBack();
+    await expect(sidebarCat(page, 'AI')).toHaveClass(/active/);
+  });
+
+  test('an unknown ?cat falls back to "all"', async ({ page }) => {
+    await page.goto('/?cat=Nope');
+    await expect(sidebarCat(page, 'all')).toHaveClass(/active/);
+    await expect(page.locator('.card').first()).toBeVisible();
+  });
+
+  test('search narrows the list to matching articles', async ({ page }) => {
+    await page.locator('#search').fill('race condition');
+    await expect(page.locator('.card:visible')).toHaveCount(1);
+    await expect(page.locator('#filter-status')).toHaveText('1 article');
+  });
+
+  test('search with no match shows the empty state', async ({ page }) => {
+    await page.locator('#search').fill('zzzz-no-such-article');
+    await expect(page.locator('#empty-state')).toBeVisible();
+  });
 });
