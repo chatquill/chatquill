@@ -84,6 +84,11 @@ const { title, tags, readtime, date, coverGradient, coverGlow, coverImage, descr
 
 <style>
   /* Prose styles scoped to .article-body */
+  /* Let long URLs / unbroken strings wrap instead of widening the page */
+  .article-body {
+    overflow-wrap: break-word;
+  }
+
   .article-body :global(p) {
     font-size: 17px;
     line-height: 1.85;
@@ -186,6 +191,15 @@ const { title, tags, readtime, date, coverGradient, coverGlow, coverImage, descr
   }
   .article-body :global(tr:nth-child(even) td) {
     background: #0d1520;
+  }
+  /* On narrow screens, scroll wide tables inside the column rather than
+     widening the page (iOS Safari zooms out and leaves a gap on the right) */
+  @media (max-width: 740px) {
+    .article-body :global(table) {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
   }
 
   /* Blockquotes */
