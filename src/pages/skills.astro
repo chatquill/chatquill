@@ -1,0 +1,342 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const skills = [
+  {
+    name: 'Prompt Fixer',
+    meta: 'Claude plugin · MIT',
+    summary:
+      'Turns a rough prompt into one Claude Code can run in a single pass. It asks up to four short questions (which file, the exact error, what "fixed" looks like), then hands back a short prompt with a check Claude can run.',
+    tags: ['Claude Code', 'Cowork', 'Chat', 'Salesforce'],
+    before: 'the discount is wrong, can you fix it',
+    after: [
+      'In @classes/OpportunityService.cls, calculateDiscount',
+      'returns 0 when Quantity is over 100; expected 15%.',
+      'Write a failing test first, then fix.',
+      'Done when: sf apex run test --class-names OpportunityServiceTest',
+    ],
+    links: [
+      {
+        label: 'ADD IN CLAUDE',
+        value: 'Customize › Plugins › Prompt Fixer',
+        href: 'https://claude.ai/customize/plugins',
+      },
+      {
+        label: 'SOURCE',
+        value: 'chatquill/prompt-fixer',
+        href: 'https://github.com/chatquill/prompt-fixer',
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout title="Skills — ChatQuill" description="Claude skills and plugins built by Mohun Shakeel Ahmad.">
+  <Nav />
+
+  <main class="skills-page page-enter">
+    <div class="skills-wrap">
+
+      <!-- ── Hero ─────────────────────────────────────────────────── -->
+      <header class="hero">
+        <span class="section-eyebrow">SKILLS</span>
+        <h1 class="hero-title">Claude skills</h1>
+        <p class="hero-tagline">Small tools I built for working with Claude.</p>
+      </header>
+
+      <hr class="divider" />
+
+      <!-- ── Plugins ──────────────────────────────────────────────── -->
+      <section class="prose-section">
+        <h2 class="section-label">PLUGINS</h2>
+
+        <div class="skill-list">
+          {skills.map((skill) => (
+            <article class="skill-card">
+              <div class="skill-head">
+                <h3 class="skill-name">{skill.name}</h3>
+                <p class="skill-meta">{skill.meta}</p>
+              </div>
+
+              <p class="skill-summary">{skill.summary}</p>
+
+              <div class="tag-cloud">
+                {skill.tags.map((tag) => <span class="tag">{tag}</span>)}
+              </div>
+
+              <div class="example">
+                <p class="example-label">BEFORE</p>
+                <pre class="example-code example-before">{skill.before}</pre>
+                <p class="example-label">AFTER</p>
+                <pre class="example-code">{skill.after.join('\n')}</pre>
+              </div>
+
+              <div class="skill-links">
+                {skill.links.map((link) => (
+                  <a href={link.href} target="_blank" rel="noopener" class="skill-link">
+                    <div class="skill-link-body">
+                      <span class="skill-link-label">{link.label}</span>
+                      <span class="skill-link-value">{link.value}</span>
+                    </div>
+                    <span class="skill-link-arrow">→</span>
+                  </a>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+    </div><!-- /skills-wrap -->
+
+    <Footer showBack />
+  </main>
+</BaseLayout>
+
+<style>
+  .skills-page {
+    min-height: calc(100vh - 65px);
+  }
+
+  .skills-wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: clamp(48px, 8vh, 80px) clamp(16px, 5vw, 56px) 0;
+  }
+
+  /* ── Section label ───────────────────────── */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #3d5166;
+    margin: 0 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    white-space: nowrap;
+  }
+
+  .section-label::after {
+    content: '';
+    display: block;
+    flex: 1;
+    height: 1px;
+    background: #1e2d3d;
+  }
+
+  .section-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #00e5a0;
+    display: block;
+    margin-bottom: 24px;
+  }
+
+  /* ── Hero ────────────────────────────────── */
+  .hero {
+    margin-bottom: 40px;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 700;
+    color: #e4eff8;
+    margin: 0 0 10px;
+    line-height: 1.15;
+  }
+
+  .hero-tagline {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 17px;
+    font-style: italic;
+    color: #00e5a0;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* ── Divider ─────────────────────────────── */
+  .divider {
+    border: none;
+    border-top: 1px solid #1e2d3d;
+    margin: 40px 0;
+  }
+
+  .prose-section {
+    margin-bottom: 48px;
+  }
+
+  /* ── Skill card ──────────────────────────── */
+  .skill-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .skill-card {
+    background: #111820;
+    border: 1px solid #1e2d3d;
+    border-left: 3px solid #00e5a0;
+    border-radius: 4px;
+    padding: 24px 22px;
+  }
+
+  .skill-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+
+  .skill-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #e4eff8;
+    margin: 0;
+  }
+
+  .skill-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #7a90a4;
+    margin: 0;
+  }
+
+  .skill-summary {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #b8ccdb;
+    margin: 0 0 18px;
+  }
+
+  /* ── Tags ────────────────────────────────── */
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #7a90a4;
+    border: 1px solid #1e2d3d;
+    border-radius: 3px;
+    padding: 5px 12px;
+    white-space: nowrap;
+  }
+
+  /* ── Before / after ──────────────────────── */
+  .example {
+    margin-bottom: 22px;
+  }
+
+  .example-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #3d5166;
+    margin: 0 0 6px;
+  }
+
+  .example-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #b8ccdb;
+    background: #0d1117;
+    border: 1px solid #1e2d3d;
+    border-radius: 4px;
+    padding: 12px 14px;
+    margin: 0 0 14px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .example-code:last-child {
+    margin-bottom: 0;
+  }
+
+  .example-before {
+    color: #7a90a4;
+  }
+
+  /* ── Links ───────────────────────────────── */
+  .skill-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  @media (max-width: 640px) {
+    .skill-links {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .skill-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #0d1117;
+    border: 1px solid #1e2d3d;
+    border-radius: 4px;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: border-color 150ms, background 150ms;
+  }
+
+  .skill-link:hover {
+    border-color: #243447;
+    background: #161f2c;
+  }
+
+  .skill-link-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .skill-link-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #00e5a0;
+  }
+
+  .skill-link-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #b8ccdb;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .skill-link-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #3d5166;
+    flex-shrink: 0;
+    transition: color 150ms;
+  }
+
+  .skill-link:hover .skill-link-arrow {
+    color: #00e5a0;
+  }
+</style>

@@ -19,6 +19,12 @@ test.describe('Navigation', () => {
     await expect(page).toHaveURL('/contact');
   });
 
+  test('"skills" link navigates to the skills page', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('link', { name: /^skills$/i }).first().click();
+    await expect(page).toHaveURL('/skills');
+  });
+
   test('"articles" nav link is active on the homepage', async ({ page }) => {
     await page.goto('/');
     const articlesLink = page.locator('.nav-page-link.active');

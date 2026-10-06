@@ -25,7 +25,7 @@ npm run test:e2e      # Playwright E2E tests (auto-starts dev server)
 ```bash
 npm run lint       # Must exit 0
 npm test           # All 52 unit tests must pass
-npm run test:e2e   # All 36 E2E tests must pass
+npm run test:e2e   # All 41 E2E tests must pass
 ```
 
 The pre-push git hook (`.githooks/pre-push`) enforces this automatically, but run them manually first to catch failures early. Never skip or bypass the hook (`--no-verify`).
@@ -43,6 +43,7 @@ src/
 ├── pages/
 │   ├── index.astro         # Homepage (article grid + sidebar)
 │   ├── blog/[slug].astro   # Dynamic article page
+│   ├── skills.astro        # Claude skills and plugins
 │   └── contact.astro       # Author bio / contact
 └── styles/
     └── global.css
@@ -94,6 +95,7 @@ coverGlow: 'rgba(...)'
 
 - `/` — homepage; accepts `?cat=<tag>` query param for client-side category filtering
 - `/blog/[slug]` — generated at build time via `getStaticPaths()` from the `blog` content collection
+- `/skills` — static list of Claude skills/plugins (edit the `skills` array in `skills.astro`)
 - `/contact` — static about/contact page
 
 Category filtering on the homepage uses the browser History API and does not cause a full navigation.
