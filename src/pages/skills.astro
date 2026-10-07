@@ -8,14 +8,15 @@ const skills = [
     name: 'Prompt Fixer',
     meta: 'Claude plugin · MIT',
     summary:
-      'Turns a rough prompt into one Claude Code can run in a single pass. It asks up to four short questions (which file, the exact error, what "fixed" looks like), then hands back a short prompt with a check Claude can run.',
-    tags: ['Claude Code', 'Cowork', 'Chat', 'Salesforce'],
-    before: 'the discount is wrong, can you fix it',
+      'Turns a rough request into a clear prompt Claude can get right the first time. For emails, posts, reports and plans it asks what it is about, who it is for, the tone and the length. For code it asks which file, the exact error and how to check the fix. It can also suggest one of your installed skills when one fits.',
+    tags: ['Writing', 'Code', 'Chat', 'Cowork', 'Claude Code', 'Salesforce'],
+    before: 'write an email to my landlord about the broken heater',
     after: [
-      'In @classes/OpportunityService.cls, calculateDiscount',
-      'returns 0 when Quantity is over 100; expected 15%.',
-      'Write a failing test first, then fix.',
-      'Done when: sf apex run test --class-names OpportunityServiceTest',
+      'Write an email to my landlord, <landlord name>, asking him to',
+      'repair the heater in my flat by Friday 10 October.',
+      'Facts: it stopped working on 2 October; I reported it on 3 October.',
+      'Tone: polite and firm. Under 150 words, with a subject line.',
+      'End by asking him to confirm a repair date.',
     ],
     links: [
       {
