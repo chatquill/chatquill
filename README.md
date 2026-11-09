@@ -56,16 +56,29 @@ and half are for people who ship to production.
 
 ---
 
-### 🛠️ Featured project
+### 🛠️ Featured projects
 
 <table>
 <tr>
-<td>
+<td width="50%" valign="top">
 
-**[Prompt Fixer](https://github.com/chatquill/prompt-fixer)**: a Claude plugin that turns rough requests into clear,
-well-structured prompts and suggests one of your installed skills when one fits.
+**[Claude Code Web Studios](https://github.com/chatquill/claude-code-websites)**
 
-`Writing` · `Code` · `Chat` · `Cowork` · `Claude Code` · `Salesforce` · MIT licensed
+Turns a single Claude Code session into a full web development studio, from discovery to growth.
+Directors, leads and specialists cover frontend, backend, UX, QA, DevOps, security and content.
+Hooks catch secrets, missing tests and accessibility issues as code is written.
+
+`55 agents` · `100 skills` · `17 hooks` · `18 rules` · MIT
+
+</td>
+<td width="50%" valign="top">
+
+**[Prompt Fixer](https://github.com/chatquill/prompt-fixer)**
+
+A Claude plugin that turns rough requests into clear, well-structured prompts,
+and suggests one of your installed skills when one fits.
+
+`Writing` · `Code` · `Chat` · `Cowork` · `Claude Code` · `Salesforce` · MIT
 
 </td>
 </tr>
