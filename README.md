@@ -38,20 +38,6 @@ and half are for people who ship to production.
 
 ---
 
-### ✒️ Latest from the blog
-
-| | Article | Topic |
-|:-:|:--|:--|
-| 🤖 | [Prompt Engineering for Dummies in 2026](https://chatquill.dev/blog/prompt-engineering-2026) | AI · Beginner |
-| 🏁 | [What Is a Race Condition](https://chatquill.dev/blog/race-condition) | Tech |
-| 💬 | [Tracking Mental Health Conversations on Reddit](https://chatquill.dev/blog/reddit-sentiment-analysis) | Data Science |
-| 🎨 | [How AI Image Generators Work](https://chatquill.dev/blog/stable-diffusion) | AI |
-| 💎 | [Why I Still Love Ruby on Rails in 2026](https://chatquill.dev/blog/ruby-on-rails-2026) | Tech |
-| 📊 | [Implementing K-Means Clustering From Scratch](https://chatquill.dev/blog/k-means-clustering) | Data Science |
-| 🕵️ | [The Exact Moment Your Data Gets Sold](https://chatquill.dev/blog/data-sold) | Tech |
-| 🧠 | [What Is Machine Learning? Explained With Zero Math](https://chatquill.dev/blog/ml-zero-math) | Data Science · Beginner |
-| 🔍 | [AI Code Review: Is It Ready to Replace Your Senior Dev?](https://chatquill.dev/blog/ai-code-review) | AI |
-
 <sub>→ All articles at <a href="https://chatquill.dev">chatquill.dev</a></sub>
 
 ---
